@@ -74,7 +74,7 @@ private val DarkColors = darkColorScheme(
 )
 
 @Composable
-fun AppTheme(
+fun FitFolioTheme(
     useDarkTheme: Boolean = true, //isSystemInDarkTheme(),
     content: @Composable() () -> Unit
 ) {
