@@ -1,7 +1,7 @@
-# PROJECT NAME
+# FitFolio
 
 ## Goal
-A brief description of your application. Should answer, as concisely as you can: what is it? what is its purpose?
+FitFolio seeks to provide an intuative way for people going to the gym to organize and plan their workouts.
 
 ## Quick-start
 How to install and launch your application. These should include instructions for:
@@ -11,4 +11,5 @@ How to install and launch your application. These should include instructions fo
 - (by Sprint 1): Screenshots from each of the main screens of your application.
 
 ## Team members
-List each person's name and email address.
+Kevin Baggott - Kevin.Baggott@johnabbottcollege.net
+Cristiano Fazi - Cristiano.Fazi@johnabbottcollege.net
