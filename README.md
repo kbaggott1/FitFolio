@@ -12,4 +12,5 @@ How to install and launch your application. These should include instructions fo
 
 ## Team members
 Kevin Baggott - Kevin.Baggott@johnabbottcollege.net
+
 Cristiano Fazi - Cristiano.Fazi@johnabbottcollege.net
