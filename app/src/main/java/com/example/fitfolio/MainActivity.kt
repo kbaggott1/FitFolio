@@ -68,7 +68,7 @@ fun FitFolio(
     }) {
         NavHost(
             navController = navController,
-            startDestination = "RoutinesOverview",
+            startDestination = "RoutineViewer",
             modifier = modifier.padding(it)
         ) {
             composable("RoutinesOverview") {
@@ -76,7 +76,7 @@ fun FitFolio(
                 exerciseViewModel.exercises[0].sets = 4
             }
             composable("RoutineViewer") {
-                RoutineViewerScreen(exerciseViewModel, routineViewModel)
+                RoutineViewerScreen(routineViewModel.routines[0])
             }
         }
     }

@@ -1,5 +1,4 @@
 package com.example.fitfolio.viewmodels
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import com.example.fitfolio.data.Exercise
@@ -14,7 +13,7 @@ class ExerciseViewModel : ViewModel() {
         _exercises.add(exercise)
     }
 
-    fun remove(exercise: Exercise) {
+    fun remove(exercise: Any?) {
         _exercises.remove(exercise);
     }
 
@@ -26,6 +25,7 @@ class ExerciseViewModel : ViewModel() {
         Exercise("Seated Bicep Curl", listOf(Muscles.BICEPS), "Sit down and Curl", 4, 12),
         Exercise("Tricep Pull down",listOf(Muscles.TRICEPS), "Pull down on the Cords", 4, 12),
         Exercise("Leg Press", listOf(Muscles.QUADRICEPS), "Push up with your legs", 4, 12),
+        Exercise("Chest Press", listOf(Muscles.MIDCHEST,  Muscles.UPPERCHEST), "Light Weight", 4, 12),
         Exercise("Flex in the mirror", Muscles.values().toList(), "Appreciate the gains", 10, 200)
     )
 }
