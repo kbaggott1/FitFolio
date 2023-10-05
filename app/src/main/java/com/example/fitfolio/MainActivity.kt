@@ -68,14 +68,14 @@ fun FitFolio(
     }) {
         NavHost(
             navController = navController,
-            startDestination = "RoutinesOverview",
+            startDestination = "RoutineViewer",
             modifier = modifier.padding(it)
         ) {
             composable("RoutinesOverview") {
                 RoutineOverviewScreen(modifier, routineViewModel)
             }
             composable("RoutineViewer") {
-                RoutineViewerScreen(exerciseViewModel, routineViewModel)
+                RoutineViewerScreen(routineViewModel.routines[0])
             }
         }
     }
