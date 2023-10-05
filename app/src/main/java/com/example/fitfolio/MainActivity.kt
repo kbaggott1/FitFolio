@@ -17,6 +17,11 @@ import com.example.fitfolio.ui.theme.FitFolioTheme
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.fitfolio.viewmodels.ExerciseViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.fitfolio.screens.RoutineOverviewScreen
+import com.example.fitfolio.screens.RoutineViewerScreen
+import com.example.fitfolio.viewmodels.RoutineViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,23 +42,25 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FitFolio(modifier: Modifier = Modifier) {
+fun FitFolio(
+    modifier: Modifier = Modifier,
+    exerciseViewModel: ExerciseViewModel = viewModel(),
+    routineViewModel: RoutineViewModel = viewModel()
+    ) {
     val navController = rememberNavController()
 
     Scaffold() {
         NavHost(
             navController = navController,
-            startDestination = "Home",
+            startDestination = "RoutinesOverview",
             modifier = modifier.padding(it)
-            ) {
-                composable("Home") {
-                    HomeScreen()
-                }
+        ) {
+            composable("RoutinesOverview") {
+                RoutineOverviewScreen()
+            }
+            composable("RoutineViewer") {
+                RoutineViewerScreen(exerciseViewModel, routineViewModel)
+            }
         }
     }
-
-}
-@Composable
-fun HomeScreen() {
-    Text("Hello")
 }
