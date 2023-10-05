@@ -18,3 +18,4 @@ ktlint {
     filter {
         exclude("**/style-violations.kt")
     }
+}
