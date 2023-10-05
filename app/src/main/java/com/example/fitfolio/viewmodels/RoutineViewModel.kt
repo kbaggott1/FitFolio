@@ -6,7 +6,7 @@ import com.example.fitfolio.data.Exercise
 import com.example.fitfolio.data.Routine
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
-
+import androidx.lifecycle.viewmodel.compose.viewModel
 class RoutineViewModel : ViewModel()  {
     private val _routines = getMockRoutines().toMutableStateList()
     val routines: SnapshotStateList<Routine>
@@ -24,6 +24,6 @@ class RoutineViewModel : ViewModel()  {
 
 private fun getMockRoutines(): List<Routine> {
     return listOf<Routine>(
-        Routine("Chest Day",null, getMockExercises())
+        Routine("Chest Day",null, ExerciseViewModel())
     )
 }

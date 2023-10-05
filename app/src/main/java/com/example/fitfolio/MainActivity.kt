@@ -73,6 +73,7 @@ fun FitFolio(
         ) {
             composable("RoutinesOverview") {
                 RoutineOverviewScreen()
+                exerciseViewModel.exercises[0].sets = 4
             }
             composable("RoutineViewer") {
                 RoutineViewerScreen(exerciseViewModel, routineViewModel)
