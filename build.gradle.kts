@@ -1,3 +1,5 @@
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     id("com.android.application") version "8.1.1" apply false
@@ -6,7 +8,16 @@ plugins {
 }
 
 // Apply klint to our code
-/*
+plugins {
+    application
+    kotlin("jvm")
+    id("org.jlleitschuh.gradle.ktlint")
+}
+
+application {
+    mainClass.set("org.jlleitschuh.gradle.ktlint.sample.kotlin.MainKt")
+}
+
 ktlint {
     verbose.set(true)
     outputToConsole.set(true)
@@ -19,21 +30,4 @@ ktlint {
     filter {
         exclude("**/style-violations.kt")
     }
-}
-*/
-
-ktlint {
-    version.set("11.16.0") // Specify the desired ktlint version
-    reporters = listOf("plain", "checkstyle") // Use plain and checkstyle reporters
-    verbose.set(true) // Show verbose output
-}
-
-tasks.register("ktlintStagingDebugCheck", KtlintCheckTask::class) {
-    description = "Runs ktlint on all Kotlin sources (StagingDebug)"
-    group = "verification"
-    sourceSets = listOf(sourceSets["stagingDebug"]) // Replace with your desired source set
-}
-
-tasks.named("check") {
-    dependsOn("ktlintStagingDebugCheck")
 }
