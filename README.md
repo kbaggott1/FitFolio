@@ -2,6 +2,7 @@
 
 ## Goal
 FitFolio seeks to provide an intuative way for people going to the gym to organize and plan their workouts.
+Currrently features two pages.
 
 ## Quick-start
 How to install and launch your application. These should include instructions for:
