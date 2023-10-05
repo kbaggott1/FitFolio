@@ -1,5 +1,6 @@
 package com.example.fitfolio.screens
 
+import android.os.Bundle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,16 +32,19 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavArgumentBuilder
+import androidx.navigation.NavController
+import androidx.navigation.navArgument
 import com.example.fitfolio.R
 import com.example.fitfolio.viewmodels.RoutineViewModel
 
 @Composable
-fun RoutineOverviewScreen(modifier: Modifier = Modifier, routineViewModel: RoutineViewModel) {
+fun RoutineOverviewScreen(modifier: Modifier = Modifier, routineViewModel: RoutineViewModel, navController: NavController) {
     RoutineList(
         list = routineViewModel.routines,
         modifier = modifier.padding(dimensionResource(id = R.dimen.padding_small)),
-        handleDelete = {routineViewModel.remove(it)}
-    )
+        handleDelete = {routineViewModel.remove(it)},
+        openRoutine = {navController.navigate(route = "RoutineViewer/${it}")})
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -84,13 +88,13 @@ fun RoutineItem(name: String, routineDescription: String?, handleDelete: () -> U
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddRoutineCard(modifier: Modifier = Modifier, onClick: () -> Unit) {
+fun AddRoutineCard(modifier: Modifier = Modifier, openRoutine: () -> Unit) {
     Card(
         modifier = modifier
         .fillMaxWidth()
         .height(dimensionResource(id = R.dimen.add_routine_card_size))
         .padding(dimensionResource(id = R.dimen.padding_tiny)),
-        onClick = onClick
+        onClick = openRoutine
 
     ) {
 
@@ -112,7 +116,8 @@ fun AddRoutineCard(modifier: Modifier = Modifier, onClick: () -> Unit) {
 fun RoutineList(
     list: List<Routine>,
     modifier: Modifier,
-    handleDelete: (Routine) -> Unit
+    handleDelete: (Routine) -> Unit,
+    openRoutine: (Int) -> Unit
 ) {
 
     LazyColumn(modifier = modifier) {
@@ -121,11 +126,11 @@ fun RoutineList(
                 name = routine.name,
                 routineDescription = routine.description,
                 handleDelete = { handleDelete(routine) },
-                openRoutine = {}
+                openRoutine = {openRoutine(routine.id)}
             )
         }
         item {
-            AddRoutineCard(onClick = {/* Todo */})
+            AddRoutineCard(openRoutine = {/* Todo */})
         }
 
     }

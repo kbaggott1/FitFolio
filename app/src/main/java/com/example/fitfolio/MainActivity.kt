@@ -25,9 +25,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.fitfolio.viewmodels.ExerciseViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
+import com.example.fitfolio.data.Routine
 import com.example.fitfolio.screens.RoutineOverviewScreen
 import com.example.fitfolio.screens.RoutineViewerScreen
 import com.example.fitfolio.viewmodels.RoutineViewModel
+import kotlin.reflect.typeOf
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,14 +72,17 @@ fun FitFolio(
     }) {
         NavHost(
             navController = navController,
-            startDestination = "RoutineViewer",
+            startDestination = "RoutinesOverview",
             modifier = modifier.padding(it)
         ) {
             composable("RoutinesOverview") {
-                RoutineOverviewScreen(modifier, routineViewModel)
+                RoutineOverviewScreen(modifier, routineViewModel, navController)
             }
-            composable("RoutineViewer") {
-                RoutineViewerScreen(routineViewModel.routines[0])
+            composable("RoutineViewer/{id}", arguments = listOf(
+                navArgument("id") { type = NavType.IntType}
+            )) {navBackStackEntry ->
+                val routineId = navBackStackEntry.arguments?.getInt("id")
+                RoutineViewerScreen(routineViewModel, routineId!!)
             }
         }
     }

@@ -39,12 +39,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavBackStackEntry
 import com.example.fitfolio.data.Exercise
 import com.example.fitfolio.data.Routine
+import com.example.fitfolio.viewmodels.RoutineViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RoutineViewerScreen(routine: Routine) {
+fun RoutineViewerScreen(routineViewModel: RoutineViewModel, routineId: Int) {
+
+    val routine = getRoutineFromId(routineViewModel, routineId)!!
     Scaffold {
         Column (modifier= Modifier.padding(it)){
             RoutineTitle(routine = routine)
@@ -58,6 +62,16 @@ fun RoutineViewerScreen(routine: Routine) {
             }
         }
     }
+}
+
+private fun getRoutineFromId(routineViewModel: RoutineViewModel, id: Int) : Routine? {
+    for(routine in routineViewModel.routines) {
+        if(routine.id == id) {
+            return routine;
+        }
+    }
+
+    return null;
 }
 
 //Represents the routine title. Can be modified to preflect the new name

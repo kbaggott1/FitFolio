@@ -13,9 +13,13 @@ class RoutineViewModel : ViewModel()  {
         get() = _routines
 
     fun add(routine: Routine) {
+        for(r in _routines) {
+            if (routine.id == r.id ) {
+                return
+            }
+        }
         _routines.add(routine)
     }
-
     fun remove(routine: Routine) {
         _routines.remove(routine);
     }
@@ -24,8 +28,8 @@ class RoutineViewModel : ViewModel()  {
 
 private fun getMockRoutines(): List<Routine> {
     return listOf<Routine>(
-        Routine("Chest Day",null, ExerciseViewModel()),
-        Routine("Back Day",null, ExerciseViewModel()),
-        Routine("Leg Day",null, ExerciseViewModel())
+        Routine(0,"Chest Day",null, ExerciseViewModel()),
+        Routine(1,"Back Day",null, ExerciseViewModel()),
+        Routine(2, "Leg Day",null, ExerciseViewModel())
     )
 }
