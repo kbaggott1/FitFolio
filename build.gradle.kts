@@ -2,7 +2,7 @@
 plugins {
     id("com.android.application") version "8.1.1" apply false
     id("org.jetbrains.kotlin.android") version "1.8.10" apply false
-    id("org.jlleitschuh.gradle.ktlint") version "11.6.0"
+    id("org.jlleitschuh.gradle.ktlint") version "8.0.0"
 }
 
 // Apply klint to our code
@@ -23,7 +23,7 @@ ktlint {
 */
 
 ktlint {
-    version.set("11.16.0") // Specify the desired ktlint version
+    version.set("8.0.0") // Specify the desired ktlint version
     reporters = listOf("plain", "checkstyle") // Use plain and checkstyle reporters
     verbose.set(true) // Show verbose output
 }
