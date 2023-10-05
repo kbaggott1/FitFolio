@@ -2,10 +2,11 @@
 plugins {
     id("com.android.application") version "8.1.1" apply false
     id("org.jetbrains.kotlin.android") version "1.8.10" apply false
-    id("org.jlleitschuh.gradle.ktlint")
+    id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
 }
 
 // Apply klint to our code
+/*
 ktlint {
     verbose.set(true)
     outputToConsole.set(true)
@@ -18,4 +19,21 @@ ktlint {
     filter {
         exclude("**/style-violations.kt")
     }
+}
+*/
+
+ktlint {
+    version.set("0.42.1") // Specify the desired ktlint version
+    reporters = listOf("plain", "checkstyle") // Use plain and checkstyle reporters
+    verbose.set(true) // Show verbose output
+}
+
+tasks.register("ktlintStagingDebugCheck", KtlintCheckTask::class) {
+    description = "Runs ktlint on all Kotlin sources (StagingDebug)"
+    group = "verification"
+    sourceSets = listOf(sourceSets["stagingDebug"]) // Replace with your desired source set
+}
+
+tasks.named("check") {
+    dependsOn("ktlintStagingDebugCheck")
 }
