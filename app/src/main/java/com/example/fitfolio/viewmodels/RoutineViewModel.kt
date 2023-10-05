@@ -24,6 +24,8 @@ class RoutineViewModel : ViewModel()  {
 
 private fun getMockRoutines(): List<Routine> {
     return listOf<Routine>(
-        Routine("Chest Day",null, ExerciseViewModel())
+        Routine("Chest Day",null, ExerciseViewModel()),
+        Routine("Back Day",null, ExerciseViewModel()),
+        Routine("Leg Day",null, ExerciseViewModel())
     )
 }

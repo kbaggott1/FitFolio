@@ -1,6 +1,8 @@
 package com.example.fitfolio.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -15,12 +17,15 @@ import androidx.compose.ui.Modifier
 import com.example.fitfolio.data.Routine
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -38,8 +43,9 @@ fun RoutineOverviewScreen(modifier: Modifier = Modifier, routineViewModel: Routi
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RoutineItem(name: String, routineDescription: String?, handleDelete: () -> Unit) {
+fun RoutineItem(name: String, routineDescription: String?, handleDelete: () -> Unit, openRoutine: () -> Unit) {
     var description = routineDescription;
 
     if(description == null) {
@@ -48,7 +54,11 @@ fun RoutineItem(name: String, routineDescription: String?, handleDelete: () -> U
 
     Card(modifier = Modifier
         .fillMaxWidth()
-        .height(dimensionResource(id = R.dimen.routine_card_size))) {
+        .height(dimensionResource(id = R.dimen.routine_card_size))
+        .padding(dimensionResource(id = R.dimen.padding_tiny)),
+        onClick = openRoutine
+
+    ) {
 
         Row(modifier = Modifier
             .fillMaxWidth()
@@ -65,9 +75,37 @@ fun RoutineItem(name: String, routineDescription: String?, handleDelete: () -> U
                 Icon(
                     Icons.Filled.Close, 
                     contentDescription = "Delete Routine", 
-                    modifier = Modifier.size(dimensionResource(id = R.dimen.routine_card_delete_button)))
+                    modifier = Modifier.size(dimensionResource(id = R.dimen.routine_card_delete_button))
+                )
             }
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AddRoutineCard(modifier: Modifier = Modifier, onClick: () -> Unit) {
+    Card(
+        modifier = modifier
+        .fillMaxWidth()
+        .height(dimensionResource(id = R.dimen.add_routine_card_size))
+        .padding(dimensionResource(id = R.dimen.padding_tiny)),
+        onClick = onClick
+
+    ) {
+
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Transparent)) {
+            Icon(
+                Icons.Filled.AddCircle,
+                contentDescription = "Add routine",
+                modifier = Modifier
+                    .size(dimensionResource(id = R.dimen.add_routine_button))
+                    .align(Alignment.Center)
+            )
+        }
+
     }
 }
 @Composable
@@ -76,13 +114,19 @@ fun RoutineList(
     modifier: Modifier,
     handleDelete: (Routine) -> Unit
 ) {
+
     LazyColumn(modifier = modifier) {
         items(list) {
             routine -> RoutineItem(
                 name = routine.name,
                 routineDescription = routine.description,
-                handleDelete = { handleDelete(routine) }
+                handleDelete = { handleDelete(routine) },
+                openRoutine = {}
             )
         }
+        item {
+            AddRoutineCard(onClick = {/* Todo */})
+        }
+
     }
 }
