@@ -1,5 +1,6 @@
 package com.example.fitfolio
 
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 /**
