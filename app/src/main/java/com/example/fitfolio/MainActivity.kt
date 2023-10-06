@@ -14,8 +14,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults.smallTopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,21 +26,18 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import com.example.fitfolio.ui.theme.FitFolioTheme
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import com.example.fitfolio.viewmodels.ExerciseViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.fitfolio.data.Routine
 import com.example.fitfolio.screens.RoutineOverviewScreen
 import com.example.fitfolio.screens.RoutineViewerScreen
+import com.example.fitfolio.ui.theme.FitFolioTheme
+import com.example.fitfolio.viewmodels.ExerciseViewModel
 import com.example.fitfolio.viewmodels.RoutineViewModel
-import kotlin.reflect.typeOf
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +49,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    FitFolio();
+                    FitFolio()
                 }
             }
         }
@@ -67,20 +62,20 @@ fun FitFolio(
     modifier: Modifier = Modifier,
     exerciseViewModel: ExerciseViewModel = viewModel(),
     routineViewModel: RoutineViewModel = viewModel()
-    ) {
+) {
     val navController = rememberNavController()
-    var currentPage by rememberSaveable { mutableStateOf("Routines Overview")}
+    var currentPage by rememberSaveable { mutableStateOf("Routines Overview") }
 
     Scaffold(topBar = {
         CenterAlignedTopAppBar(
             colors = smallTopAppBarColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
-                titleContentColor = MaterialTheme.colorScheme.primary,
+                titleContentColor = MaterialTheme.colorScheme.primary
             ),
 
             title = {
                 Column(
-                    horizontalAlignment = Alignment.CenterHorizontally, 
+                    horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
                 ) {
                     Text(
@@ -91,7 +86,6 @@ fun FitFolio(
                     )
                     Text(text = currentPage, textAlign = TextAlign.Center)
                 }
-
             }
         )
     }) {
@@ -104,9 +98,12 @@ fun FitFolio(
                 currentPage = "Routines Overview"
                 RoutineOverviewScreen(modifier, routineViewModel, navController)
             }
-            composable("RoutineViewer/{id}", arguments = listOf(
-                navArgument("id") { type = NavType.IntType}
-            )) {navBackStackEntry ->
+            composable(
+                "RoutineViewer/{id}",
+                arguments = listOf(
+                    navArgument("id") { type = NavType.IntType }
+                )
+            ) { navBackStackEntry ->
                 val routineId = navBackStackEntry.arguments?.getInt("id")
                 currentPage = "Routine Viewer"
                 RoutineViewerScreen(routineViewModel, routineId!!)

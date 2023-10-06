@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Close
@@ -23,7 +22,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -37,9 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavBackStackEntry
 import com.example.fitfolio.data.Exercise
 import com.example.fitfolio.data.Routine
 import com.example.fitfolio.viewmodels.RoutineViewModel
@@ -47,16 +43,15 @@ import com.example.fitfolio.viewmodels.RoutineViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RoutineViewerScreen(routineViewModel: RoutineViewModel, routineId: Int) {
-
     val routine = getRoutineFromId(routineViewModel, routineId)!!
     Scaffold {
-        Column (modifier= Modifier.padding(it)){
+        Column(modifier = Modifier.padding(it)) {
             RoutineTitle(routine = routine)
-            LazyColumn (contentPadding = it) {
+            LazyColumn(contentPadding = it) {
                 items(routine.exercises.exercises) { exer ->
-                    ExerciseCard(exercise = exer, onClose = { exercise -> routine.exercises.remove(exercise)}, modifier = Modifier.padding(8.dp))
+                    ExerciseCard(exercise = exer, onClose = { exercise -> routine.exercises.remove(exercise) }, modifier = Modifier.padding(8.dp))
                 }
-                item(){
+                item() {
                     AddExerciseCard(routine = routine, modifier = Modifier.padding(8.dp))
                 }
             }
@@ -64,20 +59,20 @@ fun RoutineViewerScreen(routineViewModel: RoutineViewModel, routineId: Int) {
     }
 }
 
-private fun getRoutineFromId(routineViewModel: RoutineViewModel, id: Int) : Routine? {
-    for(routine in routineViewModel.routines) {
-        if(routine.id == id) {
-            return routine;
+private fun getRoutineFromId(routineViewModel: RoutineViewModel, id: Int): Routine? {
+    for (routine in routineViewModel.routines) {
+        if (routine.id == id) {
+            return routine
         }
     }
 
-    return null;
+    return null
 }
 
-//Represents the routine title. Can be modified to preflect the new name
+// Represents the routine title. Can be modified to preflect the new name
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RoutineTitle(routine: Routine){
+fun RoutineTitle(routine: Routine) {
     var routineNameText by remember { mutableStateOf(routine.name) }
 
     Box(
@@ -87,9 +82,11 @@ fun RoutineTitle(routine: Routine){
     ) {
         TextField(
             value = routineNameText,
-            onValueChange = { routineNameText = it
-                routine.name = routineNameText },
-            label = { Text("Routine Name")},
+            onValueChange = {
+                routineNameText = it
+                routine.name = routineNameText
+            },
+            label = { Text("Routine Name") },
             modifier = Modifier
                 .fillMaxWidth()
         )
@@ -99,7 +96,7 @@ fun RoutineTitle(routine: Routine){
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-    ){
+    ) {
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
@@ -107,13 +104,11 @@ fun RoutineTitle(routine: Routine){
                 .background(SolidColor(Color.Gray))
         )
     }
-
 }
 
-
-//Displays a single exercise in the form of a card.
+// Displays a single exercise in the form of a card.
 @Composable
-fun ExerciseCard(exercise: Exercise, onClose: (Any?) -> Unit, modifier: Modifier = Modifier){
+fun ExerciseCard(exercise: Exercise, onClose: (Any?) -> Unit, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier
     ) {
@@ -134,9 +129,9 @@ fun ExerciseCard(exercise: Exercise, onClose: (Any?) -> Unit, modifier: Modifier
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 ExerciseInformation(exercise = exercise)
-                Column (
+                Column(
                     modifier = Modifier.align(Alignment.CenterVertically)
-                ){
+                ) {
                     Spacer(modifier = Modifier.height(1.dp))
                     IconButton(onClick = { onClose(exercise) }) {
                         Icon(Icons.Filled.Close, contentDescription = "Close")
@@ -147,7 +142,7 @@ fun ExerciseCard(exercise: Exercise, onClose: (Any?) -> Unit, modifier: Modifier
     }
 }
 
-//Displays the information contained inside an exercise card
+// Displays the information contained inside an exercise card
 @Composable
 fun ExerciseInformation(
     exercise: Exercise,
@@ -161,21 +156,21 @@ fun ExerciseInformation(
         )
         Text(
             text = exercise.description,
-            style = MaterialTheme.typography.bodyLarge ,
+            style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(horizontal = 8.dp)
         )
     }
 }
 
-//Card used as a button to add a new exercise to the routine
+// Card used as a button to add a new exercise to the routine
 @Composable
 fun AddExerciseCard(
     routine: Routine,
     modifier: Modifier = Modifier
-){
+) {
     Card(
         modifier = modifier
-    ){
+    ) {
         Box(
             modifier = Modifier
                 .animateContentSize(
@@ -189,9 +184,10 @@ fun AddExerciseCard(
             contentAlignment = Alignment.Center
         ) {
             IconButton(onClick = { }, modifier = Modifier.size(80.dp, 80.dp)) {
-                Box(modifier = Modifier, contentAlignment = Alignment.Center){
+                Box(modifier = Modifier, contentAlignment = Alignment.Center) {
                     Icon(
-                        Icons.Filled.AddCircle, contentDescription = "Add Exercise",
+                        Icons.Filled.AddCircle,
+                        contentDescription = "Add Exercise",
                         modifier = Modifier.size(64.dp)
                     )
                 }
