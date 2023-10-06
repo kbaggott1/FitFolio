@@ -26,30 +26,22 @@ jobs:
     - name: Grant Execute Permission to gradlew
       run: chmod +x ./gradlew
 
-    # Step 1.2: Check the code with ktlint, you can remove this job if you don't use ktlint
+    # Step 1: Format the kotlin files as best as possible
+    - name: Run the ktlintFormat command to format our files
+      run: ./gradlew ktlintFormat
+
+    # Step 2: Check the code with ktlint, you can remove this job if you don't use ktlint
     - name: Run Kotlin Linter
       run: ./gradlew ktlintCheck
 
-    # Step 2: Check the code with Android linter
-    - name: Run Android Linter
-      run: ./gradlew lintStagingDebug
+    #Step 3: Attempt to fix standard linting errors
+    - name: Run lintFix to attempt to fix linting errors
+      run: ./gradlew lintFix
 
-    # Step 4: Yun your unit tests
+    # Step 4: Check the code with Android linter
+    - name: Run Android Linter
+      run: ./gradlew lint
+
+    # Step 5: Yun your unit tests
     #- name: Run Unit Tests
     #  run: ./gradlew testStagingDebugUnitTest
-
-    # Step 4: Assemble debug apk to send to firebase test lab
-    #- name: Assemble Debug APK
-    #  run: ./gradlew assembleStagingDebug
-
-    # Step 4: Assemble debug test apk to send to firebase test lab
-    #- name: Assemble Debug Test APK
-    #  run: ./gradlew assembleStagingDebugAndroidTest
-
-    # Step 4: Run instrumented tests on firebase test lab
-    #- name: Run tests on Firebase Test Lab
-    #  uses: asadmansr/Firebase-Test-Lab-Action@v1.0
-    #  with:
-    #    arg-spec: '.github/test-lab-config-staging.yml:android-pixel-4'
-    #  env:
-    #    SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
