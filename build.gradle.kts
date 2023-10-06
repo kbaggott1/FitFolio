@@ -4,9 +4,9 @@ import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 plugins {
     id("com.android.application") version "8.1.1" apply false
     id("org.jetbrains.kotlin.android") version "1.8.10" apply false
-    id("org.jlleitschuh.gradle.ktlint") version "11.6.0"
 }
 
+/*
 application {
     mainClass.set("org.jlleitschuh.gradle.ktlint.sample.kotlin.MainKt")
 }
@@ -21,6 +21,7 @@ ktlint {
         reporter(ReporterType.HTML)
     }
     filter {
-        exclude("**/style-violations.kt")
+        exclude("style-violations.kt")
     }
 }
+*/
