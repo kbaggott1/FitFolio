@@ -45,3 +45,7 @@ jobs:
     # Step 5: Yun your unit tests
     #- name: Run Unit Tests
     #  run: ./gradlew testStagingDebugUnitTest
+
+    # Step 5: Build the application
+    - name: Build the application
+      run: ./gradlew build
