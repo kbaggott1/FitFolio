@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 android {
@@ -34,7 +35,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_8
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "8"
     }
     buildFeatures {
         compose = true
