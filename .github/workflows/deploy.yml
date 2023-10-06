@@ -21,6 +21,10 @@ jobs:
       with:
         java-version: 8
 
+    # Step 0: Grant permissions to access the gradle file
+    - name: Grant Execute Permission to gradlew
+      run: chmod +x ./gradlew
+
     # Step 1: Check the code with ktlint, you can remove this job if you don't use ktlint
     - name: Run Kotlin Linter
       run: ./gradlew # ktlintCheck
