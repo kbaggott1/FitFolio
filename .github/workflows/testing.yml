@@ -17,10 +17,10 @@ jobs:
     - name: Clone Repo
       uses: actions/checkout@v1
 
-    - name: Set up JDK 8
+    - name: Set up JDK 17
       uses: actions/setup-java@v1
       with:
-        java-version: 8
+        java-version: 17
 
 
     # Step 0: Grant permissions to access the gradle file
@@ -28,12 +28,12 @@ jobs:
       run: chmod +x ./gradlew
 
     #Step 0.5: Update Gradle version
-    - name: Update Gradle Version
-      run: ./gradlew wrapper --gradle-version 8.1.1
+    #- name: Update Gradle Version
+    #  run: ./gradlew wrapper --gradle-version 8.1.1
 
     # Step 1: Check the code with ktlint, you can remove this job if you don't use ktlint
     - name: Run Kotlin Linter
-      run: ./gradlew # ktlintCheck
+      run: ./gradlew ktlintCheck
 
     # Step 2: Check the code with Android linter
     #- name: Run Android Linter
