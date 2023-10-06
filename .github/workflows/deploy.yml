@@ -16,19 +16,15 @@ jobs:
     - name: Clone Repo
       uses: actions/checkout@v1
 
-    - name: Set up JDK 8
+    - name: Set up JDK 17
       uses: actions/setup-java@v1
       with:
-        java-version: 8
+        java-version: 17
 
     # Step 0: Grant permissions to access the gradle file
     - name: Grant Execute Permission to gradlew
       run: chmod +x ./gradlew
-
-    # Step 1: Check the code with ktlint, you can remove this job if you don't use ktlint
-    - name: Run Kotlin Linter
-      run: ./gradlew # ktlintCheck
-
+      
     # Step 2: Decode Google services configuration file
     # - name: Decode google-services.json
     # env:
