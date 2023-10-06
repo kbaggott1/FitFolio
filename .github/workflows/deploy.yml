@@ -24,3 +24,7 @@ jobs:
     # Step 0: Grant permissions to access the gradle file
     - name: Grant Execute Permission to gradlew
       run: chmod +x ./gradlew
+
+    # Step 1: Build the Project
+    - name: Build the project
+      run: ./gradlew build
