@@ -9,11 +9,6 @@ ktlint {
     verbose.set(true)
     outputToConsole.set(true)
     coloredOutput.set(true)
-    reporters {
-        reporter(ReporterType.CHECKSTYLE)
-        reporter(ReporterType.JSON)
-        reporter(ReporterType.HTML)
-    }
     filter {
         exclude("**/ExampleInstrumentedTest.kt")
     }
