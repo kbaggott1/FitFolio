@@ -6,6 +6,15 @@ plugins {
 }
 
 ktlint {
-    // Configure the source directory you want to check
-    source = files("app/src/main")
+    verbose.set(true)
+    outputToConsole.set(true)
+    coloredOutput.set(true)
+    reporters {
+        reporter(ReporterType.CHECKSTYLE)
+        reporter(ReporterType.JSON)
+        reporter(ReporterType.HTML)
+    }
+    filter {
+        exclude("**/ExampleInstrumentedTest.kt")
+    }
 }
