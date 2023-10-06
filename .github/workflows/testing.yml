@@ -45,7 +45,6 @@ jobs:
     #- name: Assemble Debug Test APK
     #  run: ./gradlew assembleStagingDebugAndroidTest
 
-
     # Step 4: Run instrumented tests on firebase test lab
     #- name: Run tests on Firebase Test Lab
     #  uses: asadmansr/Firebase-Test-Lab-Action@v1.0
