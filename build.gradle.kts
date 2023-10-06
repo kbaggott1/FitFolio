@@ -11,7 +11,7 @@ ktlint {
     coloredOutput.set(true)
     filter {
         exclude("**/ExampleInstrumentedTest.kt")
-        exclude("**/settings.gradle.kts)
+        exclude("**/settings.gradle.kts")
         exclude("**/ktlintKotlinScriptCheck.txt")
     }
 }
