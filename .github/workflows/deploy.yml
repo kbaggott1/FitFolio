@@ -28,3 +28,42 @@ jobs:
     # Step 1: Build the Project
     - name: Build the project
       run: ./gradlew build
+
+  build:
+     runs-on: ubuntu-latest
+     
+     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+  
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: 17
+  
+      - name: Build and Package APK
+        run: ./gradlew assembleRelease
+        # working-directory: ./app  # Adjust this path if necessary
+  
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-release
+          path: app/build/outputs/apk/release/app-release.apk
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    
+    steps:    
+    - name: Download APK
+      uses: actions/download-artifact@v2
+      with:
+        name: app-release
+
+    - name: Release APK
+      run: |
+        # Use a tool like GitHub Releases or Firebase App Distribution to release your APK
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
