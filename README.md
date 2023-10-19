@@ -11,7 +11,7 @@ FirFolio does not currently run with an exe or APK. Therefore you will need an I
   3. Press the "run" icon
 
 ## Screenshots of application
-<img width="252" alt="image" src="https://github.com/kbaggott1/FitFolio/assets/98350514/1419df51-8210-47c1-89e4-624c142e06f9"> <img width="253" alt="image" src="https://github.com/kbaggott1/FitFolio/assets/98350514/9c561a93-a095-41ac-85db-d4daaf3de67f">
+<img width="252" alt="273326367-1419df51-8210-47c1-89e4-624c142e06f9" src="https://github.com/kbaggott1/FitFolio/assets/93663166/46d58a83-2b44-4412-bb1c-0584e9957b7f"> <img width="253" alt="2" src="https://github.com/kbaggott1/FitFolio/assets/93663166/a1ab6a50-6710-4ba9-ac64-80046a2dd1a3">
 
 
 ## Team members
