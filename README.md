@@ -5,7 +5,7 @@ FitFolio seeks to provide an intuative way for people going to the gym to organi
 Currrently features two pages.
 
 ## Quick-start
-FirFolio does not currently run with an exe or APK. Therefore you will need an IDE to run this version of the project
+FitFolio does not currently run with an exe or APK. Therefore you will need an IDE to run this version of the project
   1. Download Android Studio -> [https://developer.android.com/studio?gclid=CjwKCAjw4P6oBhBsEiwAKYVkq1KCv2lf45dwmVXp0tnO9TR8a9qzSeE_cbTN1R-TRvPaMiqC18WwnRoCGCEQAvD_BwE&gclsrc=aw.ds]
   2. Clone the github repo and open it in android studio
   3. Press the "run" icon
