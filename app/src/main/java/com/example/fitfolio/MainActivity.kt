@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.AlertDialogDefaults.containerColor
 import androidx.compose.material3.AlertDialogDefaults.titleContentColor
 import androidx.compose.material3.BottomAppBar
@@ -38,6 +40,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.fitfolio.screens.AboutScreen
 import com.example.fitfolio.screens.RoutineOverviewScreen
 import com.example.fitfolio.screens.RoutineViewerScreen
 import com.example.fitfolio.ui.theme.FitFolioTheme
@@ -97,9 +100,12 @@ fun FitFolio(
         bottomBar = {
             BottomAppBar (
                 actions = {
-                IconButton(onClick = { navController.navigate(route = "RoutinesOverview")}) {
-                    Icon(Icons.Filled.Home, contentDescription = "Routine Overview")
-                }
+                    IconButton(onClick = { navController.navigate(route = "RoutinesOverview")}) {
+                        Icon(Icons.Filled.Home, contentDescription = "Routine Overview")
+                    }
+                    IconButton(onClick = { navController.navigate(route = "About")}) {
+                        Icon(Icons.Filled.Face, contentDescription = "About us screen")
+                    }
             })
         }
         ) {
@@ -121,6 +127,11 @@ fun FitFolio(
                 val routineId = navBackStackEntry.arguments?.getInt("id")
                 currentPage = "Routine Viewer"
                 RoutineViewerScreen(routineViewModel, routineId!!)
+            }
+
+            composable("About") {
+                currentPage = "About"
+                AboutScreen()
             }
         }
     }
