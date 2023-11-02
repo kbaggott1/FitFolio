@@ -30,12 +30,13 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.fitfolio.R
 import com.example.fitfolio.data.Routine
+import com.example.fitfolio.viewmodels.ExerciseViewModel
 import com.example.fitfolio.viewmodels.RoutineViewModel
 
 @Composable
 fun RoutineOverviewScreen(modifier: Modifier = Modifier, routineViewModel: RoutineViewModel, navController: NavController) {
     RoutineList(
-        list = routineViewModel.routines,
+        routineViewModel = routineViewModel,
         modifier = modifier.padding(dimensionResource(id = R.dimen.padding_small)),
         handleDelete = { routineViewModel.remove(it) },
         openRoutine = { navController.navigate(route = "RoutineViewer/$it") }
@@ -116,11 +117,12 @@ fun AddRoutineCard(modifier: Modifier = Modifier, openRoutine: () -> Unit) {
 
 @Composable
 fun RoutineList(
-    list: List<Routine>,
+    routineViewModel : RoutineViewModel,
     modifier: Modifier,
     handleDelete: (Routine) -> Unit,
     openRoutine: (Int) -> Unit
 ) {
+    val list = routineViewModel.routines;
     LazyColumn(modifier = modifier) {
         items(list) {
                 routine ->
@@ -132,7 +134,16 @@ fun RoutineList(
             )
         }
         item {
-            AddRoutineCard(openRoutine = { /* Todo */ })
+            AddRoutineCard(openRoutine = { AddEmptyRoutine(routineViewModel, openRoutine);  })
         }
     }
+}
+
+fun AddEmptyRoutine(routineViewModel: RoutineViewModel, openRoutine: (Int) -> Unit) {
+    val newId = routineViewModel.routines.last().id + 1;
+    val newRoutine = Routine(newId, Routine.defaultName, null, ExerciseViewModel())
+
+    routineViewModel.add(newRoutine);
+    openRoutine(newId);
+
 }
