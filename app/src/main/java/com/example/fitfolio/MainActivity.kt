@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.AlertDialogDefaults.containerColor
@@ -41,6 +42,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.fitfolio.screens.AboutScreen
+import com.example.fitfolio.screens.MotivationScreen
 import com.example.fitfolio.screens.RoutineOverviewScreen
 import com.example.fitfolio.screens.RoutineViewerScreen
 import com.example.fitfolio.ui.theme.FitFolioTheme
@@ -106,6 +108,9 @@ fun FitFolio(
                     IconButton(onClick = { navController.navigate(route = "About")}) {
                         Icon(Icons.Filled.Face, contentDescription = "About us screen")
                     }
+                    IconButton(onClick = { navController.navigate(route = "Motivation")}) {
+                        Icon(Icons.Filled.Favorite, contentDescription = "About us screen")
+                    }
             })
         }
         ) {
@@ -132,6 +137,10 @@ fun FitFolio(
             composable("About") {
                 currentPage = "About"
                 AboutScreen()
+            }
+            composable("Motivation") {
+                currentPage = "Motivation"
+                MotivationScreen()
             }
         }
     }
