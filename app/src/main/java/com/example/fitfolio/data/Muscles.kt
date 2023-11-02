@@ -25,5 +25,7 @@ enum class Muscles(val string: String) {
     HAMSTRINGS("Hamstrings"),
     CALVES("Calves"),
     ADDUCTORS("Adductors"),
-    GLUTES("Glutes")
+    GLUTES("Glutes"),
+
+    None("None")
 }
