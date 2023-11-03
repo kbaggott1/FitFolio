@@ -3,6 +3,8 @@ package com.example.fitfolio
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -11,6 +13,7 @@ import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.AlertDialogDefaults.containerColor
 import androidx.compose.material3.AlertDialogDefaults.titleContentColor
 import androidx.compose.material3.BottomAppBar
@@ -45,6 +48,7 @@ import com.example.fitfolio.screens.AboutScreen
 import com.example.fitfolio.screens.MotivationScreen
 import com.example.fitfolio.screens.RoutineOverviewScreen
 import com.example.fitfolio.screens.RoutineViewerScreen
+import com.example.fitfolio.screens.StatisticsScreen
 import com.example.fitfolio.ui.theme.FitFolioTheme
 import com.example.fitfolio.viewmodels.ExerciseViewModel
 import com.example.fitfolio.viewmodels.RoutineViewModel
@@ -111,7 +115,10 @@ fun FitFolio(
                     IconButton(onClick = { navController.navigate(route = "Motivation")}) {
                         Icon(Icons.Filled.Favorite, contentDescription = "About us screen")
                     }
-            })
+                    IconButton(onClick = { navController.navigate(route = "Statistics")}) {
+                        Icon(Icons.Filled.Share, contentDescription = "Statistics screen")
+                    }
+                })
         }
         ) {
         NavHost(
@@ -141,6 +148,10 @@ fun FitFolio(
             composable("Motivation") {
                 currentPage = "Motivation"
                 MotivationScreen()
+            }
+            composable("Statistics"){
+                currentPage = "Statistics"
+                StatisticsScreen()
             }
         }
     }
