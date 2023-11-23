@@ -45,6 +45,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.fitfolio.data.Repository
+import com.example.fitfolio.providers.InMemoryRoutinesProvider
 import com.example.fitfolio.screens.AboutScreen
 import com.example.fitfolio.screens.LoginScreen
 import com.example.fitfolio.screens.MotivationScreen
@@ -75,8 +77,9 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun FitFolio(
     modifier: Modifier = Modifier,
+    repository: Repository = Repository(InMemoryRoutinesProvider()),
     exerciseViewModel: ExerciseViewModel = viewModel(),
-    routineViewModel: RoutineViewModel = viewModel()
+    routineViewModel: RoutineViewModel = RoutineViewModel(repository)
 ) {
     val navController = rememberNavController()
     var currentPage by rememberSaveable { mutableStateOf("Routines Overview") }
