@@ -117,7 +117,7 @@ fun FitFolio(
                         Icon(Icons.Filled.Favorite, contentDescription = "About us screen")
                     }
                     IconButton(onClick = { }) {
-                        Icon(Icons.Filled.ArrowBack, contentDescription = "")
+                        Icon(Icons.Filled.ArrowBack, contentDescription = "Logout")
                     }
                 })
         }
