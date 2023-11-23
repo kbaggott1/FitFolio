@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.fitfolio.R
 
+//The main screen for the "About" section, contains all composables for this page
 @Composable
 fun AboutScreen() {
     Surface(
@@ -34,6 +35,7 @@ fun AboutScreen() {
     }
 }
 
+//An "About Card" is the card that hosts the information and images of the about section
 @Composable
 fun AboutCard() {
     Box(
@@ -59,6 +61,7 @@ fun AboutCard() {
     }
 }
 
+//Contains the about text for application. Tells the story of FitFolio
 @Composable
 fun AboutText() {
     Text(
@@ -73,6 +76,7 @@ fun AboutText() {
     )
 }
 
+//A row of two images, that sit side by side. Images are the faces of the creators
 @Composable
 fun ImageRow() {
     Row(
