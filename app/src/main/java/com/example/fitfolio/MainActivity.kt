@@ -140,7 +140,6 @@ fun FitFolio(
                 currentPage = "Routine Viewer"
                 RoutineViewerScreen(routineViewModel, routineId!!)
             }
-
             composable("About") {
                 currentPage = "About"
                 AboutScreen()
