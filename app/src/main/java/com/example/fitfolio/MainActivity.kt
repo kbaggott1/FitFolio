@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
@@ -48,7 +49,6 @@ import com.example.fitfolio.screens.AboutScreen
 import com.example.fitfolio.screens.MotivationScreen
 import com.example.fitfolio.screens.RoutineOverviewScreen
 import com.example.fitfolio.screens.RoutineViewerScreen
-import com.example.fitfolio.screens.StatisticsScreen
 import com.example.fitfolio.ui.theme.FitFolioTheme
 import com.example.fitfolio.viewmodels.ExerciseViewModel
 import com.example.fitfolio.viewmodels.RoutineViewModel
@@ -115,8 +115,8 @@ fun FitFolio(
                     IconButton(onClick = { navController.navigate(route = "Motivation")}) {
                         Icon(Icons.Filled.Favorite, contentDescription = "About us screen")
                     }
-                    IconButton(onClick = { navController.navigate(route = "Statistics")}) {
-                        Icon(Icons.Filled.Share, contentDescription = "Statistics screen")
+                    IconButton(onClick = { }) {
+                        Icon(Icons.Filled.ArrowBack, contentDescription = "")
                     }
                 })
         }
@@ -148,10 +148,6 @@ fun FitFolio(
             composable("Motivation") {
                 currentPage = "Motivation"
                 MotivationScreen()
-            }
-            composable("Statistics"){
-                currentPage = "Statistics"
-                StatisticsScreen()
             }
         }
     }
