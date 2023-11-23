@@ -46,6 +46,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.fitfolio.screens.AboutScreen
+import com.example.fitfolio.screens.LoginScreen
 import com.example.fitfolio.screens.MotivationScreen
 import com.example.fitfolio.screens.RoutineOverviewScreen
 import com.example.fitfolio.screens.RoutineViewerScreen
@@ -140,7 +141,6 @@ fun FitFolio(
                 currentPage = "Routine Viewer"
                 RoutineViewerScreen(routineViewModel, routineId!!)
             }
-
             composable("About") {
                 currentPage = "About"
                 AboutScreen()
@@ -148,6 +148,10 @@ fun FitFolio(
             composable("Motivation") {
                 currentPage = "Motivation"
                 MotivationScreen()
+            }
+            composable("Login") {
+                currentPage = "Login"
+                LoginScreen()
             }
         }
     }
