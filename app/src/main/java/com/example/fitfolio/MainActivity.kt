@@ -6,7 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -38,6 +40,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
@@ -109,20 +112,28 @@ fun FitFolio(
     },
         bottomBar = {
             BottomAppBar (
-                actions = {
-                    IconButton(onClick = { navController.navigate(route = "RoutinesOverview")}) {
-                        Icon(Icons.Filled.Home, contentDescription = "Routine Overview")
+                content = {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ){
+                        IconButton(onClick = { navController.navigate(route = "RoutinesOverview")}) {
+                            Icon(Icons.Filled.Home, contentDescription = "Routine Overview")
+                        }
+                        IconButton(onClick = { navController.navigate(route = "About")}) {
+                            Icon(Icons.Filled.Face, contentDescription = "About us screen")
+                        }
+                        IconButton(onClick = { navController.navigate(route = "Motivation")}) {
+                            Icon(Icons.Filled.Favorite, contentDescription = "About us screen")
+                        }
+                        IconButton(onClick = { }) {
+                            Icon(Icons.Filled.ArrowBack, contentDescription = "Logout")
+                        }
                     }
-                    IconButton(onClick = { navController.navigate(route = "About")}) {
-                        Icon(Icons.Filled.Face, contentDescription = "About us screen")
-                    }
-                    IconButton(onClick = { navController.navigate(route = "Motivation")}) {
-                        Icon(Icons.Filled.Favorite, contentDescription = "About us screen")
-                    }
-                    IconButton(onClick = { }) {
-                        Icon(Icons.Filled.ArrowBack, contentDescription = "Logout")
-                    }
-                })
+                },
+                modifier = Modifier.fillMaxWidth(),
+                )
         }
         ) {
         NavHost(
