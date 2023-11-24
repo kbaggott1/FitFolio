@@ -5,9 +5,16 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import com.example.fitfolio.data.Repository
 import com.example.fitfolio.data.Routine
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
+
 class RoutineViewModel(private val repository: Repository) : ViewModel() {
     val routines: SnapshotStateList<Routine>
-        get() = repository.getRoutines().toMutableStateList()
+        get() = runBlocking {
+            async {
+                repository.getRoutines()
+            }.await().toMutableStateList()
+        }
 
     fun add(routine: Routine) {
         repository.addRoutine(routine)
