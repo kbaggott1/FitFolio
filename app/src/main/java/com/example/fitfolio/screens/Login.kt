@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.sp
 
 //Contains signing in and signing up forms
 @Composable
-fun LoginScreen() {
+fun LoginScreen(onLogin: (String, String) -> Unit, onRegister: (String, String) -> Unit) {
     var isLoginSelected by rememberSaveable { mutableStateOf(true) }
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
@@ -100,7 +100,7 @@ fun LoginScreen() {
                 )
 
                 Button(
-                    onClick = { /* Handle login click */ },
+                    onClick = { onRegister(email, password) },
                     enabled = allFieldsValid(isLoginSelected, isEmailValid, isPasswordValid, isConfirmPasswordValid)
                 ) {
                     Text("Register")
@@ -116,7 +116,7 @@ fun LoginScreen() {
                 )
 
                 Button(
-                    onClick = { /* Handle login click */ },
+                    onClick = { onLogin(email, password) },
                     enabled = allFieldsValid(isLoginSelected, isEmailValid, isPasswordValid, isConfirmPasswordValid)
                 ) {
                     Text("Login")
