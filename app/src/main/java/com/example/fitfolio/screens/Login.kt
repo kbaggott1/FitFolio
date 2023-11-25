@@ -43,6 +43,10 @@ fun LoginScreen() {
     var password by rememberSaveable { mutableStateOf("") }
     var confirmPassword by rememberSaveable { mutableStateOf("") }
 
+    var isEmailValid by rememberSaveable { mutableStateOf(false) }
+    var isPasswordValid by rememberSaveable { mutableStateOf(false) }
+    var isConfirmPasswordValid by rememberSaveable { mutableStateOf(false) }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -80,6 +84,8 @@ fun LoginScreen() {
             EmailField(
                 email = email,
                 onEmailChange = {email = it},
+                isEmailValid = isEmailValid,
+                setIsEmailValid = {isEmailValid = it},
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 8.dp)
@@ -173,27 +179,28 @@ fun LoginToggleButtons(onSignInClick: () -> Unit, onSignUpClick: () -> Unit) {
 fun EmailField(
     email: String,
     onEmailChange: (String) -> Unit,
+    isEmailValid: Boolean,
+    setIsEmailValid: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var isEmailValid by remember { mutableStateOf(true) }
     var emailErrorText by remember { mutableStateOf("Enter a valid email") }
 
     OutlinedTextField(
         value = email,
         onValueChange = {
             onEmailChange(it)
-            isEmailValid = isEmailValid(it)
+            setIsEmailValid(isEmailValid(it))
         },
         label = { Text("Email") },
         keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = KeyboardType.Email,
             imeAction = ImeAction.Next
         ),
-        isError = !isEmailValid,
+        isError = !isEmailValid && email != "",
         modifier = modifier
             .fillMaxWidth(),
         trailingIcon = {
-            if (!isEmailValid) {
+            if (!isEmailValid && email != "") {
                 Icon(
                     imageVector = Icons.Default.Warning,
                     contentDescription = null,
@@ -203,7 +210,7 @@ fun EmailField(
         }
     )
 
-    if (!isEmailValid) {
+    if (!isEmailValid && email != "") {
         Text(
             text = emailErrorText,
             color = MaterialTheme.colorScheme.error,
@@ -247,7 +254,7 @@ fun RegisterPasswordFields(
         )
 
 
-        if (password.length < 8) {
+        if (password.length < 8 && password != "") {
             Text(
                 text = "Password must be at least 8 characters",
                 color = MaterialTheme.colorScheme.error,
