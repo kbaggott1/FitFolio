@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,10 +14,6 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.AlertDialogDefaults.containerColor
-import androidx.compose.material3.AlertDialogDefaults.titleContentColor
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -40,7 +35,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
@@ -88,57 +82,64 @@ fun FitFolio(
     var currentPage by rememberSaveable { mutableStateOf("Routines Overview") }
 
     Scaffold(topBar = {
-        CenterAlignedTopAppBar(
-            colors = smallTopAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                titleContentColor = MaterialTheme.colorScheme.primary
-            ),
+        if(currentPage != "Login") {
+            CenterAlignedTopAppBar(
+                colors = smallTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.primary
+                ),
 
-            title = {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.app_name),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 30.sp
-                    )
-                    Text(text = currentPage, textAlign = TextAlign.Center)
+                title = {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.app_name),
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 30.sp
+                        )
+                        Text(text = currentPage, textAlign = TextAlign.Center)
+                    }
                 }
-            }
-        )
+            )
+        }
+
     },
         bottomBar = {
-            BottomAppBar (
-                content = {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                    ){
-                        IconButton(onClick = { navController.navigate(route = "RoutinesOverview")}) {
-                            Icon(Icons.Filled.Home, contentDescription = "Routine Overview")
+            if(currentPage != "Login")
+            {
+                BottomAppBar (
+                    content = {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceEvenly
+                        ){
+                            IconButton(onClick = { navController.navigate(route = "RoutinesOverview")}) {
+                                Icon(Icons.Filled.Home, contentDescription = "Routine Overview")
+                            }
+                            IconButton(onClick = { navController.navigate(route = "About")}) {
+                                Icon(Icons.Filled.Face, contentDescription = "About us screen")
+                            }
+                            IconButton(onClick = { navController.navigate(route = "Motivation")}) {
+                                Icon(Icons.Filled.Favorite, contentDescription = "About us screen")
+                            }
+                            IconButton(onClick = { }) {
+                                Icon(Icons.Filled.ArrowBack, contentDescription = "Logout")
+                            }
                         }
-                        IconButton(onClick = { navController.navigate(route = "About")}) {
-                            Icon(Icons.Filled.Face, contentDescription = "About us screen")
-                        }
-                        IconButton(onClick = { navController.navigate(route = "Motivation")}) {
-                            Icon(Icons.Filled.Favorite, contentDescription = "About us screen")
-                        }
-                        IconButton(onClick = { }) {
-                            Icon(Icons.Filled.ArrowBack, contentDescription = "Logout")
-                        }
-                    }
-                },
-                modifier = Modifier.fillMaxWidth(),
+                    },
+                    modifier = Modifier.fillMaxWidth(),
                 )
+            }
+
         }
         ) {
         NavHost(
             navController = navController,
-            startDestination = "RoutinesOverview",
+            startDestination = "Login",
             modifier = modifier.padding(it)
         ) {
             composable("RoutinesOverview") {
@@ -165,7 +166,10 @@ fun FitFolio(
             }
             composable("Login") {
                 currentPage = "Login"
-                LoginScreen()
+                LoginScreen(
+                    onLogin = {i, j -> Unit},
+                    onRegister = {i, j -> Unit}
+                )
             }
         }
     }
