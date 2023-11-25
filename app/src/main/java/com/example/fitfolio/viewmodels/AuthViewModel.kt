@@ -13,12 +13,7 @@ class AuthViewModel : ViewModel() {
 
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    resultLiveData.value = true
-                } else {
-                    // Handle registration failure
-                    resultLiveData.value = false
-                }
+                resultLiveData.value = task.isSuccessful
             }
 
         return resultLiveData
@@ -29,12 +24,7 @@ class AuthViewModel : ViewModel() {
 
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    resultLiveData.value = true
-                } else {
-                    // Handle registration failure
-                    resultLiveData.value = false
-                }
+                resultLiveData.value = task.isSuccessful
             }
 
         return resultLiveData
