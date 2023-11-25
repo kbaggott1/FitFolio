@@ -88,27 +88,30 @@ fun FitFolio(
     var currentPage by rememberSaveable { mutableStateOf("Routines Overview") }
 
     Scaffold(topBar = {
-        CenterAlignedTopAppBar(
-            colors = smallTopAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                titleContentColor = MaterialTheme.colorScheme.primary
-            ),
+        if(currentPage != "Login") {
+            CenterAlignedTopAppBar(
+                colors = smallTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.primary
+                ),
 
-            title = {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.app_name),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 30.sp
-                    )
-                    Text(text = currentPage, textAlign = TextAlign.Center)
+                title = {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.app_name),
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 30.sp
+                        )
+                        Text(text = currentPage, textAlign = TextAlign.Center)
+                    }
                 }
-            }
-        )
+            )
+        }
+
     },
         bottomBar = {
             if(currentPage != "Login")
