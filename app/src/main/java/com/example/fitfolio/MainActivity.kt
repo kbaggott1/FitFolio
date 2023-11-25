@@ -44,6 +44,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.fitfolio.data.Repository
 import com.example.fitfolio.providers.InMemoryRoutinesProvider
+import com.example.fitfolio.providers.UsersProvider
 import com.example.fitfolio.screens.AboutScreen
 import com.example.fitfolio.screens.LoginScreen
 import com.example.fitfolio.screens.MotivationScreen
@@ -53,6 +54,10 @@ import com.example.fitfolio.ui.theme.FitFolioTheme
 import com.example.fitfolio.viewmodels.AuthViewModel
 import com.example.fitfolio.viewmodels.ExerciseViewModel
 import com.example.fitfolio.viewmodels.RoutineViewModel
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,10 +80,11 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun FitFolio(
     modifier: Modifier = Modifier,
-    repository: Repository = Repository(InMemoryRoutinesProvider()),
+    database: FirebaseFirestore = Firebase.firestore,
     exerciseViewModel: ExerciseViewModel = viewModel(),
     authViewModel: AuthViewModel = AuthViewModel(),
-    routineViewModel: RoutineViewModel = RoutineViewModel(repository)
+    repository: Repository = Repository(InMemoryRoutinesProvider(), UsersProvider(database, authViewModel)),
+    routineViewModel: RoutineViewModel = RoutineViewModel(repository),
 ) {
     val navController = rememberNavController()
     var currentPage by rememberSaveable { mutableStateOf("Routines Overview") }
@@ -175,6 +181,7 @@ fun FitFolio(
                     navController = navController,
                     onLogin = { email, password -> authViewModel.loginUser(email, password) },
                     onRegister = { email, password -> authViewModel.registerUser(email, password) },
+                    repository = repository
                 )
             }
         }
