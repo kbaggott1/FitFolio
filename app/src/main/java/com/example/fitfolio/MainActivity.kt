@@ -111,34 +111,38 @@ fun FitFolio(
         )
     },
         bottomBar = {
-            BottomAppBar (
-                content = {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                    ){
-                        IconButton(onClick = { navController.navigate(route = "RoutinesOverview")}) {
-                            Icon(Icons.Filled.Home, contentDescription = "Routine Overview")
+            if(currentPage != "Login")
+            {
+                BottomAppBar (
+                    content = {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceEvenly
+                        ){
+                            IconButton(onClick = { navController.navigate(route = "RoutinesOverview")}) {
+                                Icon(Icons.Filled.Home, contentDescription = "Routine Overview")
+                            }
+                            IconButton(onClick = { navController.navigate(route = "About")}) {
+                                Icon(Icons.Filled.Face, contentDescription = "About us screen")
+                            }
+                            IconButton(onClick = { navController.navigate(route = "Motivation")}) {
+                                Icon(Icons.Filled.Favorite, contentDescription = "About us screen")
+                            }
+                            IconButton(onClick = { }) {
+                                Icon(Icons.Filled.ArrowBack, contentDescription = "Logout")
+                            }
                         }
-                        IconButton(onClick = { navController.navigate(route = "About")}) {
-                            Icon(Icons.Filled.Face, contentDescription = "About us screen")
-                        }
-                        IconButton(onClick = { navController.navigate(route = "Motivation")}) {
-                            Icon(Icons.Filled.Favorite, contentDescription = "About us screen")
-                        }
-                        IconButton(onClick = { }) {
-                            Icon(Icons.Filled.ArrowBack, contentDescription = "Logout")
-                        }
-                    }
-                },
-                modifier = Modifier.fillMaxWidth(),
+                    },
+                    modifier = Modifier.fillMaxWidth(),
                 )
+            }
+
         }
         ) {
         NavHost(
             navController = navController,
-            startDestination = "RoutinesOverview",
+            startDestination = "Login",
             modifier = modifier.padding(it)
         ) {
             composable("RoutinesOverview") {
