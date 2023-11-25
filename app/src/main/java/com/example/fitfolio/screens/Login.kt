@@ -154,8 +154,7 @@ fun signUser(
         if (success) {
             // Registration successful, navigate to another screen or perform other actions.
             if(createUser){
-                repository.addUsers(User(email, password, listOf(Routine(1, "bleh", "blah", ExerciseViewModel()))))
-                val user = repository.getUser()
+                repository.addUsers(User(email, password))
             }
             navController.navigate("RoutinesOverview")
 

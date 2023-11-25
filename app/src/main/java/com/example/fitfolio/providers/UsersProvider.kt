@@ -39,5 +39,4 @@ class UsersProvider(private val db: FirebaseFirestore, private val autheticator:
 
         return isSuccess
     }
-
 }
