@@ -4,11 +4,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
@@ -26,7 +24,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -35,7 +32,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-@OptIn(ExperimentalMaterial3Api::class)
+//Contains signing in and signing up forms
 @Composable
 fun LoginScreen() {
     var isLoginSelected by rememberSaveable { mutableStateOf(true) }
@@ -131,6 +128,7 @@ fun LoginScreen() {
     }
 }
 
+//Validates all user input fields
 fun allFieldsValid (
     isLoginSelected: Boolean,
     isEmailValid: Boolean,
@@ -145,6 +143,7 @@ fun allFieldsValid (
     }
 }
 
+//Buttons for toggling between sign in form and sign up form
 @Composable
 fun LoginToggleButtons(onSignInClick: () -> Unit, onSignUpClick: () -> Unit) {
     var isLoginSelected by remember { mutableStateOf(true) }
@@ -187,6 +186,7 @@ fun LoginToggleButtons(onSignInClick: () -> Unit, onSignUpClick: () -> Unit) {
     }
 }
 
+//User input field for email with validation
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EmailField(
@@ -234,11 +234,13 @@ fun EmailField(
     }
 }
 
+//Validates an email using regex
 fun isEmailValid(email: String): Boolean {
     val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
     return email.matches(emailPattern.toRegex())
 }
 
+//User input password field for signing in with validation
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginPasswordField(
@@ -272,7 +274,7 @@ fun LoginPasswordField(
     }
 }
 
-
+//User input password fields (password, re-type password) for signing up with validation
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterPasswordFields(
