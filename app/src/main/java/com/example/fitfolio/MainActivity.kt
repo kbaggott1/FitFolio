@@ -50,6 +50,7 @@ import com.example.fitfolio.screens.MotivationScreen
 import com.example.fitfolio.screens.RoutineOverviewScreen
 import com.example.fitfolio.screens.RoutineViewerScreen
 import com.example.fitfolio.ui.theme.FitFolioTheme
+import com.example.fitfolio.viewmodels.AuthViewModel
 import com.example.fitfolio.viewmodels.ExerciseViewModel
 import com.example.fitfolio.viewmodels.RoutineViewModel
 
@@ -76,6 +77,7 @@ fun FitFolio(
     modifier: Modifier = Modifier,
     repository: Repository = Repository(InMemoryRoutinesProvider()),
     exerciseViewModel: ExerciseViewModel = viewModel(),
+    authViewModel: AuthViewModel = AuthViewModel(),
     routineViewModel: RoutineViewModel = RoutineViewModel(repository)
 ) {
     val navController = rememberNavController()
