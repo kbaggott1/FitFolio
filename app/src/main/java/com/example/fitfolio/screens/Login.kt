@@ -35,7 +35,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import com.example.fitfolio.data.Repository
+import com.example.fitfolio.data.Routine
 import com.example.fitfolio.data.User
+import com.example.fitfolio.viewmodels.ExerciseViewModel
 
 //Contains signing in and signing up forms
 @Composable
@@ -152,7 +154,8 @@ fun signUser(
         if (success) {
             // Registration successful, navigate to another screen or perform other actions.
             if(createUser){
-                repository.addUsers(User(email, password))
+                repository.addUsers(User(email, password, listOf(Routine(1, "bleh", "blah", ExerciseViewModel()))))
+                val user = repository.getUser()
             }
             navController.navigate("RoutinesOverview")
 

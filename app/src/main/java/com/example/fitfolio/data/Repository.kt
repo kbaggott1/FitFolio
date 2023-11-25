@@ -27,4 +27,8 @@ class Repository(
     fun addUsers(user: User): Boolean{
         return usersProvider.addUser(user)
     }
+
+    fun getUser(){
+        usersProvider.getUser()
+    }
 }
