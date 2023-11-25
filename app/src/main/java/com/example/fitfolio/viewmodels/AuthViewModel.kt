@@ -39,4 +39,8 @@ class AuthViewModel : ViewModel() {
 
         return resultLiveData
     }
+
+    fun logout() {
+        auth.signOut()
+    }
 }

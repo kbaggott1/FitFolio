@@ -128,7 +128,10 @@ fun FitFolio(
                             IconButton(onClick = { navController.navigate(route = "Motivation")}) {
                                 Icon(Icons.Filled.Favorite, contentDescription = "About us screen")
                             }
-                            IconButton(onClick = { }) {
+                            IconButton(onClick = {
+                                authViewModel.logout()
+                                navController.navigate("Login")
+                            }) {
                                 Icon(Icons.Filled.ArrowBack, contentDescription = "Logout")
                             }
                         }
