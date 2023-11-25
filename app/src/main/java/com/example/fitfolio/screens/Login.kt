@@ -1,5 +1,6 @@
 package com.example.fitfolio.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -92,6 +93,9 @@ fun LoginScreen(onLogin: (String, String) -> Unit, onRegister: (String, String) 
                 RegisterPasswordFields(
                     onPasswordChange = {password = it},
                     onConfirmPasswordChange = {confirmPassword = it},
+                    isPasswordValid = isPasswordValid,
+                    setIsPasswordValid = {isPasswordValid = it},
+                    setIsConfirmPasswordValid = {isConfirmPasswordValid = it},
                     password = password,
                     confirmPassword = confirmPassword,
                     modifier = Modifier
@@ -139,6 +143,9 @@ fun allFieldsValid (
         return isEmailValid && isPasswordValid;
     }
     else {
+        Log.d("isEmailValid", isEmailValid.toString())
+        Log.d("isPasswordValid", isPasswordValid.toString())
+        Log.d("isConfirmPasswordValid", isConfirmPasswordValid.toString())
         return isEmailValid && isPasswordValid && isConfirmPasswordValid
     }
 }
@@ -280,6 +287,9 @@ fun LoginPasswordField(
 fun RegisterPasswordFields(
     onPasswordChange: (String) -> Unit,
     onConfirmPasswordChange: (String) -> Unit,
+    isPasswordValid: Boolean,
+    setIsPasswordValid: (Boolean) -> Unit,
+    setIsConfirmPasswordValid: (Boolean) -> Unit,
     password: String,
     confirmPassword: String,
     modifier: Modifier
@@ -290,7 +300,10 @@ fun RegisterPasswordFields(
     ) {
         OutlinedTextField(
             value = password,
-            onValueChange = { onPasswordChange(it) },
+            onValueChange = {
+                onPasswordChange(it)
+                setIsPasswordValid(it.length >= 8)
+            },
             label = { Text("Password") },
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions.Default.copy(
@@ -315,7 +328,10 @@ fun RegisterPasswordFields(
 
         OutlinedTextField(
             value = confirmPassword,
-            onValueChange = { onConfirmPasswordChange(it) },
+            onValueChange = {
+                onConfirmPasswordChange(it)
+                setIsConfirmPasswordValid(password == it)
+            },
             label = { Text("Confirm Password") },
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions.Default.copy(
