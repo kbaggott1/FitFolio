@@ -50,6 +50,7 @@ import com.example.fitfolio.screens.MotivationScreen
 import com.example.fitfolio.screens.RoutineOverviewScreen
 import com.example.fitfolio.screens.RoutineViewerScreen
 import com.example.fitfolio.ui.theme.FitFolioTheme
+import com.example.fitfolio.viewmodels.AuthViewModel
 import com.example.fitfolio.viewmodels.ExerciseViewModel
 import com.example.fitfolio.viewmodels.RoutineViewModel
 
@@ -76,6 +77,7 @@ fun FitFolio(
     modifier: Modifier = Modifier,
     repository: Repository = Repository(InMemoryRoutinesProvider()),
     exerciseViewModel: ExerciseViewModel = viewModel(),
+    authViewModel: AuthViewModel = AuthViewModel(),
     routineViewModel: RoutineViewModel = RoutineViewModel(repository)
 ) {
     val navController = rememberNavController()
@@ -126,7 +128,10 @@ fun FitFolio(
                             IconButton(onClick = { navController.navigate(route = "Motivation")}) {
                                 Icon(Icons.Filled.Favorite, contentDescription = "About us screen")
                             }
-                            IconButton(onClick = { }) {
+                            IconButton(onClick = {
+                                authViewModel.logout()
+                                navController.navigate("Login")
+                            }) {
                                 Icon(Icons.Filled.ArrowBack, contentDescription = "Logout")
                             }
                         }
@@ -167,8 +172,9 @@ fun FitFolio(
             composable("Login") {
                 currentPage = "Login"
                 LoginScreen(
-                    onLogin = {i, j -> Unit},
-                    onRegister = {i, j -> Unit}
+                    navController = navController,
+                    onLogin = { email, password -> authViewModel.loginUser(email, password) },
+                    onRegister = { email, password -> authViewModel.registerUser(email, password) },
                 )
             }
         }

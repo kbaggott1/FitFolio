@@ -32,10 +32,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.LiveData
+import androidx.navigation.NavController
 
 //Contains signing in and signing up forms
 @Composable
-fun LoginScreen(onLogin: (String, String) -> Unit, onRegister: (String, String) -> Unit) {
+fun LoginScreen(navController: NavController, onLogin: (String, String) -> LiveData<Boolean>, onRegister: (String, String) -> LiveData<Boolean>) {
     var isLoginSelected by rememberSaveable { mutableStateOf(true) }
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
@@ -104,7 +106,7 @@ fun LoginScreen(onLogin: (String, String) -> Unit, onRegister: (String, String) 
                 )
 
                 Button(
-                    onClick = { onRegister(email, password) },
+                    onClick = { signUser(navController, onRegister, email, password) },
                     enabled = allFieldsValid(isLoginSelected, isEmailValid, isPasswordValid, isConfirmPasswordValid)
                 ) {
                     Text("Register")
@@ -120,13 +122,31 @@ fun LoginScreen(onLogin: (String, String) -> Unit, onRegister: (String, String) 
                 )
 
                 Button(
-                    onClick = { onLogin(email, password) },
+                    onClick = { signUser(navController, onLogin, email, password) },
                     enabled = allFieldsValid(isLoginSelected, isEmailValid, isPasswordValid, isConfirmPasswordValid)
                 ) {
                     Text("Login")
                 }
             }
 
+        }
+
+    }
+}
+
+fun signUser(
+    navController: NavController,
+    signInOrUp: (String, String) -> LiveData<Boolean>,
+    email :String,
+    password: String) {
+
+
+    signInOrUp(email, password).observeForever { success ->
+        if (success) {
+        // Registration successful, navigate to another screen or perform other actions.
+            navController.navigate("RoutinesOverview")
+        } else {
+        // Registration failed, show an error message.
         }
 
     }
