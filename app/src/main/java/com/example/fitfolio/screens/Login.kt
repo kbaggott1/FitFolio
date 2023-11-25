@@ -102,26 +102,26 @@ fun LoginScreen() {
                         .padding(bottom = 8.dp)
                 )
 
-                Button(onClick = { /* Handle login click */ }) {
+                Button(
+                    onClick = { /* Handle login click */ },
+                    enabled = allFieldsValid(isLoginSelected, isEmailValid, isPasswordValid, isConfirmPasswordValid)
+                ) {
                     Text("Register")
                 }
             }
             else {
-                OutlinedTextField(
-                    value = password,
-                    onValueChange = { password = it },
-                    label = { Text("Password") },
-                    visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        keyboardType = KeyboardType.Password,
-                        imeAction = ImeAction.Done
-                    ),
+                LoginPasswordField(
+                    onPasswordChange = {password = it},
+                    password = password,
+                    isPasswordValid = isPasswordValid,
+                    setIsPasswordValid = {isPasswordValid = it},
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 8.dp)
                 )
 
-                Button(onClick = { /* Handle login click */ }) {
+                Button(
+                    onClick = { /* Handle login click */ },
+                    enabled = allFieldsValid(isLoginSelected, isEmailValid, isPasswordValid, isConfirmPasswordValid)
+                ) {
                     Text("Login")
                 }
             }
@@ -131,6 +131,19 @@ fun LoginScreen() {
     }
 }
 
+fun allFieldsValid (
+    isLoginSelected: Boolean,
+    isEmailValid: Boolean,
+    isPasswordValid: Boolean,
+    isConfirmPasswordValid: Boolean
+): Boolean {
+    if(isLoginSelected) {
+        return isEmailValid && isPasswordValid;
+    }
+    else {
+        return isEmailValid && isPasswordValid && isConfirmPasswordValid
+    }
+}
 
 @Composable
 fun LoginToggleButtons(onSignInClick: () -> Unit, onSignUpClick: () -> Unit) {
@@ -225,6 +238,40 @@ fun isEmailValid(email: String): Boolean {
     val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
     return email.matches(emailPattern.toRegex())
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LoginPasswordField(
+    onPasswordChange: (String) -> Unit,
+    password: String,
+    isPasswordValid: Boolean,
+    setIsPasswordValid: (Boolean) -> Unit,
+    modifier: Modifier
+) {
+
+    Column(
+        modifier = modifier
+    ) {
+        OutlinedTextField(
+            value = password,
+            onValueChange = {
+                onPasswordChange(it)
+                setIsPasswordValid(it.isNotEmpty()) // Validate at least 1 character
+            },
+            label = { Text("Password") },
+            visualTransformation = PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Password,
+                imeAction = ImeAction.Done
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp),
+        )
+
+    }
+}
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
