@@ -169,8 +169,8 @@ fun FitFolio(
             composable("Login") {
                 currentPage = "Login"
                 LoginScreen(
-                    onLogin = {i, j -> Unit},
-                    onRegister = {i, j -> Unit}
+                    onLogin = authViewModel.loginUser,
+                    onRegister = authViewModel.loginUser
                 )
             }
         }
