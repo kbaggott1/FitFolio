@@ -2,7 +2,6 @@ package com.example.fitfolio.data
 
 import com.example.fitfolio.interfaces.IRoutinesProvider
 import com.example.fitfolio.interfaces.IUsersProvider
-import kotlinx.coroutines.Deferred
 
 
 //Repository for all data used in the app
@@ -24,11 +23,11 @@ class Repository(
     }
 
     //USERS METHODS
-    fun addUsers(user: User): Boolean{
+    suspend fun addUser(user: User): Boolean {
         return usersProvider.addUser(user)
     }
 
-    fun getUser(){
-        usersProvider.getUser()
+    suspend fun getUser(): User? {
+        return usersProvider.getUser()
     }
 }

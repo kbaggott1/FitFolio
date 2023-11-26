@@ -1,29 +1,35 @@
 package com.example.fitfolio.providers
 
+import android.util.Log
 import com.example.fitfolio.data.User
 import com.example.fitfolio.interfaces.IUsersProvider
 import com.example.fitfolio.viewmodels.AuthViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 
-class UsersProvider(private val db: FirebaseFirestore, private val autheticator: AuthViewModel) : IUsersProvider {
+class UsersProvider(private val db: FirebaseFirestore, private val authenticator: AuthViewModel) : IUsersProvider {
 
     //Gets the user that is currently logged in from the database
-    override fun getUser(): User? {
+    override suspend fun getUser(): User? {
         //Get the snapshot
-        val userSnapshot = autheticator.getCurrentUser()?.let { db.collection("users").document(it.uid) }
+        val userid = authenticator.getCurrentUser()?.uid
 
-        //Initialize to null, in the event we can't find a user
-        var user: User? = null
+        val docRef = db.collection("users").document(userid!!)
+        return try {
+                withContext(Dispatchers.IO) {
+                    val userSnapshot = docRef.get().await()
+                    userSnapshot.toObject<User>()
+                }
+            }
 
-        //Look for the user and convert the snapshot to a user
-        userSnapshot?.get()?.addOnSuccessListener { documentSnapshot ->
-            user = documentSnapshot.toObject<User>()
+        catch (e: Exception) {
+            Log.d("E", e.toString())
+            null
         }
-
-        //Return the user, will be null if none was found
-        return user
     }
 
 
@@ -31,8 +37,8 @@ class UsersProvider(private val db: FirebaseFirestore, private val autheticator:
      * Adds a user to the database
      * @param user The user being added to the database
      */
-    override fun addUser(user: User): Boolean {
-        val documentTask = autheticator.getCurrentUser()?.let { db.collection("users").document(it.uid).set(user) }
+    override suspend fun addUser(user: User): Boolean {
+        val documentTask = authenticator.getCurrentUser()?.let { db.collection("users").document(it.uid).set(user) }
 
         var isSuccess = false
         documentTask?.addOnSuccessListener { isSuccess = true }

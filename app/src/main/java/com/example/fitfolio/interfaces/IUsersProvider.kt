@@ -2,7 +2,7 @@ package com.example.fitfolio.interfaces
 
 import com.example.fitfolio.data.User
 interface IUsersProvider {
-    fun getUser(): User?
+    suspend fun getUser(): User?
 
-    fun addUser(user: User): Boolean
+    suspend fun addUser(user: User): Boolean
 }

@@ -35,9 +35,10 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import com.example.fitfolio.data.Repository
-import com.example.fitfolio.data.Routine
 import com.example.fitfolio.data.User
-import com.example.fitfolio.viewmodels.ExerciseViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 //Contains signing in and signing up forms
 @Composable
@@ -153,11 +154,14 @@ fun signUser(
     signInOrUp(email, password).observeForever { success ->
         if (success) {
             // Registration successful, navigate to another screen or perform other actions.
-            if(createUser){
-                repository.addUsers(User(email, password, listOf(Routine(1, "bleh", "blah", ExerciseViewModel()))))
-                val user = repository.getUser()
+            var user = User(email, password)
+            CoroutineScope(Dispatchers.Main).launch {
+                if(createUser){
+                    repository.addUser(user)
+                }
+                //val user = repository.getUser()
+                navController.navigate("RoutinesOverview")
             }
-            navController.navigate("RoutinesOverview")
 
         } else {
             // Registration failed, show an error message.
