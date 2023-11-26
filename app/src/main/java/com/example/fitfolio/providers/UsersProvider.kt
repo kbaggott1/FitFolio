@@ -16,7 +16,7 @@ class UsersProvider(private val db: FirebaseFirestore) : IUsersProvider {
     override suspend fun getUser(userId: String): User? {
         //Get the snapshot
 
-        val docRef = db.collection("users").document(userId!!)
+        val docRef = db.collection("users").document(userId)
         return try {
                 withContext(Dispatchers.IO) {
                     val userSnapshot = docRef.get().await()

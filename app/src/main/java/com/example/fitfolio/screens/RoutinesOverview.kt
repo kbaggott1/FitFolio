@@ -122,7 +122,7 @@ fun RoutineList(
     handleDelete: (Routine) -> Unit,
     openRoutine: (Int) -> Unit
 ) {
-    val list = routineViewModel.routines;
+    var list = routineViewModel.routineList
     LazyColumn(modifier = modifier) {
         items(list) {
                 routine ->
@@ -130,7 +130,7 @@ fun RoutineList(
                 name = routine.name,
                 routineDescription = routine.description,
                 handleDelete = { handleDelete(routine) },
-                openRoutine = { openRoutine(routine.id) }
+                openRoutine = { }//openRoutine(routine) }
             )
         }
         item {
@@ -139,11 +139,12 @@ fun RoutineList(
     }
 }
 
+
+
 fun AddEmptyRoutine(routineViewModel: RoutineViewModel, openRoutine: (Int) -> Unit) {
-    val newId = routineViewModel.routines.last().id + 1;
-    val newRoutine = Routine(newId, Routine.defaultName, null, ExerciseViewModel())
+    val newRoutine = Routine(Routine.defaultName, null, ExerciseViewModel())
 
     routineViewModel.add(newRoutine);
-    openRoutine(newId);
+    //openRoutine();
 
 }

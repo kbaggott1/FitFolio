@@ -2,7 +2,7 @@ package com.example.fitfolio.data
 
 import com.example.fitfolio.interfaces.IRoutinesProvider
 import com.example.fitfolio.interfaces.IUsersProvider
-import com.example.fitfolio.providers.InMemoryRoutinesProvider
+import com.example.fitfolio.providers.RoutinesProvider
 import com.example.fitfolio.providers.UsersProvider
 import com.example.fitfolio.viewmodels.AuthViewModel
 import com.google.firebase.firestore.FirebaseFirestore
@@ -12,28 +12,32 @@ import com.google.firebase.firestore.FirebaseFirestore
 class Repository(
     private val database: FirebaseFirestore,
     private val authenticator: AuthViewModel,
-    private val routinesProvider: IRoutinesProvider = InMemoryRoutinesProvider(),
+    private val routinesProvider: IRoutinesProvider = RoutinesProvider(database),
     private val usersProvider: IUsersProvider = UsersProvider(database)
 ) {
 
+    private val userId: String
+        get() { return authenticator.getCurrentUser()!!.uid }
+
+
     //ROUTINES METHODS
     suspend fun getRoutines(): List<Routine> {
-        return routinesProvider.getRoutines()
+        return routinesProvider.getRoutines(this.userId)
     }
 
-    fun addRoutine(routine: Routine) {
-        routinesProvider.addRoutine(routine)
+    suspend fun addRoutine(routine: Routine) {
+        routinesProvider.addRoutine(this.userId, routine)
     }
-    fun removeRoutine(routine: Routine) {
-        routinesProvider.removeRoutine(routine)
+    suspend fun removeRoutine(routine: Routine) {
+        routinesProvider.removeRoutine(this.userId, routine)
     }
 
     //USERS METHODS
     suspend fun addUser(user: User): Boolean {
-        return usersProvider.addUser(authenticator.getCurrentUser()!!.uid, user)
+        return usersProvider.addUser(this.userId, user)
     }
 
     suspend fun getUser(): User? {
-        return usersProvider.getUser(authenticator.getCurrentUser()!!.uid)
+        return usersProvider.getUser(this.userId)
     }
 }

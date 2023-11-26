@@ -1,11 +1,10 @@
 package com.example.fitfolio.interfaces
 
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.example.fitfolio.data.Routine
 
 //Interface for routine providers
 interface IRoutinesProvider {
-    fun getRoutines(): List<Routine>
-    fun addRoutine(routine: Routine): Boolean
-    fun removeRoutine(routine: Routine): Boolean
+    suspend fun getRoutines(userId: String): List<Routine>
+    suspend fun addRoutine(userId: String, routine: Routine): Boolean
+    suspend fun removeRoutine(userId: String, routine: Routine): Boolean
 }
