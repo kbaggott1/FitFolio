@@ -65,11 +65,11 @@ fun RoutineViewerScreen(routineViewModel: RoutineViewModel, routineId: Int) {
 
 //Gets a routine that matches the provided ID. Returns null if none were found.
 private fun getRoutineFromId(routineViewModel: RoutineViewModel, id: Int): Routine? {
-    for (routine in routineViewModel.getRoutines()) {
-        if (true) {
-            return routine
-        }
-    }
+//    for (routine in routineViewModel.routineList) {
+//        if (true) {
+//            return routine
+//        }
+//    }
     return null
 }
 

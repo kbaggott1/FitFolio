@@ -1,56 +1,52 @@
 package com.example.fitfolio.viewmodels
 
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fitfolio.data.Repository
 import com.example.fitfolio.data.Routine
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class RoutineViewModel(private val repository: Repository) : ViewModel() {
-        var _routines = mutableStateListOf<Routine>()
-        var routineList: SnapshotStateList<Routine> = _routines
-                get() {return _routines}
+        private var _routines = MutableStateFlow<List<Routine>>(emptyList())
+        var routineList: StateFlow<List<Routine>> = _routines.asStateFlow()
 
     init {
         viewModelScope.launch {
-            _routines = repository.getRoutines().toMutableStateList()
+            // Update the StateFlow with the new list of routines
+            _routines.value = repository.getRoutines().toMutableList()
         }
     }
-       fun getRoutines(): SnapshotStateList<Routine> {
-           viewModelScope.launch {
-               _routines = repository.getRoutines().toMutableStateList()
-           }
-           return _routines
-       }
+    suspend fun getRoutines(): List<Routine> {
+        val routines = repository.getRoutines()
+        // Update the StateFlow with the new list of routines
+        _routines.value = routines.toMutableList()
+        return routines
+    }
 
     /**
-     * Adds a routine to the database and to the list in this viewmodel.
-     * The list is what we use in the front-end to access the necessary
-     * data about the routines.
+     * Adds a routine to the database and updates the StateFlow.
      * @param routine The routine being added to the database
      */
     fun add(routine: Routine) {
-            viewModelScope.launch {
-                repository.addRoutine(routine)
-                // Update the LiveData with the new list of routines
-                _routines.add(routine)
-            }
+        viewModelScope.launch {
+            repository.addRoutine(routine)
+            // Update the StateFlow with the new list of routines
+            _routines.value = _routines.value + routine
         }
+    }
 
     /**
-     * Removes a routine to the database and to the list in this viewmodel.
-     * The list is what we use in the front-end to access the necessary
-     * data about the routines.
+     * Removes a routine from the database and updates the StateFlow.
      * @param routine The routine being removed from the database
      */
     fun remove(routine: Routine) {
         viewModelScope.launch {
             repository.removeRoutine(routine)
-            // Update the LiveData with the new list of routines
-            _routines.remove(routine)
+            // Update the StateFlow with the new list of routines
+            _routines.value = _routines.value - routine
         }
     }
 }
