@@ -27,6 +27,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,11 +49,12 @@ import com.example.fitfolio.viewmodels.RoutineViewModel
 @Composable
 fun RoutineViewerScreen(routineViewModel: RoutineViewModel, routineId: Int) {
     val routine = getRoutineFromId(routineViewModel, routineId)!!
+    val listOfExercises by routineViewModel.routineList.
     Scaffold {
         Column(modifier = Modifier.padding(it)) {
             RoutineTitle(routine = routine)
             LazyColumn(contentPadding = it) {
-                items(routine.exercises.exercises) { exer ->
+                items(listOfExercises) { exer ->
                     ExerciseCard(exercise = exer, onClose = { exercise -> routine.exercises.remove(exercise) }, modifier = Modifier.padding(8.dp))
                 }
                 item() {
@@ -63,15 +65,17 @@ fun RoutineViewerScreen(routineViewModel: RoutineViewModel, routineId: Int) {
     }
 }
 
+
 //Gets a routine that matches the provided ID. Returns null if none were found.
 private fun getRoutineFromId(routineViewModel: RoutineViewModel, id: Int): Routine? {
-//    for (routine in routineViewModel.routineList) {
-//        if (true) {
-//            return routine
-//        }
-//    }
+    for (routine in routineViewModel.routineList) {
+        if (true) {
+            return routine
+        }
+    }
     return null
 }
+
 
 // Represents the routine title. Can be modified to reflect the new name
 @OptIn(ExperimentalMaterial3Api::class)
