@@ -36,7 +36,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import com.example.fitfolio.data.Repository
+import com.example.fitfolio.data.Routine
 import com.example.fitfolio.data.User
+import com.example.fitfolio.viewmodels.ExerciseViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -192,11 +194,15 @@ fun signUser(
             CoroutineScope(Dispatchers.Main).launch {
                 if(createUser){
                     repository.addUser(user)
+
+                    for(routine in getMockRoutines()) {
+                        repository.addRoutine(routine)
+                    }
                 }
                 //val user = repository.getUser()
-                navController.navigate("RoutinesOverview")
+                //navController.navigate("RoutinesOverview")
             }
-
+            navController.navigate("RoutinesOverview")
         } else {
             if(createUser){
                 onError("The email has already been used. Sign in or use a different email")
@@ -206,6 +212,14 @@ fun signUser(
             }
         }
     }
+}
+
+fun getMockRoutines(): List<Routine> {
+    return listOf<Routine>(
+        Routine("Chest Day", null, ExerciseViewModel()),
+        Routine("Back Day", null, ExerciseViewModel()),
+        Routine("Leg Day", null, ExerciseViewModel())
+    )
 }
 
 //Validates all user input fields

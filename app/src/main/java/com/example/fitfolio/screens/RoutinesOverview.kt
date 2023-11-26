@@ -22,6 +22,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -122,7 +124,7 @@ fun RoutineList(
     handleDelete: (Routine) -> Unit,
     openRoutine: (Int) -> Unit
 ) {
-    val list = routineViewModel.routines;
+    val list by routineViewModel.routineList.collectAsState()
     LazyColumn(modifier = modifier) {
         items(list) {
                 routine ->
@@ -130,7 +132,7 @@ fun RoutineList(
                 name = routine.name,
                 routineDescription = routine.description,
                 handleDelete = { handleDelete(routine) },
-                openRoutine = { openRoutine(routine.id) }
+                openRoutine = { }//openRoutine(routine) }
             )
         }
         item {
@@ -139,11 +141,11 @@ fun RoutineList(
     }
 }
 
+
+
 fun AddEmptyRoutine(routineViewModel: RoutineViewModel, openRoutine: (Int) -> Unit) {
-    val newId = routineViewModel.routines.last().id + 1;
-    val newRoutine = Routine(newId, Routine.defaultName, null, ExerciseViewModel())
+    val newRoutine = Routine(Routine.defaultName, null, ExerciseViewModel())
 
     routineViewModel.add(newRoutine);
-    openRoutine(newId);
-
+    //openRoutine();
 }
