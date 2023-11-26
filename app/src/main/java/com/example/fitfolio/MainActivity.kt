@@ -83,7 +83,7 @@ fun FitFolio(
     database: FirebaseFirestore = Firebase.firestore,
     exerciseViewModel: ExerciseViewModel = viewModel(),
     authViewModel: AuthViewModel = AuthViewModel(),
-    repository: Repository = Repository(InMemoryRoutinesProvider(), UsersProvider(database, authViewModel)),
+    repository: Repository = Repository(database, authViewModel),
     routineViewModel: RoutineViewModel = RoutineViewModel(repository),
 ) {
     val navController = rememberNavController()
