@@ -122,7 +122,7 @@ fun RoutineList(
     handleDelete: (Routine) -> Unit,
     openRoutine: (Int) -> Unit
 ) {
-    var list = routineViewModel.routineList
+    var list = routineViewModel.getRoutines()
     LazyColumn(modifier = modifier) {
         items(list) {
                 routine ->
@@ -146,5 +146,4 @@ fun AddEmptyRoutine(routineViewModel: RoutineViewModel, openRoutine: (Int) -> Un
 
     routineViewModel.add(newRoutine);
     //openRoutine();
-
 }

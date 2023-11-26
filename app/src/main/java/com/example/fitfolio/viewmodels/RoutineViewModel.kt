@@ -26,7 +26,13 @@ class RoutineViewModel(private val repository: Repository) : ViewModel() {
            return _routines
        }
 
-        fun add(routine: Routine) {
+    /**
+     * Adds a routine to the database and to the list in this viewmodel.
+     * The list is what we use in the front-end to access the necessary
+     * data about the routines.
+     * @param routine The routine being added to the database
+     */
+    fun add(routine: Routine) {
             viewModelScope.launch {
                 repository.addRoutine(routine)
                 // Update the LiveData with the new list of routines
@@ -34,13 +40,18 @@ class RoutineViewModel(private val repository: Repository) : ViewModel() {
             }
         }
 
-        fun remove(routine: Routine) {
-            viewModelScope.launch {
-                repository.removeRoutine(routine)
-                // Update the LiveData with the new list of routines
-                _routines = repository.getRoutines().toMutableStateList()
-                _routines.remove(routine)
-            }
+    /**
+     * Removes a routine to the database and to the list in this viewmodel.
+     * The list is what we use in the front-end to access the necessary
+     * data about the routines.
+     * @param routine The routine being removed from the database
+     */
+    fun remove(routine: Routine) {
+        viewModelScope.launch {
+            repository.removeRoutine(routine)
+            // Update the LiveData with the new list of routines
+            _routines.remove(routine)
         }
     }
+}
 
