@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
@@ -55,6 +56,10 @@ fun LoginScreen(
     var isEmailValid by rememberSaveable { mutableStateOf(false) }
     var isPasswordValid by rememberSaveable { mutableStateOf(false) }
     var isConfirmPasswordValid by rememberSaveable { mutableStateOf(false) }
+
+    var showLoginError by remember { mutableStateOf(false) }
+    var showRegisterError by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
 
     Box(
         modifier = Modifier
@@ -114,8 +119,23 @@ fun LoginScreen(
                         .padding(bottom = 8.dp)
                 )
 
+                // Error message
+                if (showRegisterError) {
+                    Text(
+                        text = errorMessage,
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 6.dp),
+                        textAlign = TextAlign.Center
+                    )
+                }
+
                 Button(
-                    onClick = { signUser(navController, onRegister, email, password, repository, true) },
+                    onClick = { signUser(navController, onRegister, email, password, repository, { message ->
+                        showRegisterError = true
+                        errorMessage = message
+                    }, true) },
                     enabled = allFieldsValid(isLoginSelected, isEmailValid, isPasswordValid, isConfirmPasswordValid)
                 ) {
                     Text("Register")
@@ -130,16 +150,29 @@ fun LoginScreen(
                     modifier = Modifier
                 )
 
+                // Error message
+                if (showLoginError) {
+                    Text(
+                        text = errorMessage,
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 6.dp),
+                        textAlign = TextAlign.Center
+                    )
+                }
+
                 Button(
-                    onClick = { signUser(navController, onLogin, email, password, repository) },
+                    onClick = { signUser(navController, onLogin, email, password, repository, { message ->
+                        showLoginError = true
+                        errorMessage = message
+                    }) },
                     enabled = allFieldsValid(isLoginSelected, isEmailValid, isPasswordValid, isConfirmPasswordValid)
                 ) {
                     Text("Login")
                 }
             }
-
         }
-
     }
 }
 
@@ -149,6 +182,7 @@ fun signUser(
     email :String,
     password: String,
     repository: Repository,
+    onError: (String) -> Unit,
     createUser: Boolean = false
 ) {
     signInOrUp(email, password).observeForever { success ->
@@ -164,9 +198,13 @@ fun signUser(
             }
 
         } else {
-            // Registration failed, show an error message.
+            if(createUser){
+                onError("The email has already been used. Sign in or use a different email")
+            }
+            else{
+                onError("Invalid login credentials. Please try again.")
+            }
         }
-
     }
 }
 
