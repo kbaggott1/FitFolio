@@ -34,10 +34,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
+import com.example.fitfolio.data.Repository
+import com.example.fitfolio.data.User
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 //Contains signing in and signing up forms
 @Composable
-fun LoginScreen(navController: NavController, onLogin: (String, String) -> LiveData<Boolean>, onRegister: (String, String) -> LiveData<Boolean>) {
+fun LoginScreen(
+    navController: NavController,
+    onLogin: (String, String) -> LiveData<Boolean>,
+    onRegister: (String, String) -> LiveData<Boolean>,
+    repository: Repository) {
     var isLoginSelected by rememberSaveable { mutableStateOf(true) }
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
@@ -106,7 +115,7 @@ fun LoginScreen(navController: NavController, onLogin: (String, String) -> LiveD
                 )
 
                 Button(
-                    onClick = { signUser(navController, onRegister, email, password) },
+                    onClick = { signUser(navController, onRegister, email, password, repository, true) },
                     enabled = allFieldsValid(isLoginSelected, isEmailValid, isPasswordValid, isConfirmPasswordValid)
                 ) {
                     Text("Register")
@@ -122,7 +131,7 @@ fun LoginScreen(navController: NavController, onLogin: (String, String) -> LiveD
                 )
 
                 Button(
-                    onClick = { signUser(navController, onLogin, email, password) },
+                    onClick = { signUser(navController, onLogin, email, password, repository) },
                     enabled = allFieldsValid(isLoginSelected, isEmailValid, isPasswordValid, isConfirmPasswordValid)
                 ) {
                     Text("Login")
@@ -138,15 +147,24 @@ fun signUser(
     navController: NavController,
     signInOrUp: (String, String) -> LiveData<Boolean>,
     email :String,
-    password: String) {
-
-
+    password: String,
+    repository: Repository,
+    createUser: Boolean = false
+) {
     signInOrUp(email, password).observeForever { success ->
         if (success) {
-        // Registration successful, navigate to another screen or perform other actions.
-            navController.navigate("RoutinesOverview")
+            // Registration successful, navigate to another screen or perform other actions.
+            var user = User(email, password)
+            CoroutineScope(Dispatchers.Main).launch {
+                if(createUser){
+                    repository.addUser(user)
+                }
+                //val user = repository.getUser()
+                navController.navigate("RoutinesOverview")
+            }
+
         } else {
-        // Registration failed, show an error message.
+            // Registration failed, show an error message.
         }
 
     }
