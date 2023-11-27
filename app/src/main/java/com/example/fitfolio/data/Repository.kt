@@ -1,7 +1,9 @@
 package com.example.fitfolio.data
 
+import com.example.fitfolio.interfaces.IExercisesProvider
 import com.example.fitfolio.interfaces.IRoutinesProvider
 import com.example.fitfolio.interfaces.IUsersProvider
+import com.example.fitfolio.providers.ExercisesProvider
 import com.example.fitfolio.providers.RoutinesProvider
 import com.example.fitfolio.providers.UsersProvider
 import com.example.fitfolio.viewmodels.AuthViewModel
@@ -13,7 +15,8 @@ class Repository(
     private val database: FirebaseFirestore,
     private val authenticator: AuthViewModel,
     private val routinesProvider: IRoutinesProvider = RoutinesProvider(database),
-    private val usersProvider: IUsersProvider = UsersProvider(database)
+    private val usersProvider: IUsersProvider = UsersProvider(database),
+    private val exercisesProvider: IExercisesProvider = ExercisesProvider(database)
 ) {
 
     private val userId: String
@@ -30,6 +33,19 @@ class Repository(
     }
     suspend fun removeRoutine(routine: Routine) {
         routinesProvider.removeRoutine(this.userId, routine)
+    }
+
+    //EXERCISE METHODS
+    suspend fun getExercises(routineId: String): List<Exercise> {
+        return exercisesProvider.getExercises(this.userId, routineId)
+    }
+
+    suspend fun addExercise(routineId: String, exercise: Exercise) {
+        exercisesProvider.addExercise(this.userId, routineId, exercise)
+    }
+
+    suspend fun removeExercise(routineId: String, exercise: Exercise){
+        exercisesProvider.removeExercise(this.userId, routineId, exercise)
     }
 
     //USERS METHODS

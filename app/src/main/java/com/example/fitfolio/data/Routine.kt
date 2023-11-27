@@ -1,11 +1,10 @@
 package com.example.fitfolio.data
 
-import com.example.fitfolio.viewmodels.ExerciseViewModel
 import java.util.UUID
 
-class Routine(var name: String, var description: String?, val exercises: ExerciseViewModel, val id: String = Routine.generateUniqueId()) {
+class Routine(val id: String, var name: String, var description: String?) {
 
-    constructor(): this("", null, ExerciseViewModel(), "")
+    constructor(): this("", "",null)
     companion object {
         val defaultName: String = "New Routine"
         fun generateUniqueId(): String {

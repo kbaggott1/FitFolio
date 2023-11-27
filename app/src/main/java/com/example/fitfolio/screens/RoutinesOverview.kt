@@ -22,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -32,16 +33,24 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.fitfolio.R
 import com.example.fitfolio.data.Routine
-import com.example.fitfolio.viewmodels.ExerciseViewModel
 import com.example.fitfolio.viewmodels.RoutineViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun RoutineOverviewScreen(modifier: Modifier = Modifier, routineViewModel: RoutineViewModel, navController: NavController) {
+    LaunchedEffect(true) {
+        routineViewModel.initRoutines()
+    }
+
     RoutineList(
         routineViewModel = routineViewModel,
         modifier = modifier.padding(dimensionResource(id = R.dimen.padding_small)),
         handleDelete = { routineViewModel.remove(it) },
-        openRoutine = { navController.navigate(route = "RoutineViewer/$it") }
+        openRoutine = { navController.navigate(route = "RoutineViewer/${it.id}") }
     )
 }
 
@@ -122,7 +131,7 @@ fun RoutineList(
     routineViewModel : RoutineViewModel,
     modifier: Modifier,
     handleDelete: (Routine) -> Unit,
-    openRoutine: (Int) -> Unit
+    openRoutine: (Routine) -> Unit
 ) {
     val list by routineViewModel.routineList.collectAsState()
     LazyColumn(modifier = modifier) {
@@ -132,20 +141,27 @@ fun RoutineList(
                 name = routine.name,
                 routineDescription = routine.description,
                 handleDelete = { handleDelete(routine) },
-                openRoutine = { }//openRoutine(routine) }
+                openRoutine = { openRoutine(routine) }
             )
         }
         item {
-            AddRoutineCard(openRoutine = { AddEmptyRoutine(routineViewModel, openRoutine);  })
+            AddRoutineCard(openRoutine = { addEmptyRoutine(routineViewModel, openRoutine);  })
         }
     }
 }
 
 
+/**
+ * Adds an empty routine to the routineViewModel
+ * @param routineViewModel The routineViewModel the routine will be added to
+ * @param openRoutine The method that will open thr routine after it's been created
+ */
+fun addEmptyRoutine(routineViewModel: RoutineViewModel, openRoutine: (Routine) -> Unit) {
+    val newId = Routine.generateUniqueId()
+    val newRoutine = Routine(newId, Routine.defaultName, null)
 
-fun AddEmptyRoutine(routineViewModel: RoutineViewModel, openRoutine: (Int) -> Unit) {
-    val newRoutine = Routine(Routine.defaultName, null, ExerciseViewModel())
-
-    routineViewModel.add(newRoutine);
-    //openRoutine();
+    runBlocking {
+        routineViewModel.add(newRoutine)
+        openRoutine(newRoutine);
+    }
 }

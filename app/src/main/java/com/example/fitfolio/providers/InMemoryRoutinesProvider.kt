@@ -4,6 +4,7 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
 import com.example.fitfolio.data.Routine
 import com.example.fitfolio.interfaces.IRoutinesProvider
+import com.example.fitfolio.screens.getMockRoutines
 import com.example.fitfolio.viewmodels.ExerciseViewModel
 
 //A routine provider that uses ram to store routines, this will only be used in development
@@ -27,6 +28,7 @@ class InMemoryRoutinesProvider : IRoutinesProvider {
         return _routines.remove(routine)
     }
 
+    /*
     private fun getMockRoutines(): List<Routine> {
         return listOf<Routine>(
             Routine("Chest Day", null, ExerciseViewModel()),
@@ -34,4 +36,5 @@ class InMemoryRoutinesProvider : IRoutinesProvider {
             Routine("Leg Day", null, ExerciseViewModel())
         )
     }
+    */
 }

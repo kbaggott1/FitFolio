@@ -1,6 +1,5 @@
 package com.example.fitfolio.screens
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,9 +37,10 @@ import androidx.navigation.NavController
 import com.example.fitfolio.data.Repository
 import com.example.fitfolio.data.Routine
 import com.example.fitfolio.data.User
-import com.example.fitfolio.viewmodels.ExerciseViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
 //Contains signing in and signing up forms
@@ -191,18 +191,22 @@ fun signUser(
         if (success) {
             // Registration successful, navigate to another screen or perform other actions.
             var user = User(email, password)
-            CoroutineScope(Dispatchers.Main).launch {
+            CoroutineScope(Dispatchers.IO).launch {
                 if(createUser){
-                    repository.addUser(user)
-
-                    for(routine in getMockRoutines()) {
-                        repository.addRoutine(routine)
+                    // List of deferred jobs for adding routines
+                    val jobs = getMockRoutines().map { routine ->
+                        async {
+                            repository.addRoutine(routine)
+                        }
                     }
+
+                    // Wait for all routines to be added
+                    jobs.awaitAll()
                 }
-                //val user = repository.getUser()
-                //navController.navigate("RoutinesOverview")
+
             }
             navController.navigate("RoutinesOverview")
+
         } else {
             if(createUser){
                 onError("The email has already been used. Sign in or use a different email")
@@ -216,9 +220,9 @@ fun signUser(
 
 fun getMockRoutines(): List<Routine> {
     return listOf<Routine>(
-        Routine("Chest Day", null, ExerciseViewModel()),
-        Routine("Back Day", null, ExerciseViewModel()),
-        Routine("Leg Day", null, ExerciseViewModel())
+        Routine(Routine.generateUniqueId(), "Chest Day", null),
+        Routine(Routine.generateUniqueId(),"Back Day", null),
+        Routine(Routine.generateUniqueId(),"Leg Day", null)
     )
 }
 
@@ -233,9 +237,6 @@ fun allFieldsValid (
         return isEmailValid && isPasswordValid;
     }
     else {
-        Log.d("isEmailValid", isEmailValid.toString())
-        Log.d("isPasswordValid", isPasswordValid.toString())
-        Log.d("isConfirmPasswordValid", isConfirmPasswordValid.toString())
         return isEmailValid && isPasswordValid && isConfirmPasswordValid
     }
 }
