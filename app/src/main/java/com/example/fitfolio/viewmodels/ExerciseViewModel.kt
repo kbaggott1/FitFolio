@@ -1,5 +1,6 @@
 package com.example.fitfolio.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fitfolio.data.Exercise
@@ -17,10 +18,12 @@ class ExerciseViewModel(private val repository: Repository) : ViewModel() {
 
     suspend fun initExercises(routineId: String) {
 
+        Log.d("ExerciseViewModel", "Loading exercises for routine $routineId")
         viewModelScope.launch {
             // Update the StateFlow with the new list of routines
             _exercises.value = repository.getExercises(routineId).toMutableList()
         }
+
         this.routineId = routineId
     }
 

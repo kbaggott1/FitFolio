@@ -1,7 +1,7 @@
 package com.example.fitfolio.providers
 
+import android.util.Log
 import com.example.fitfolio.data.Exercise
-import com.example.fitfolio.data.Routine
 import com.example.fitfolio.interfaces.IExercisesProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObjects
@@ -31,6 +31,7 @@ class ExercisesProvider(private val db: FirebaseFirestore) : IExercisesProvider{
             }
         }
         catch (ex: Exception) {
+            Log.d("ExercisesProvider", ex.message.toString())
             emptyList()
         }
     }

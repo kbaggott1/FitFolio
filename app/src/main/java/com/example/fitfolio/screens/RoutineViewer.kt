@@ -55,7 +55,7 @@ fun RoutineViewerScreen(routineViewModel: RoutineViewModel, exerciseViewModel: E
         exerciseViewModel.initExercises(routineId)
     }
     val exercises by exerciseViewModel.exerciseList.collectAsState()
-    val routine = getRoutineFromId(routineViewModel, routineId)!!
+    val routine = getRoutineFromId(routineViewModel, routineId)!! //TODO THIS IS RETURNING NULL
 
     Scaffold {
         Column(modifier = Modifier.padding(it)) {
