@@ -36,7 +36,9 @@ import com.example.fitfolio.data.Routine
 import com.example.fitfolio.viewmodels.RoutineViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun RoutineOverviewScreen(modifier: Modifier = Modifier, routineViewModel: RoutineViewModel, navController: NavController) {
@@ -149,15 +151,17 @@ fun RoutineList(
 }
 
 
-
+/**
+ * Adds an empty routine to the routineViewModel
+ * @param routineViewModel The routineViewModel the routine will be added to
+ * @param openRoutine The method that will open thr routine after it's been created
+ */
 fun addEmptyRoutine(routineViewModel: RoutineViewModel, openRoutine: (Routine) -> Unit) {
     val newId = Routine.generateUniqueId()
     val newRoutine = Routine(newId, Routine.defaultName, null)
 
-    CoroutineScope(Dispatchers.Main).launch {
-        routineViewModel.add(newRoutine);
+    runBlocking {
+        routineViewModel.add(newRoutine)
         openRoutine(newRoutine);
     }
-
-
 }

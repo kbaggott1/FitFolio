@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class ExercisesProvider(private val db: FirebaseFirestore) : IExercisesProvider{
+class ExercisesProvider(private val db: FirebaseFirestore) : IExercisesProvider {
 
     /**
      * Gets all exercises that belong to a specific routine from the database
@@ -87,6 +87,34 @@ class ExercisesProvider(private val db: FirebaseFirestore) : IExercisesProvider{
                     .collection("exercises")
                     .document(exercise.id)
                     .delete()
+                    .await()
+            }
+            true
+        } catch (ex: Exception) {
+            false
+        }
+    }
+
+    override suspend fun updateExercise(
+        userId: String,
+        routineId: String,
+        exercise: Exercise
+    ): Boolean {
+        return try {
+            withContext(Dispatchers.IO) {
+                db
+                    .collection("users")
+                    .document(userId)
+                    .collection("routines")
+                    .document(routineId)
+                    .collection("exercises")
+                    .document(exercise.id)
+                    .update(
+                        "name", exercise.name,
+                        "description", exercise.description,
+                        "muscleGroup", exercise.muscleGroup
+
+                    )
                     .await()
             }
             true

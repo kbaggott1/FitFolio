@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.fitfolio.data.Exercise
 import com.example.fitfolio.data.Muscles
 import com.example.fitfolio.data.Repository
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
