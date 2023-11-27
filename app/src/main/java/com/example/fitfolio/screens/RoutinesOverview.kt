@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.fitfolio.R
 import com.example.fitfolio.data.Routine
-import com.example.fitfolio.viewmodels.ExerciseViewModel
 import com.example.fitfolio.viewmodels.RoutineViewModel
 
 @Composable
@@ -122,7 +121,7 @@ fun RoutineList(
     routineViewModel : RoutineViewModel,
     modifier: Modifier,
     handleDelete: (Routine) -> Unit,
-    openRoutine: (Int) -> Unit
+    openRoutine: (String) -> Unit
 ) {
     val list by routineViewModel.routineList.collectAsState()
     LazyColumn(modifier = modifier) {
@@ -132,7 +131,7 @@ fun RoutineList(
                 name = routine.name,
                 routineDescription = routine.description,
                 handleDelete = { handleDelete(routine) },
-                openRoutine = { }//openRoutine(routine) }
+                openRoutine = { openRoutine(routine.id) }
             )
         }
         item {
@@ -143,9 +142,10 @@ fun RoutineList(
 
 
 
-fun AddEmptyRoutine(routineViewModel: RoutineViewModel, openRoutine: (Int) -> Unit) {
-    val newRoutine = Routine(Routine.defaultName, null, ExerciseViewModel())
+fun AddEmptyRoutine(routineViewModel: RoutineViewModel, openRoutine: (String) -> Unit) {
+    val newId = Routine.generateUniqueId()
+    val newRoutine = Routine(newId, Routine.defaultName, null)
 
     routineViewModel.add(newRoutine);
-    //openRoutine();
+    openRoutine(newId);
 }

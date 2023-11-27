@@ -38,7 +38,6 @@ import androidx.navigation.NavController
 import com.example.fitfolio.data.Repository
 import com.example.fitfolio.data.Routine
 import com.example.fitfolio.data.User
-import com.example.fitfolio.viewmodels.ExerciseViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -199,8 +198,7 @@ fun signUser(
                         repository.addRoutine(routine)
                     }
                 }
-                //val user = repository.getUser()
-                //navController.navigate("RoutinesOverview")
+
             }
             navController.navigate("RoutinesOverview")
         } else {
@@ -216,9 +214,9 @@ fun signUser(
 
 fun getMockRoutines(): List<Routine> {
     return listOf<Routine>(
-        Routine("Chest Day", null, ExerciseViewModel()),
-        Routine("Back Day", null, ExerciseViewModel()),
-        Routine("Leg Day", null, ExerciseViewModel())
+        Routine(Routine.generateUniqueId(), "Chest Day", null),
+        Routine(Routine.generateUniqueId(),"Back Day", null),
+        Routine(Routine.generateUniqueId(),"Leg Day", null)
     )
 }
 
@@ -233,9 +231,6 @@ fun allFieldsValid (
         return isEmailValid && isPasswordValid;
     }
     else {
-        Log.d("isEmailValid", isEmailValid.toString())
-        Log.d("isPasswordValid", isPasswordValid.toString())
-        Log.d("isConfirmPasswordValid", isConfirmPasswordValid.toString())
         return isEmailValid && isPasswordValid && isConfirmPasswordValid
     }
 }

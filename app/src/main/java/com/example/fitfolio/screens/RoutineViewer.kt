@@ -27,6 +27,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,22 +44,28 @@ import androidx.compose.ui.unit.sp
 import com.example.fitfolio.data.Exercise
 import com.example.fitfolio.data.Muscles
 import com.example.fitfolio.data.Routine
+import com.example.fitfolio.viewmodels.ExerciseViewModel
 import com.example.fitfolio.viewmodels.RoutineViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RoutineViewerScreen(routineViewModel: RoutineViewModel, routineId: Int) {
+fun RoutineViewerScreen(routineViewModel: RoutineViewModel, exerciseViewModel: ExerciseViewModel, routineId: String) {
+
+    LaunchedEffect(routineId) {
+        exerciseViewModel.initExercises(routineId)
+    }
+    val exercises by exerciseViewModel.exerciseList.collectAsState()
     val routine = getRoutineFromId(routineViewModel, routineId)!!
-    val listOfExercises by routineViewModel.routineList.
+
     Scaffold {
         Column(modifier = Modifier.padding(it)) {
             RoutineTitle(routine = routine)
             LazyColumn(contentPadding = it) {
-                items(listOfExercises) { exer ->
-                    ExerciseCard(exercise = exer, onClose = { exercise -> routine.exercises.remove(exercise) }, modifier = Modifier.padding(8.dp))
+                items(exercises) { exercise ->
+                    ExerciseCard(exercise = exercise, onClose = { exerciseViewModel.remove(exercise) }, modifier = Modifier.padding(8.dp))
                 }
                 item() {
-                    AddExerciseCard(routine = routine, modifier = Modifier.padding(8.dp), addExercise = { routine.exercises.add(Exercise("-- Exercise Name --", listOf(Muscles.None), "-- Description --", 0, 0)) })
+                    AddExerciseCard(routine = routine, modifier = Modifier.padding(8.dp), addExercise = { exerciseViewModel.add(Exercise("-- Exercise Name --", listOf(Muscles.None), "-- Description --", 0, 0)) })
                 }
             }
         }
@@ -67,9 +74,9 @@ fun RoutineViewerScreen(routineViewModel: RoutineViewModel, routineId: Int) {
 
 
 //Gets a routine that matches the provided ID. Returns null if none were found.
-private fun getRoutineFromId(routineViewModel: RoutineViewModel, id: Int): Routine? {
-    for (routine in routineViewModel.routineList) {
-        if (true) {
+private fun getRoutineFromId(routineViewModel: RoutineViewModel, id: String): Routine? {
+    for (routine in routineViewModel.routineList.value) {
+        if (routine.id == id) {
             return routine
         }
     }

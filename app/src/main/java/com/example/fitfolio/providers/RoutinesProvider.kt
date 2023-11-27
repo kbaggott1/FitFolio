@@ -1,5 +1,6 @@
 package com.example.fitfolio.providers
 
+import android.util.Log
 import com.example.fitfolio.data.Routine
 import com.example.fitfolio.interfaces.IRoutinesProvider
 import com.google.firebase.firestore.FirebaseFirestore
@@ -23,6 +24,7 @@ class RoutinesProvider(private val db: FirebaseFirestore): IRoutinesProvider {
             }
         }
         catch (ex: Exception) {
+            Log.e("FIRESTORE", ex.message.toString())
             emptyList()
         }
     }

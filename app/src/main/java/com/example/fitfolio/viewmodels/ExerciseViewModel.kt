@@ -10,19 +10,22 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class ExerciseViewModel(private val repository: Repository, routineId: String) : ViewModel() {
+class ExerciseViewModel(private val repository: Repository) : ViewModel() {
     private var _exercises = MutableStateFlow<List<Exercise>>(emptyList())
-    private val parentRoutineId = routineId
     var exerciseList: StateFlow<List<Exercise>> = _exercises.asStateFlow()
+    private var routineId: String = ""
 
-    init {
+    suspend fun initExercises(routineId: String) {
+
         viewModelScope.launch {
             // Update the StateFlow with the new list of routines
-            _exercises.value = repository.getExercises(parentRoutineId).toMutableList()
+            _exercises.value = repository.getExercises(routineId).toMutableList()
         }
+        this.routineId = routineId
     }
 
-    suspend fun add(exercise: Exercise, routineId: String) {
+
+    fun add(exercise: Exercise) {
         viewModelScope.launch {
             repository.addExercise(routineId, exercise)
             // Update the StateFlow with the new list of routines
@@ -30,7 +33,7 @@ class ExerciseViewModel(private val repository: Repository, routineId: String) :
         }
     }
 
-    fun remove(exercise: Exercise, routineId: String) {
+    fun remove(exercise: Exercise) {
         viewModelScope.launch {
             repository.removeExercise(routineId, exercise)
             // Update the StateFlow with the new list of routines
