@@ -43,6 +43,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.fitfolio.data.Repository
 import com.example.fitfolio.screens.AboutScreen
+import com.example.fitfolio.screens.LandingScreen
 import com.example.fitfolio.screens.LoginScreen
 import com.example.fitfolio.screens.MotivationScreen
 import com.example.fitfolio.screens.RoutineOverviewScreen
@@ -84,10 +85,10 @@ fun FitFolio(
     exerciseViewModel: ExerciseViewModel = ExerciseViewModel(repository),
 ) {
     val navController = rememberNavController()
-    var currentPage by rememberSaveable { mutableStateOf("Routines Overview") }
+    var currentPage by rememberSaveable { mutableStateOf("LandingScreen") }
 
     Scaffold(topBar = {
-        if(currentPage != "Login") {
+        if(currentPage != "Login" && currentPage != "Landing") {
             CenterAlignedTopAppBar(
                 colors = smallTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -113,7 +114,7 @@ fun FitFolio(
 
     },
         bottomBar = {
-            if(currentPage != "Login")
+            if(currentPage != "Login" && currentPage != "Landing")
             {
                 BottomAppBar (
                     content = {
@@ -147,7 +148,7 @@ fun FitFolio(
         ) {
         NavHost(
             navController = navController,
-            startDestination = "Login",
+            startDestination = "Landing",
             modifier = modifier.padding(it)
         ) {
             composable("RoutinesOverview") {
@@ -180,6 +181,11 @@ fun FitFolio(
                     onRegister = { email, password -> authViewModel.registerUser(email, password) },
                     repository = repository
                 )
+            }
+            composable("Landing") {
+                currentPage = "Landing"
+                LandingScreen(onTimeout = { navController.navigate("Login")})
+
             }
         }
     }
