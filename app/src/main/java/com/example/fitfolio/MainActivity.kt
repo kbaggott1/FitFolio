@@ -58,6 +58,13 @@ import com.google.firebase.firestore.firestore
 
 
 class MainActivity : ComponentActivity() {
+    companion object {
+        val database = Firebase.firestore
+        val authViewModel = AuthViewModel()
+        val repository = Repository(database, authViewModel)
+        val routinesViewModel = RoutineViewModel(repository)
+        val exerciseViewModel = ExerciseViewModel(repository)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -67,7 +74,13 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    FitFolio()
+                    FitFolio(
+                        database = database,
+                        authViewModel = authViewModel,
+                        repository = repository,
+                        routineViewModel = routinesViewModel,
+                        exerciseViewModel = exerciseViewModel
+                    )
                 }
             }
         }
@@ -78,11 +91,11 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun FitFolio(
     modifier: Modifier = Modifier,
-    database: FirebaseFirestore = Firebase.firestore,
-    authViewModel: AuthViewModel = AuthViewModel(),
-    repository: Repository = Repository(database, authViewModel),
-    routineViewModel: RoutineViewModel = RoutineViewModel(repository),
-    exerciseViewModel: ExerciseViewModel = ExerciseViewModel(repository),
+    database: FirebaseFirestore,
+    authViewModel: AuthViewModel,
+    repository: Repository,
+    routineViewModel: RoutineViewModel,
+    exerciseViewModel: ExerciseViewModel,
 ) {
     val navController = rememberNavController()
     var currentPage by rememberSaveable { mutableStateOf("LandingScreen") }
@@ -143,7 +156,6 @@ fun FitFolio(
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
-
         }
         ) {
         NavHost(
