@@ -100,8 +100,8 @@ fun ImageRow() {
             painter = painterResource(id = R.drawable.cristiano),
             contentDescription = "Image of Creator, Cristiano",
             modifier = Modifier
-                .size(125.dp)
-                .clip(RoundedCornerShape(40.dp))
+                .size(200.dp)
+                .clip(RoundedCornerShape(50.dp))
                 .padding(4.dp)
                 .fillMaxSize()
         )
@@ -110,7 +110,7 @@ fun ImageRow() {
             painter = painterResource(id = R.drawable.kevin),
             contentDescription = "Image of Creator, Kevin",
             modifier = Modifier
-                .size(125.dp)
+                .size(200.dp)
                 .clip(RoundedCornerShape(40.dp))
                 .padding(4.dp)
                 .fillMaxSize()
