@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Close
@@ -24,61 +23,66 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.FocusState
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fitfolio.data.Exercise
 import com.example.fitfolio.data.Muscles
 import com.example.fitfolio.data.Routine
+import com.example.fitfolio.viewmodels.ExerciseViewModel
 import com.example.fitfolio.viewmodels.RoutineViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RoutineViewerScreen(routineViewModel: RoutineViewModel, routineId: Int) {
-    val routine = getRoutineFromId(routineViewModel, routineId)!!
+fun RoutineViewerScreen(routineViewModel: RoutineViewModel, exerciseViewModel: ExerciseViewModel, routineId: String) {
+
+    LaunchedEffect(routineId) {
+        exerciseViewModel.initExercises(routineId)
+    }
+    val exercises by exerciseViewModel.exerciseList.collectAsState()
+    val routine = getRoutineFromId(routineViewModel, routineId)!! //TODO THIS IS RETURNING NULL
+
     Scaffold {
         Column(modifier = Modifier.padding(it)) {
             RoutineTitle(routine = routine)
             LazyColumn(contentPadding = it) {
-                items(routine.exercises.exercises) { exer ->
-                    ExerciseCard(exercise = exer, onClose = { exercise -> routine.exercises.remove(exercise) }, modifier = Modifier.padding(8.dp))
+                items(exercises) { exercise ->
+                    ExerciseCard(exercise = exercise, onClose = { exerciseViewModel.remove(exercise) }, modifier = Modifier.padding(8.dp))
                 }
                 item() {
-                    AddExerciseCard(routine = routine, modifier = Modifier.padding(8.dp), addExercise = { routine.exercises.add(Exercise("-- Exercise Name --", listOf(Muscles.None), "-- Description --", 0, 0)) })
+                    AddExerciseCard(routine = routine, modifier = Modifier.padding(8.dp), addExercise = { exerciseViewModel.add(Exercise("-- Exercise Name --", listOf(Muscles.None), "-- Description --", 0, 0)) })
                 }
             }
         }
     }
 }
 
+
 //Gets a routine that matches the provided ID. Returns null if none were found.
-private fun getRoutineFromId(routineViewModel: RoutineViewModel, id: Int): Routine? {
-    for (routine in routineViewModel.routines) {
+private fun getRoutineFromId(routineViewModel: RoutineViewModel, id: String): Routine? {
+    for (routine in routineViewModel.routineList.value) {
         if (routine.id == id) {
             return routine
         }
     }
     return null
 }
+
 
 // Represents the routine title. Can be modified to reflect the new name
 @OptIn(ExperimentalMaterial3Api::class)

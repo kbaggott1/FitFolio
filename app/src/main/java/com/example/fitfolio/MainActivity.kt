@@ -36,16 +36,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.fitfolio.data.Repository
-import com.example.fitfolio.providers.InMemoryRoutinesProvider
-import com.example.fitfolio.providers.UsersProvider
 import com.example.fitfolio.screens.AboutScreen
+import com.example.fitfolio.screens.LandingScreen
 import com.example.fitfolio.screens.LoginScreen
 import com.example.fitfolio.screens.MotivationScreen
 import com.example.fitfolio.screens.RoutineOverviewScreen
@@ -81,16 +79,16 @@ class MainActivity : ComponentActivity() {
 fun FitFolio(
     modifier: Modifier = Modifier,
     database: FirebaseFirestore = Firebase.firestore,
-    exerciseViewModel: ExerciseViewModel = viewModel(),
     authViewModel: AuthViewModel = AuthViewModel(),
-    repository: Repository = Repository(InMemoryRoutinesProvider(), UsersProvider(database, authViewModel)),
+    repository: Repository = Repository(database, authViewModel),
     routineViewModel: RoutineViewModel = RoutineViewModel(repository),
+    exerciseViewModel: ExerciseViewModel = ExerciseViewModel(repository),
 ) {
     val navController = rememberNavController()
-    var currentPage by rememberSaveable { mutableStateOf("Routines Overview") }
+    var currentPage by rememberSaveable { mutableStateOf("LandingScreen") }
 
     Scaffold(topBar = {
-        if(currentPage != "Login") {
+        if(currentPage != "Login" && currentPage != "Landing") {
             CenterAlignedTopAppBar(
                 colors = smallTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -116,7 +114,7 @@ fun FitFolio(
 
     },
         bottomBar = {
-            if(currentPage != "Login")
+            if(currentPage != "Login" && currentPage != "Landing")
             {
                 BottomAppBar (
                     content = {
@@ -150,7 +148,7 @@ fun FitFolio(
         ) {
         NavHost(
             navController = navController,
-            startDestination = "Login",
+            startDestination = "Landing",
             modifier = modifier.padding(it)
         ) {
             composable("RoutinesOverview") {
@@ -160,12 +158,12 @@ fun FitFolio(
             composable(
                 "RoutineViewer/{id}",
                 arguments = listOf(
-                    navArgument("id") { type = NavType.IntType }
+                    navArgument("id") { type = NavType.StringType }
                 )
             ) { navBackStackEntry ->
-                val routineId = navBackStackEntry.arguments?.getInt("id")
+                val routineId = navBackStackEntry.arguments?.getString("id")
                 currentPage = "Routine Viewer"
-                RoutineViewerScreen(routineViewModel, routineId!!)
+                RoutineViewerScreen(routineViewModel, exerciseViewModel, routineId!!)
             }
             composable("About") {
                 currentPage = "About"
@@ -183,6 +181,11 @@ fun FitFolio(
                     onRegister = { email, password -> authViewModel.registerUser(email, password) },
                     repository = repository
                 )
+            }
+            composable("Landing") {
+                currentPage = "Landing"
+                LandingScreen(onTimeout = { navController.navigate("Login")})
+
             }
         }
     }

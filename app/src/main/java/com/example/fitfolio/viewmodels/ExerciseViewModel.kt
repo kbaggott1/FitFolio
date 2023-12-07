@@ -1,20 +1,48 @@
 package com.example.fitfolio.viewmodels
-import androidx.compose.runtime.toMutableStateList
+
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.fitfolio.data.Exercise
 import com.example.fitfolio.data.Muscles
+import com.example.fitfolio.data.Repository
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
-class ExerciseViewModel : ViewModel() {
-    private val _exercises = getMockExercises().toMutableStateList()
-    val exercises: List<Exercise>
-        get() = _exercises
+class ExerciseViewModel(private val repository: Repository) : ViewModel() {
+    private var _exercises = MutableStateFlow<List<Exercise>>(emptyList())
+    var exerciseList: StateFlow<List<Exercise>> = _exercises.asStateFlow()
+    private var routineId: String = ""
 
-    fun add(exercise: Exercise) {
-        _exercises.add(exercise)
+    suspend fun initExercises(routineId: String) {
+
+        Log.d("ExerciseViewModel", "Loading exercises for routine $routineId")
+        viewModelScope.launch {
+            // Update the StateFlow with the new list of routines
+            _exercises.value = repository.getExercises(routineId).toMutableList()
+        }
+
+        this.routineId = routineId
     }
 
-    fun remove(exercise: Any?) {
-        _exercises.remove(exercise)
+
+    fun add(exercise: Exercise) {
+        viewModelScope.launch {
+            repository.addExercise(routineId, exercise)
+            // Update the StateFlow with the new list of routines
+            _exercises.value = _exercises.value + exercise
+        }
+    }
+
+    fun remove(exercise: Exercise) {
+        viewModelScope.launch {
+            repository.removeExercise(routineId, exercise)
+            // Update the StateFlow with the new list of routines
+            _exercises.value = _exercises.value - exercise
+        }
     }
 }
 
