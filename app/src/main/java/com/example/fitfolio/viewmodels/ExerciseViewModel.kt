@@ -36,6 +36,12 @@ class ExerciseViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
+    suspend fun update(exercise: Exercise) = coroutineScope {
+        launch {
+            repository.updateExercise(routineId, exercise)
+        }
+    }
+
     fun remove(exercise: Exercise) {
         viewModelScope.launch {
             repository.removeExercise(routineId, exercise)
