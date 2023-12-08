@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fitfolio.data.Exercise
 import com.example.fitfolio.data.Repository
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,8 +28,8 @@ class ExerciseViewModel(private val repository: Repository) : ViewModel() {
     }
 
 
-    fun add(exercise: Exercise) {
-        viewModelScope.launch {
+    suspend fun add(exercise: Exercise) = coroutineScope {
+        launch {
             repository.addExercise(routineId, exercise)
             // Update the StateFlow with the new list of routines
             _exercises.value = _exercises.value + exercise

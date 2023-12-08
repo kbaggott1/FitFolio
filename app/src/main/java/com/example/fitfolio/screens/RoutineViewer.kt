@@ -35,16 +35,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fitfolio.data.Exercise
-import com.example.fitfolio.data.Muscles
 import com.example.fitfolio.data.Routine
 import com.example.fitfolio.viewmodels.ExerciseViewModel
 import com.example.fitfolio.viewmodels.RoutineViewModel
+import kotlinx.coroutines.runBlocking
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -74,7 +75,17 @@ fun RoutineViewerScreen(
                         )
                 }
                 item() {
-                    AddExerciseCard(routine = routine, modifier = Modifier.padding(8.dp), addExercise = { exerciseViewModel.add(Exercise("-- Exercise Name --", listOf(Muscles.None), "-- Description --", 0, 0)) })
+                    AddExerciseCard(
+                        routine = routine,
+                        modifier = Modifier.padding(8.dp),
+                        addExercise = {
+                            var exercise = Exercise("", "", 0, 0)
+                            runBlocking {
+                                exerciseViewModel.add(exercise)
+                                onExerciseClick(exercise.id)
+                            }
+
+                        })
                 }
             }
         }
@@ -165,7 +176,7 @@ fun ExerciseCard(
                 ) {
                     Spacer(modifier = Modifier.height(1.dp))
                     IconButton(onClick = { onClose(exercise) }) {
-                        Icon(Icons.Filled.Close, contentDescription = "Close")
+                        Icon(Icons.Filled.Close, contentDescription = "Close", Modifier.scale(2f).padding(10.dp))
                     }
                 }
             }
@@ -191,8 +202,21 @@ fun ExerciseInformation(
             Text(
             text = exercise.description,
             modifier = Modifier.padding(horizontal = 8.dp),
-            style = TextStyle(fontSize = 15.sp, color = Color.White),
+            style = TextStyle(fontSize = 20.sp, color = Color.White),
         )
+
+        Row(modifier = Modifier) {
+            Text(
+                text = "Sets: ${exercise.sets}" ,
+                modifier = Modifier.padding(horizontal = 8.dp),
+                style = TextStyle(fontSize = 20.sp, color = Color.White),
+            )
+            Text(
+                text = "Reps: ${exercise.reps}" ,
+                modifier = Modifier.padding(horizontal = 8.dp),
+                style = TextStyle(fontSize = 20.sp, color = Color.White),
+            )
+        }
 
     }
 }
