@@ -43,6 +43,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.fitfolio.data.Repository
 import com.example.fitfolio.screens.AboutScreen
+import com.example.fitfolio.screens.ExerciseEditorScreen
 import com.example.fitfolio.screens.LandingScreen
 import com.example.fitfolio.screens.LoginScreen
 import com.example.fitfolio.screens.MotivationScreen
@@ -175,7 +176,22 @@ fun FitFolio(
             ) { navBackStackEntry ->
                 val routineId = navBackStackEntry.arguments?.getString("id")
                 currentPage = "Routine Viewer"
-                RoutineViewerScreen(routineViewModel, exerciseViewModel, routineId!!)
+                RoutineViewerScreen(
+                    routineViewModel,
+                    exerciseViewModel,
+                    routineId!!,
+                    { navController.navigate("ExerciseEditor/${it}") },
+                )
+            }
+            composable(
+                "ExerciseEditor/{id}",
+                arguments = listOf(
+                    navArgument("id") { type = NavType.StringType }
+                )
+            ) { navBackStackEntry ->
+                val exerciseId = navBackStackEntry.arguments?.getString("id")
+                currentPage = "Exercise Editor"
+                ExerciseEditorScreen(exerciseId = exerciseId!!)
             }
             composable("About") {
                 currentPage = "About"
