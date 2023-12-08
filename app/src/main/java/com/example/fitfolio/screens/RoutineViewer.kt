@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Close
@@ -49,20 +48,30 @@ import com.example.fitfolio.viewmodels.RoutineViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RoutineViewerScreen(routineViewModel: RoutineViewModel, exerciseViewModel: ExerciseViewModel, routineId: String) {
+fun RoutineViewerScreen(
+    routineViewModel: RoutineViewModel,
+    exerciseViewModel: ExerciseViewModel,
+    routineId: String,
+    onExerciseClick: (String) -> Unit
+) {
 
     LaunchedEffect(routineId) {
         exerciseViewModel.initExercises(routineId)
     }
     val exercises by exerciseViewModel.exerciseList.collectAsState()
-    val routine = getRoutineFromId(routineViewModel, routineId)!! //TODO THIS IS RETURNING NULL
+    val routine = getRoutineFromId(routineViewModel, routineId)!!
 
     Scaffold {
         Column(modifier = Modifier.padding(it)) {
             RoutineTitle(routine = routine)
             LazyColumn(contentPadding = it) {
                 items(exercises) { exercise ->
-                    ExerciseCard(exercise = exercise, onClose = { exerciseViewModel.remove(exercise) }, modifier = Modifier.padding(8.dp))
+                    ExerciseCard(
+                        exercise = exercise,
+                        onClose = { exerciseViewModel.remove(exercise) },
+                        modifier = Modifier.padding(8.dp),
+                        onExerciseClick = {it -> onExerciseClick(it)}
+                        )
                 }
                 item() {
                     AddExerciseCard(routine = routine, modifier = Modifier.padding(8.dp), addExercise = { exerciseViewModel.add(Exercise("-- Exercise Name --", listOf(Muscles.None), "-- Description --", 0, 0)) })
@@ -122,10 +131,17 @@ fun RoutineTitle(routine: Routine) {
 }
 
 // Displays a single exercise in the form of a card.
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExerciseCard(exercise: Exercise, onClose: (Any?) -> Unit, modifier: Modifier = Modifier) {
+fun ExerciseCard(
+    exercise: Exercise,
+    onClose: (Any?) -> Unit,
+    modifier: Modifier = Modifier,
+    onExerciseClick: (String) -> Unit
+) {
     Card(
-        modifier = modifier
+        modifier = modifier,
+        onClick = {onExerciseClick(exercise.id)}
     ) {
         Column(
             modifier = Modifier
@@ -164,28 +180,18 @@ fun ExerciseInformation(
     exercise: Exercise,
     modifier: Modifier = Modifier
 ) {
-    var exerciseNameText by remember { mutableStateOf(exercise.name) }
-    var exerciseDescription by remember { mutableStateOf(exercise.description) }
 
     Column(modifier = modifier) {
-        BasicTextField(
-            value = exerciseNameText,
-            onValueChange = {
-                exerciseNameText = it
-                exercise.name = exerciseNameText
-            },
+        Text(
+            text = exercise.name,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-            textStyle = TextStyle(fontSize = 30.sp, color = Color.White),
+            style = TextStyle(fontSize = 30.sp, color = Color.White),
         )
 
-        BasicTextField(
-            value = exerciseDescription,
-            onValueChange = {
-                exerciseDescription = it
-                exercise.description = exerciseDescription
-            },
+            Text(
+            text = exercise.description,
             modifier = Modifier.padding(horizontal = 8.dp),
-            textStyle = TextStyle(fontSize = 15.sp, color = Color.White),
+            style = TextStyle(fontSize = 15.sp, color = Color.White),
         )
 
     }
