@@ -2,6 +2,7 @@ package com.example.fitfolio
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -101,6 +102,10 @@ fun FitFolio(
     val navController = rememberNavController()
     var currentPage by rememberSaveable { mutableStateOf("LandingScreen") }
 
+    BackHandler {
+        navController.popBackStack()
+    }
+
     Scaffold(topBar = {
         if(currentPage != "Login" && currentPage != "Landing") {
             CenterAlignedTopAppBar(
@@ -191,7 +196,7 @@ fun FitFolio(
             ) { navBackStackEntry ->
                 val exerciseId = navBackStackEntry.arguments?.getString("id")
                 currentPage = "Exercise Editor"
-                ExerciseEditorScreen(exerciseId = exerciseId!!)
+                ExerciseEditorScreen(exerciseViewModel, exerciseId!!, { navController.popBackStack() })
             }
             composable("About") {
                 currentPage = "About"
