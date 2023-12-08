@@ -15,7 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Close
@@ -23,9 +23,9 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -36,36 +36,59 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fitfolio.data.Exercise
-import com.example.fitfolio.data.Muscles
 import com.example.fitfolio.data.Routine
 import com.example.fitfolio.viewmodels.ExerciseViewModel
 import com.example.fitfolio.viewmodels.RoutineViewModel
+import kotlinx.coroutines.runBlocking
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RoutineViewerScreen(routineViewModel: RoutineViewModel, exerciseViewModel: ExerciseViewModel, routineId: String) {
+fun RoutineViewerScreen(
+    routineViewModel: RoutineViewModel,
+    exerciseViewModel: ExerciseViewModel,
+    routineId: String,
+    onExerciseClick: (String) -> Unit
+) {
 
     LaunchedEffect(routineId) {
         exerciseViewModel.initExercises(routineId)
     }
     val exercises by exerciseViewModel.exerciseList.collectAsState()
-    val routine = getRoutineFromId(routineViewModel, routineId)!! //TODO THIS IS RETURNING NULL
+    val routine = getRoutineFromId(routineViewModel, routineId)!!
 
     Scaffold {
         Column(modifier = Modifier.padding(it)) {
             RoutineTitle(routine = routine)
             LazyColumn(contentPadding = it) {
                 items(exercises) { exercise ->
-                    ExerciseCard(exercise = exercise, onClose = { exerciseViewModel.remove(exercise) }, modifier = Modifier.padding(8.dp))
+                    ExerciseCard(
+                        exercise = exercise,
+                        onClose = { exerciseViewModel.remove(exercise) },
+                        modifier = Modifier.padding(8.dp),
+                        onExerciseClick = {it -> onExerciseClick(it)}
+                        )
                 }
                 item() {
-                    AddExerciseCard(routine = routine, modifier = Modifier.padding(8.dp), addExercise = { exerciseViewModel.add(Exercise("-- Exercise Name --", listOf(Muscles.None), "-- Description --", 0, 0)) })
+                    AddExerciseCard(
+                        routine = routine,
+                        modifier = Modifier.padding(8.dp),
+                        addExercise = {
+                            var exercise = Exercise("", "", 0, 0)
+                            runBlocking {
+                                exerciseViewModel.add(exercise)
+                                onExerciseClick(exercise.id)
+                            }
+
+                        })
                 }
             }
         }
@@ -95,7 +118,7 @@ fun RoutineTitle(routine: Routine) {
             .fillMaxWidth()
             .padding(8.dp)
     ) {
-        TextField(
+        OutlinedTextField(
             value = routineNameText,
             onValueChange = {
                 routineNameText = it
@@ -104,6 +127,14 @@ fun RoutineTitle(routine: Routine) {
             label = { Text("Routine Name") },
             modifier = Modifier
                 .fillMaxWidth()
+                .onFocusChanged { focusState ->
+                    if(!focusState.isFocused) {
+
+                    }
+                },
+            keyboardOptions = KeyboardOptions.Default.copy(
+                imeAction = ImeAction.Done
+            )
         )
     }
 
@@ -122,10 +153,17 @@ fun RoutineTitle(routine: Routine) {
 }
 
 // Displays a single exercise in the form of a card.
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExerciseCard(exercise: Exercise, onClose: (Any?) -> Unit, modifier: Modifier = Modifier) {
+fun ExerciseCard(
+    exercise: Exercise,
+    onClose: (Any?) -> Unit,
+    modifier: Modifier = Modifier,
+    onExerciseClick: (String) -> Unit
+) {
     Card(
-        modifier = modifier
+        modifier = modifier,
+        onClick = {onExerciseClick(exercise.id)}
     ) {
         Column(
             modifier = Modifier
@@ -149,7 +187,7 @@ fun ExerciseCard(exercise: Exercise, onClose: (Any?) -> Unit, modifier: Modifier
                 ) {
                     Spacer(modifier = Modifier.height(1.dp))
                     IconButton(onClick = { onClose(exercise) }) {
-                        Icon(Icons.Filled.Close, contentDescription = "Close")
+                        Icon(Icons.Filled.Close, contentDescription = "Close", Modifier.scale(2f).padding(10.dp))
                     }
                 }
             }
@@ -164,29 +202,32 @@ fun ExerciseInformation(
     exercise: Exercise,
     modifier: Modifier = Modifier
 ) {
-    var exerciseNameText by remember { mutableStateOf(exercise.name) }
-    var exerciseDescription by remember { mutableStateOf(exercise.description) }
 
     Column(modifier = modifier) {
-        BasicTextField(
-            value = exerciseNameText,
-            onValueChange = {
-                exerciseNameText = it
-                exercise.name = exerciseNameText
-            },
+        Text(
+            text = exercise.name,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-            textStyle = TextStyle(fontSize = 30.sp, color = Color.White),
+            style = TextStyle(fontSize = 30.sp, color = Color.White),
         )
 
-        BasicTextField(
-            value = exerciseDescription,
-            onValueChange = {
-                exerciseDescription = it
-                exercise.description = exerciseDescription
-            },
+            Text(
+            text = exercise.description,
             modifier = Modifier.padding(horizontal = 8.dp),
-            textStyle = TextStyle(fontSize = 15.sp, color = Color.White),
+            style = TextStyle(fontSize = 20.sp, color = Color.White),
         )
+
+        Row(modifier = Modifier) {
+            Text(
+                text = "Sets: ${exercise.sets}" ,
+                modifier = Modifier.padding(horizontal = 8.dp),
+                style = TextStyle(fontSize = 20.sp, color = Color.White),
+            )
+            Text(
+                text = "Reps: ${exercise.reps}" ,
+                modifier = Modifier.padding(horizontal = 8.dp),
+                style = TextStyle(fontSize = 20.sp, color = Color.White),
+            )
+        }
 
     }
 }

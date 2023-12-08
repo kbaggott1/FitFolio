@@ -2,6 +2,7 @@ package com.example.fitfolio
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -43,6 +44,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.fitfolio.data.Repository
 import com.example.fitfolio.screens.AboutScreen
+import com.example.fitfolio.screens.ExerciseEditorScreen
 import com.example.fitfolio.screens.LandingScreen
 import com.example.fitfolio.screens.LoginScreen
 import com.example.fitfolio.screens.MotivationScreen
@@ -99,6 +101,10 @@ fun FitFolio(
 ) {
     val navController = rememberNavController()
     var currentPage by rememberSaveable { mutableStateOf("LandingScreen") }
+
+    BackHandler {
+        navController.popBackStack()
+    }
 
     Scaffold(topBar = {
         if(currentPage != "Login" && currentPage != "Landing") {
@@ -175,7 +181,22 @@ fun FitFolio(
             ) { navBackStackEntry ->
                 val routineId = navBackStackEntry.arguments?.getString("id")
                 currentPage = "Routine Viewer"
-                RoutineViewerScreen(routineViewModel, exerciseViewModel, routineId!!)
+                RoutineViewerScreen(
+                    routineViewModel,
+                    exerciseViewModel,
+                    routineId!!,
+                    { navController.navigate("ExerciseEditor/${it}") },
+                )
+            }
+            composable(
+                "ExerciseEditor/{id}",
+                arguments = listOf(
+                    navArgument("id") { type = NavType.StringType }
+                )
+            ) { navBackStackEntry ->
+                val exerciseId = navBackStackEntry.arguments?.getString("id")
+                currentPage = "Exercise Editor"
+                ExerciseEditorScreen(exerciseViewModel, exerciseId!!, { navController.popBackStack() })
             }
             composable("About") {
                 currentPage = "About"

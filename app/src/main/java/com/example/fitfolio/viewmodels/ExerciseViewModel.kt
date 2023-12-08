@@ -4,9 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fitfolio.data.Exercise
-import com.example.fitfolio.data.Muscles
 import com.example.fitfolio.data.Repository
-import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,11 +28,17 @@ class ExerciseViewModel(private val repository: Repository) : ViewModel() {
     }
 
 
-    fun add(exercise: Exercise) {
-        viewModelScope.launch {
+    suspend fun add(exercise: Exercise) = coroutineScope {
+        launch {
             repository.addExercise(routineId, exercise)
             // Update the StateFlow with the new list of routines
             _exercises.value = _exercises.value + exercise
+        }
+    }
+
+    suspend fun update(exercise: Exercise) = coroutineScope {
+        launch {
+            repository.updateExercise(routineId, exercise)
         }
     }
 
@@ -46,13 +51,3 @@ class ExerciseViewModel(private val repository: Repository) : ViewModel() {
     }
 }
 
-fun getMockExercises(): List<Exercise> {
-    return listOf<Exercise>(
-        Exercise("Pushups", listOf(Muscles.UPPERCHEST, Muscles.LOWERCHEST, Muscles.TRICEPS, Muscles.FRONTDELTS), "Spread Arms a part and push up", 4, 12),
-        Exercise("Seated Bicep Curl", listOf(Muscles.BICEPS), "Sit down and Curl", 4, 12),
-        Exercise("Tricep Pull down", listOf(Muscles.TRICEPS), "Pull down on the Cords", 4, 12),
-        Exercise("Leg Press", listOf(Muscles.QUADRICEPS), "Push up with your legs", 4, 12),
-        Exercise("Chest Press", listOf(Muscles.MIDCHEST, Muscles.UPPERCHEST), "Light Weight", 4, 12),
-        Exercise("Flex in the mirror", Muscles.values().toList(), "Appreciate the gains", 10, 200)
-    )
-}
