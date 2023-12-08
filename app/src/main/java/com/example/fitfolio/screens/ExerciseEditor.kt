@@ -11,16 +11,24 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.fitfolio.data.Exercise
 import com.example.fitfolio.viewmodels.ExerciseViewModel
+import kotlinx.coroutines.runBlocking
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExerciseEditorScreen(exerciseViewModel: ExerciseViewModel, exerciseId: String, onExerciseSaved: Unit) {
+fun ExerciseEditorScreen(exerciseViewModel: ExerciseViewModel, exerciseId: String, onExerciseSaved: () -> Boolean) {
     val exercise = getExerciseFromId(exerciseId, exerciseViewModel)!!
-
+    var exerciseName by rememberSaveable { mutableStateOf(exercise.name) }
+    var description by rememberSaveable { mutableStateOf(exercise.description) }
+    var sets by rememberSaveable { mutableStateOf(exercise.sets.toString()) }
+    var reps by rememberSaveable { mutableStateOf(exercise.reps.toString()) }
     // Your UI components go here
     LazyColumn(
         modifier = Modifier
@@ -29,8 +37,8 @@ fun ExerciseEditorScreen(exerciseViewModel: ExerciseViewModel, exerciseId: Strin
     ) {
         item {
             OutlinedTextField(
-                value = exercise.name,
-                onValueChange = { exercise.name = it },
+                value = exerciseName,
+                onValueChange = { exerciseName = it; exercise.name = it; },
                 label = { Text("Exercise Name") },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -43,8 +51,8 @@ fun ExerciseEditorScreen(exerciseViewModel: ExerciseViewModel, exerciseId: Strin
 
             // Description
             OutlinedTextField(
-                value = exercise.description,
-                onValueChange = { exercise.description = it },
+                value = description,
+                onValueChange = { description = it; exercise.description = it },
                 label = { Text("Description") },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -57,9 +65,9 @@ fun ExerciseEditorScreen(exerciseViewModel: ExerciseViewModel, exerciseId: Strin
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 OutlinedTextField(
-                    value = exercise.sets.toString(),
+                    value = sets,
                     onValueChange = {
-                        exercise.sets = it.toIntOrNull() ?: 0
+                        sets = it; exercise.sets = it.toIntOrNull() ?: 0
                     },
                     label = { Text("Sets") },
                     modifier = Modifier
@@ -68,9 +76,9 @@ fun ExerciseEditorScreen(exerciseViewModel: ExerciseViewModel, exerciseId: Strin
                 )
 
                 OutlinedTextField(
-                    value = exercise.reps.toString(),
+                    value = reps,
                     onValueChange = {
-                        exercise.reps = it.toIntOrNull() ?: 0
+                        reps = it; exercise.reps = it.toIntOrNull() ?: 0
                     },
                     label = { Text("Reps") },
                     modifier = Modifier
@@ -81,7 +89,12 @@ fun ExerciseEditorScreen(exerciseViewModel: ExerciseViewModel, exerciseId: Strin
 
             // Save Button
             Button(
-                onClick = { onExerciseSaved },
+                onClick = {
+                    runBlocking {
+                        exerciseViewModel.update(exercise)
+                        onExerciseSaved()
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 16.dp)
