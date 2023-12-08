@@ -48,6 +48,10 @@ class Repository(
         exercisesProvider.removeExercise(this.userId, routineId, exercise)
     }
 
+    suspend fun updateExercise(routineId: String, exercise: Exercise) {
+        exercisesProvider.updateExercise(this.userId, routineId, exercise)
+    }
+
     //USERS METHODS
     suspend fun addUser(user: User): Boolean {
         return usersProvider.addUser(this.userId, user)
