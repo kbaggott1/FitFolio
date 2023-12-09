@@ -14,12 +14,19 @@ class RoutineViewModel(private val repository: Repository) : ViewModel() {
     private var _routines = MutableStateFlow<List<Routine>>(emptyList())
     var routineList: StateFlow<List<Routine>> = _routines.asStateFlow()
 
+    /**
+     * Intializes the routines ViewModel
+     */
     suspend fun initRoutines() {
         viewModelScope.launch {
             // Update the StateFlow with the new list of routines
             _routines.value = repository.getRoutines().toMutableList()
         }
     }
+
+    /**
+     * Adds a routine to the database
+     */
     suspend fun getRoutines(): List<Routine> {
         val routines = repository.getRoutines()
         // Update the StateFlow with the new list of routines

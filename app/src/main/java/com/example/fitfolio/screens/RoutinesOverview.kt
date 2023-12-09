@@ -36,6 +36,7 @@ import com.example.fitfolio.data.Routine
 import com.example.fitfolio.viewmodels.RoutineViewModel
 import kotlinx.coroutines.runBlocking
 
+// Main composable of the routine overview page. Contains all routine cards
 @Composable
 fun RoutineOverviewScreen(modifier: Modifier = Modifier, routineViewModel: RoutineViewModel, navController: NavController) {
     LaunchedEffect(true) {
@@ -50,6 +51,7 @@ fun RoutineOverviewScreen(modifier: Modifier = Modifier, routineViewModel: Routi
     )
 }
 
+// A routine item card that contains the routine information
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RoutineItem(name: String, routineDescription: String?, handleDelete: () -> Unit, openRoutine: () -> Unit) {
@@ -95,6 +97,7 @@ fun RoutineItem(name: String, routineDescription: String?, handleDelete: () -> U
     }
 }
 
+// Card with a plus icon that users can press to add a routine
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddRoutineCard(modifier: Modifier = Modifier, openRoutine: () -> Unit) {
@@ -122,6 +125,7 @@ fun AddRoutineCard(modifier: Modifier = Modifier, openRoutine: () -> Unit) {
     }
 }
 
+// The list of routine cards.
 @Composable
 fun RoutineList(
     routineViewModel: RoutineViewModel,

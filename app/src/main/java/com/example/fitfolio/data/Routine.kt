@@ -2,6 +2,7 @@ package com.example.fitfolio.data
 
 import java.util.UUID
 
+// A routine contains a list of exercises and belongs to a user
 class Routine(val id: String, var name: String, var description: String?) {
 
     constructor() : this("", "", null)

@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fitfolio.R
 
+// Main about screen composable
 @Composable
 fun AboutScreen() {
     Surface(
@@ -34,6 +35,7 @@ fun AboutScreen() {
     }
 }
 
+// About card which contains the main content of the page
 @Composable
 fun AboutCard() {
     LazyColumn(
@@ -61,6 +63,7 @@ fun AboutCard() {
     }
 }
 
+// Contains title of the page
 @Composable
 fun AboutTitle() {
     Text(
@@ -70,10 +73,10 @@ fun AboutTitle() {
         fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
         modifier = Modifier
             .padding(vertical = 16.dp)
-
     )
 }
 
+// Main body of text for the page
 @Composable
 fun AboutText() {
     Text(
@@ -87,6 +90,7 @@ fun AboutText() {
     )
 }
 
+// Contains the images of the creators
 @Composable
 fun ImageRow() {
     Row(

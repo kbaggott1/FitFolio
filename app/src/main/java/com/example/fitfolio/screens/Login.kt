@@ -180,7 +180,6 @@ fun LoginScreen(
                 }
             }
         }
-
     }
 }
 
@@ -336,7 +335,7 @@ fun EmailField(
 
 // Validates an email using regex
 fun isEmailValid(email: String): Boolean {
-    val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
+    val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+" // Regex retrieved from ChatGPT
     return email.matches(emailPattern.toRegex())
 }
 

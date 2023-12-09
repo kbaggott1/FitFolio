@@ -14,6 +14,7 @@ import androidx.compose.ui.res.painterResource
 import com.example.fitfolio.R
 import kotlinx.coroutines.delay
 
+// Screen with a logo that the user sees while the app is launching
 @Composable
 fun LandingScreen(onTimeout: () -> Unit, modifier: Modifier = Modifier) {
     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -32,4 +33,3 @@ fun LandingScreen(onTimeout: () -> Unit, modifier: Modifier = Modifier) {
         Image(painterResource(id = R.drawable.fitfolio), contentDescription = null, Modifier.scale(2F))
     }
 }
-
