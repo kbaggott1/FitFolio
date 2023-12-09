@@ -46,6 +46,12 @@ class RoutineViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
+    suspend fun update(routine: Routine) = coroutineScope {
+        launch {
+            repository.updateRoutine(routine)
+        }
+    }
+
     /**
      * Removes a routine from the database and updates the StateFlow.
      * @param routine The routine being removed from the database

@@ -123,7 +123,6 @@ class ExercisesProvider(private val db: FirebaseFirestore) : IExercisesProvider 
                         exercise.sets,
                         "reps",
                         exercise.reps
-
                     )
                     .await()
             }

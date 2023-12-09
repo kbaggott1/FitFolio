@@ -38,7 +38,13 @@ class Repository(
         routinesProvider.removeRoutine(this.userId, routine)
     }
 
-    // EXERCISE METHODS
+    // Updates a routine from the repository
+    suspend fun updateRoutine(routine: Routine) {
+        routinesProvider.updateRoutine(this.userId, routine)
+    }
+
+
+    // -- EXERCISE METHODS --
 
     // Gets an exercise from the repository
     suspend fun getExercises(routineId: String): List<Exercise> {
@@ -59,6 +65,7 @@ class Repository(
     suspend fun updateExercise(routineId: String, exercise: Exercise) {
         exercisesProvider.updateExercise(this.userId, routineId, exercise)
     }
+
 
     // USERS METHODS
 
