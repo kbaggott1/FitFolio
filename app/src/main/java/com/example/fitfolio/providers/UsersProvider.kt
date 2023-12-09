@@ -18,12 +18,11 @@ class UsersProvider(private val db: FirebaseFirestore) : IUsersProvider {
     override suspend fun getUser(userId: String): User? {
         val docRef = db.collection("users").document(userId)
         return try {
-                withContext(Dispatchers.IO) {
-                    val userSnapshot = docRef.get().await()
-                    userSnapshot.toObject<User>()
-                }
+            withContext(Dispatchers.IO) {
+                val userSnapshot = docRef.get().await()
+                userSnapshot.toObject<User>()
             }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             Log.d("E", e.toString())
             null
         }

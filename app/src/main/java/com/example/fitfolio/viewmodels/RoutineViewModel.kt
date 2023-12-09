@@ -4,8 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fitfolio.data.Repository
 import com.example.fitfolio.data.Routine
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,8 +11,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class RoutineViewModel(private val repository: Repository) : ViewModel() {
-        private var _routines = MutableStateFlow<List<Routine>>(emptyList())
-        var routineList: StateFlow<List<Routine>> = _routines.asStateFlow()
+    private var _routines = MutableStateFlow<List<Routine>>(emptyList())
+    var routineList: StateFlow<List<Routine>> = _routines.asStateFlow()
 
     /**
      * Intializes the routines ViewModel
@@ -60,4 +58,3 @@ class RoutineViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 }
-

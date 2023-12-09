@@ -34,10 +34,6 @@ import androidx.navigation.NavController
 import com.example.fitfolio.R
 import com.example.fitfolio.data.Routine
 import com.example.fitfolio.viewmodels.RoutineViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 // Main composable of the routine overview page. Contains all routine cards
@@ -132,7 +128,7 @@ fun AddRoutineCard(modifier: Modifier = Modifier, openRoutine: () -> Unit) {
 // The list of routine cards.
 @Composable
 fun RoutineList(
-    routineViewModel : RoutineViewModel,
+    routineViewModel: RoutineViewModel,
     modifier: Modifier,
     handleDelete: (Routine) -> Unit,
     openRoutine: (Routine) -> Unit
@@ -149,11 +145,10 @@ fun RoutineList(
             )
         }
         item {
-            AddRoutineCard(openRoutine = { addEmptyRoutine(routineViewModel, openRoutine);  })
+            AddRoutineCard(openRoutine = { addEmptyRoutine(routineViewModel, openRoutine); })
         }
     }
 }
-
 
 /**
  * Adds an empty routine to the routineViewModel
@@ -166,6 +161,6 @@ fun addEmptyRoutine(routineViewModel: RoutineViewModel, openRoutine: (Routine) -
 
     runBlocking {
         routineViewModel.add(newRoutine)
-        openRoutine(newRoutine);
+        openRoutine(newRoutine)
     }
 }

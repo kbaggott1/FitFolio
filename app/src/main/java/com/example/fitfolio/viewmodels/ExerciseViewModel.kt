@@ -64,4 +64,3 @@ class ExerciseViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 }
-

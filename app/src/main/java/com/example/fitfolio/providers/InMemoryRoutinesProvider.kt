@@ -5,9 +5,8 @@ import androidx.compose.runtime.toMutableStateList
 import com.example.fitfolio.data.Routine
 import com.example.fitfolio.interfaces.IRoutinesProvider
 import com.example.fitfolio.screens.getMockRoutines
-import com.example.fitfolio.viewmodels.ExerciseViewModel
 
-//A routine provider that uses ram to store routines, this will only be used in development
+// A routine provider that uses ram to store routines, this will only be used in development
 class InMemoryRoutinesProvider : IRoutinesProvider {
 
     private val _routines: SnapshotStateList<Routine> = getMockRoutines().toMutableStateList()
@@ -18,7 +17,6 @@ class InMemoryRoutinesProvider : IRoutinesProvider {
     override suspend fun addRoutine(userId: String, routine: Routine): Boolean {
         for (r in _routines) {
             return false
-
         }
         return _routines.add(routine)
     }

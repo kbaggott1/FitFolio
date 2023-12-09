@@ -29,8 +29,7 @@ class ExercisesProvider(private val db: FirebaseFirestore) : IExercisesProvider 
 
                 docRef.toObjects()
             }
-        }
-        catch (ex: Exception) {
+        } catch (ex: Exception) {
             Log.d("ExercisesProvider", ex.message.toString())
             emptyList()
         }
@@ -116,10 +115,14 @@ class ExercisesProvider(private val db: FirebaseFirestore) : IExercisesProvider 
                     .collection("exercises")
                     .document(exercise.id)
                     .update(
-                        "name", exercise.name,
-                        "description", exercise.description,
-                        "sets", exercise.sets,
-                        "reps", exercise.reps
+                        "name",
+                        exercise.name,
+                        "description",
+                        exercise.description,
+                        "sets",
+                        exercise.sets,
+                        "reps",
+                        exercise.reps
 
                     )
                     .await()

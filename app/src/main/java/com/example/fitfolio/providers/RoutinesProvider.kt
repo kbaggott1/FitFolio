@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class RoutinesProvider(private val db: FirebaseFirestore): IRoutinesProvider {
+class RoutinesProvider(private val db: FirebaseFirestore) : IRoutinesProvider {
 
     /**
      * Gets a routine from the database
@@ -26,8 +26,7 @@ class RoutinesProvider(private val db: FirebaseFirestore): IRoutinesProvider {
 
                 docRef.toObjects()
             }
-        }
-        catch (ex: Exception) {
+        } catch (ex: Exception) {
             Log.e("FIRESTORE", ex.message.toString())
             emptyList()
         }
@@ -42,7 +41,7 @@ class RoutinesProvider(private val db: FirebaseFirestore): IRoutinesProvider {
         return try {
             withContext(Dispatchers.IO) {
                 val routineDocument = db
-                        .collection("users")
+                    .collection("users")
                     .document(userId)
                     .collection("routines")
                     .document(routine.id)

@@ -1,7 +1,6 @@
 package com.example.fitfolio.interfaces
 
 import com.example.fitfolio.data.Exercise
-import com.example.fitfolio.data.Routine
 
 interface IExercisesProvider {
 

@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fitfolio.R
 
-//Main about screen composable
+// Main about screen composable
 @Composable
 fun AboutScreen() {
     Surface(
@@ -35,7 +35,7 @@ fun AboutScreen() {
     }
 }
 
-//About card which contains the main content of the page
+// About card which contains the main content of the page
 @Composable
 fun AboutCard() {
     LazyColumn(
@@ -43,7 +43,7 @@ fun AboutCard() {
             .fillMaxSize(),
         verticalArrangement = Arrangement.Center
     ) {
-        item{
+        item {
             Column(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -63,7 +63,7 @@ fun AboutCard() {
     }
 }
 
-//Contains title of the page
+// Contains title of the page
 @Composable
 fun AboutTitle() {
     Text(
@@ -76,13 +76,13 @@ fun AboutTitle() {
     )
 }
 
-//Main body of text for the page
+// Main body of text for the page
 @Composable
 fun AboutText() {
     Text(
         text = "At FitFolio, we are dedicated gym goers who wanted a workout app that matches our" +
-                " specific needs. After trying other apps, we decided to create FitFolio, the best " +
-                "workout application you've ever had the pleasure of using!",
+            " specific needs. After trying other apps, we decided to create FitFolio, the best " +
+            "workout application you've ever had the pleasure of using!",
         color = MaterialTheme.colorScheme.primary,
         textAlign = TextAlign.Center,
         modifier = Modifier
@@ -90,7 +90,7 @@ fun AboutText() {
     )
 }
 
-//Contains the images of the creators
+// Contains the images of the creators
 @Composable
 fun ImageRow() {
     Row(

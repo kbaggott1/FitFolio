@@ -74,8 +74,8 @@ fun RoutineViewerScreen(
                         exercise = exercise,
                         onClose = { exerciseViewModel.remove(exercise) },
                         modifier = Modifier.padding(8.dp),
-                        onExerciseClick = {it -> onExerciseClick(it)}
-                        )
+                        onExerciseClick = { it -> onExerciseClick(it) }
+                    )
                 }
                 item() {
                     AddExerciseCard(
@@ -87,8 +87,8 @@ fun RoutineViewerScreen(
                                 exerciseViewModel.add(exercise)
                                 onExerciseClick(exercise.id)
                             }
-
-                        })
+                        }
+                    )
                 }
             }
         }
@@ -116,8 +116,7 @@ fun RoutineTitle(routine: Routine) {
             modifier = Modifier
                 .fillMaxWidth()
                 .onFocusChanged { focusState ->
-                    if(!focusState.isFocused) {
-
+                    if (!focusState.isFocused) {
                     }
                 },
             keyboardOptions = KeyboardOptions.Default.copy(
@@ -151,7 +150,7 @@ fun ExerciseCard(
 ) {
     Card(
         modifier = modifier,
-        onClick = {onExerciseClick(exercise.id)}
+        onClick = { onExerciseClick(exercise.id) }
     ) {
         Column(
             modifier = Modifier
@@ -194,25 +193,25 @@ fun ExerciseInformation(
         Text(
             text = exercise.name,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-            style = TextStyle(fontSize = 30.sp, color = Color.White),
+            style = TextStyle(fontSize = 30.sp, color = Color.White)
         )
 
         Text(
             text = exercise.description,
             modifier = Modifier.padding(horizontal = 8.dp),
-            style = TextStyle(fontSize = 20.sp, color = Color.White),
+            style = TextStyle(fontSize = 20.sp, color = Color.White)
         )
 
         Row(modifier = Modifier) {
             Text(
-                text = "Sets: ${exercise.sets}" ,
+                text = "Sets: ${exercise.sets}",
                 modifier = Modifier.padding(horizontal = 8.dp),
-                style = TextStyle(fontSize = 20.sp, color = Color.White),
+                style = TextStyle(fontSize = 20.sp, color = Color.White)
             )
             Text(
-                text = "Reps: ${exercise.reps}" ,
+                text = "Reps: ${exercise.reps}",
                 modifier = Modifier.padding(horizontal = 8.dp),
-                style = TextStyle(fontSize = 20.sp, color = Color.White),
+                style = TextStyle(fontSize = 20.sp, color = Color.White)
             )
         }
     }
@@ -241,20 +240,20 @@ fun AddExerciseCard(
                 )
                 .fillMaxWidth()
                 .padding(8.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Box(modifier = Modifier, contentAlignment = Alignment.Center) {
-                    Icon(
-                        Icons.Filled.AddCircle,
-                        contentDescription = "Add Exercise",
-                        modifier = Modifier.size(64.dp)
-                    )
-                }
+            contentAlignment = Alignment.Center
+        ) {
+            Box(modifier = Modifier, contentAlignment = Alignment.Center) {
+                Icon(
+                    Icons.Filled.AddCircle,
+                    contentDescription = "Add Exercise",
+                    modifier = Modifier.size(64.dp)
+                )
             }
+        }
     }
 }
 
-//Gets a routine that matches the provided ID. Returns null if none were found.
+// Gets a routine that matches the provided ID. Returns null if none were found.
 private fun getRoutineFromId(routineViewModel: RoutineViewModel, id: String): Routine? {
     for (routine in routineViewModel.routineList.value) {
         if (routine.id == id) {
@@ -263,4 +262,3 @@ private fun getRoutineFromId(routineViewModel: RoutineViewModel, id: String): Ro
     }
     return null
 }
-
