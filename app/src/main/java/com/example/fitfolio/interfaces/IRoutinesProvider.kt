@@ -8,5 +8,4 @@ interface IRoutinesProvider {
     suspend fun addRoutine(userId: String, routine: Routine): Boolean
     suspend fun removeRoutine(userId: String, routine: Routine): Boolean
     suspend fun updateRoutine(userId: String, routine: Routine): Boolean
-
 }
