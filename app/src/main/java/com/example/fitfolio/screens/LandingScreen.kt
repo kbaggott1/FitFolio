@@ -33,7 +33,3 @@ fun LandingScreen(onTimeout: () -> Unit, modifier: Modifier = Modifier) {
         Image(painterResource(id = R.drawable.fitfolio), contentDescription = null, Modifier.scale(2F))
     }
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> main
