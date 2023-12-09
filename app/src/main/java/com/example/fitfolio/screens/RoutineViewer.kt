@@ -19,6 +19,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -32,12 +33,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
@@ -67,7 +68,7 @@ fun RoutineViewerScreen(
 
     Scaffold {
         Column(modifier = Modifier.padding(it)) {
-            RoutineTitle(routine = routine)
+            RoutineTitle(routine = routine, routineViewModel)
             LazyColumn(contentPadding = it) {
                 items(exercises) { exercise ->
                     ExerciseCard(
@@ -94,8 +95,6 @@ fun RoutineViewerScreen(
         }
     }
 }
-
-
 //Gets a routine that matches the provided ID. Returns null if none were found.
 private fun getRoutineFromId(routineViewModel: RoutineViewModel, id: String): Routine? {
     for (routine in routineViewModel.routineList.value) {
@@ -110,10 +109,12 @@ private fun getRoutineFromId(routineViewModel: RoutineViewModel, id: String): Ro
 // Represents the routine title. Can be modified to reflect the new name
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RoutineTitle(routine: Routine) {
-    var routineNameText by remember { mutableStateOf(routine.name) }
+fun RoutineTitle(routine: Routine, routineViewModel: RoutineViewModel) {
+    var routineNameText by rememberSaveable { mutableStateOf(routine.name) }
+    var routineDescriptionText by rememberSaveable { mutableStateOf(routine.description ?: "") }
+    var recompose by remember { mutableStateOf(false) }
 
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
@@ -122,20 +123,49 @@ fun RoutineTitle(routine: Routine) {
             value = routineNameText,
             onValueChange = {
                 routineNameText = it
-                routine.name = routineNameText
             },
             label = { Text("Routine Name") },
             modifier = Modifier
-                .fillMaxWidth()
-                .onFocusChanged { focusState ->
-                    if(!focusState.isFocused) {
-
-                    }
-                },
+                .fillMaxWidth(),
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Done
             )
         )
+        OutlinedTextField(
+            value = routineDescriptionText,
+            onValueChange = {
+                routineDescriptionText = it
+            },
+            label = { Text("Routine Description") },
+            modifier = Modifier
+                .fillMaxWidth(),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                imeAction = ImeAction.Done
+            )
+        )
+    }
+
+    if(routineNameText != routine.name || routineDescriptionText != (routine.description ?: "")) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Button(
+                modifier = Modifier,
+                onClick = {
+                    runBlocking {
+                        routine.name = routineNameText;
+                        routine.description = routineDescriptionText;
+                        routineViewModel.update(routine)
+                        recompose = !recompose
+                    }
+                }
+            ) {
+                Text("Save changes to routine")
+            }
+        }
+
     }
 
     Box(
@@ -150,6 +180,8 @@ fun RoutineTitle(routine: Routine) {
                 .background(SolidColor(Color.Gray))
         )
     }
+
+    LaunchedEffect(recompose) {}
 }
 
 // Displays a single exercise in the form of a card.
@@ -187,7 +219,10 @@ fun ExerciseCard(
                 ) {
                     Spacer(modifier = Modifier.height(1.dp))
                     IconButton(onClick = { onClose(exercise) }) {
-                        Icon(Icons.Filled.Close, contentDescription = "Close", Modifier.scale(2f).padding(10.dp))
+                        Icon(Icons.Filled.Close, contentDescription = "Close",
+                            Modifier
+                                .scale(2f)
+                                .padding(10.dp))
                     }
                 }
             }

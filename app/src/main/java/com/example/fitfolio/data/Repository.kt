@@ -35,6 +35,10 @@ class Repository(
         routinesProvider.removeRoutine(this.userId, routine)
     }
 
+    suspend fun updateRoutine(routine: Routine) {
+        routinesProvider.updateRoutine(this.userId, routine)
+    }
+
     //EXERCISE METHODS
     suspend fun getExercises(routineId: String): List<Exercise> {
         return exercisesProvider.getExercises(this.userId, routineId)
