@@ -79,7 +79,6 @@ class RoutinesProvider(private val db: FirebaseFirestore) : IRoutinesProvider {
                         routine.name,
                         "description",
                         routine.description
-
                     )
                     .await()
             }

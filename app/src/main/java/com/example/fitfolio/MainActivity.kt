@@ -132,6 +132,7 @@ fun FitFolio(
             }
         },
         bottomBar = {
+
             if (currentPage != "Login" && currentPage != "Landing") {
                 BottomAppBar(
                     content = {
