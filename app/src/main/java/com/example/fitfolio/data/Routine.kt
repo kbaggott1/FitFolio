@@ -4,7 +4,7 @@ import java.util.UUID
 
 class Routine(val id: String, var name: String, var description: String?) {
 
-    constructor(): this("", "",null)
+    constructor() : this("", "", null)
     companion object {
         val defaultName: String = "New Routine"
         fun generateUniqueId(): String {
@@ -12,6 +12,4 @@ class Routine(val id: String, var name: String, var description: String?) {
             return UUID.randomUUID().toString()
         }
     }
-
-
 }

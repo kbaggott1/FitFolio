@@ -9,8 +9,7 @@ import com.example.fitfolio.providers.UsersProvider
 import com.example.fitfolio.viewmodels.AuthViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 
-
-//Repository for all data used in the app
+// Repository for all data used in the app
 class Repository(
     private val database: FirebaseFirestore,
     private val authenticator: AuthViewModel,
@@ -22,8 +21,7 @@ class Repository(
     private val userId: String
         get() { return authenticator.getCurrentUser()!!.uid }
 
-
-    //ROUTINES METHODS
+    // ROUTINES METHODS
     suspend fun getRoutines(): List<Routine> {
         return routinesProvider.getRoutines(this.userId)
     }
@@ -39,7 +37,7 @@ class Repository(
         routinesProvider.updateRoutine(this.userId, routine)
     }
 
-    //EXERCISE METHODS
+    // EXERCISE METHODS
     suspend fun getExercises(routineId: String): List<Exercise> {
         return exercisesProvider.getExercises(this.userId, routineId)
     }
@@ -48,7 +46,7 @@ class Repository(
         exercisesProvider.addExercise(this.userId, routineId, exercise)
     }
 
-    suspend fun removeExercise(routineId: String, exercise: Exercise){
+    suspend fun removeExercise(routineId: String, exercise: Exercise) {
         exercisesProvider.removeExercise(this.userId, routineId, exercise)
     }
 
@@ -56,7 +54,7 @@ class Repository(
         exercisesProvider.updateExercise(this.userId, routineId, exercise)
     }
 
-    //USERS METHODS
+    // USERS METHODS
     suspend fun addUser(user: User): Boolean {
         return usersProvider.addUser(this.userId, user)
     }

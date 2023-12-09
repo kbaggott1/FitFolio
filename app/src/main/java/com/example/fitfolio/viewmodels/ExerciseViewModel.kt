@@ -17,7 +17,6 @@ class ExerciseViewModel(private val repository: Repository) : ViewModel() {
     private var routineId: String = ""
 
     suspend fun initExercises(routineId: String) {
-
         Log.d("ExerciseViewModel", "Loading exercises for routine $routineId")
         viewModelScope.launch {
             // Update the StateFlow with the new list of routines
@@ -26,7 +25,6 @@ class ExerciseViewModel(private val repository: Repository) : ViewModel() {
 
         this.routineId = routineId
     }
-
 
     suspend fun add(exercise: Exercise) = coroutineScope {
         launch {
@@ -50,4 +48,3 @@ class ExerciseViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 }
-

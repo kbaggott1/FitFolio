@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class RoutineViewModel(private val repository: Repository) : ViewModel() {
-        private var _routines = MutableStateFlow<List<Routine>>(emptyList())
-        var routineList: StateFlow<List<Routine>> = _routines.asStateFlow()
+    private var _routines = MutableStateFlow<List<Routine>>(emptyList())
+    var routineList: StateFlow<List<Routine>> = _routines.asStateFlow()
 
     suspend fun initRoutines() {
         viewModelScope.launch {
@@ -57,4 +57,3 @@ class RoutineViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 }
-
