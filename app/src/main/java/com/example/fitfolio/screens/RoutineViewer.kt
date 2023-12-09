@@ -39,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
@@ -96,19 +97,6 @@ fun RoutineViewerScreen(
     }
 }
 
-<<<<<<< HEAD
-=======
-// Gets a routine that matches the provided ID. Returns null if none were found.
-private fun getRoutineFromId(routineViewModel: RoutineViewModel, id: String): Routine? {
-    for (routine in routineViewModel.routineList.value) {
-        if (routine.id == id) {
-            return routine
-        }
-    }
-    return null
-}
-
->>>>>>> main
 // Represents the routine title. Can be modified to reflect the new name
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -129,14 +117,11 @@ fun RoutineTitle(routine: Routine, routineViewModel: RoutineViewModel) {
             },
             label = { Text("Routine Name") },
             modifier = Modifier
-<<<<<<< HEAD
                 .fillMaxWidth()
                 .onFocusChanged { focusState ->
                     if (!focusState.isFocused) {
                     }
                 },
-=======
-                .fillMaxWidth(),
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Done
             )
@@ -149,7 +134,6 @@ fun RoutineTitle(routine: Routine, routineViewModel: RoutineViewModel) {
             label = { Text("Routine Description") },
             modifier = Modifier
                 .fillMaxWidth(),
->>>>>>> main
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Done
             )

@@ -24,4 +24,8 @@ class InMemoryRoutinesProvider : IRoutinesProvider {
     override suspend fun removeRoutine(userId: String, routine: Routine): Boolean {
         return _routines.remove(routine)
     }
+
+    override suspend fun updateRoutine(userId: String, routine: Routine): Boolean {
+        TODO("Not yet implemented")
+    }
 }
