@@ -63,4 +63,28 @@ class RoutinesProvider(private val db: FirebaseFirestore): IRoutinesProvider {
             false
         }
     }
+
+    override suspend fun updateRoutine(
+        userId: String,
+        routine: Routine,
+    ): Boolean {
+        return try {
+            withContext(Dispatchers.IO) {
+                db
+                    .collection("users")
+                    .document(userId)
+                    .collection("routines")
+                    .document(routine.id)
+                    .update(
+                        "name", routine.name,
+                        "description", routine.description,
+
+                    )
+                    .await()
+            }
+            true
+        } catch (ex: Exception) {
+            false
+        }
+    }
 }

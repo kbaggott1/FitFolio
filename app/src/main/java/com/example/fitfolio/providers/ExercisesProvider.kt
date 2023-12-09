@@ -112,7 +112,8 @@ class ExercisesProvider(private val db: FirebaseFirestore) : IExercisesProvider 
                     .update(
                         "name", exercise.name,
                         "description", exercise.description,
-                        "muscleGroup", exercise.muscleGroup
+                        "sets", exercise.sets,
+                        "reps", exercise.reps
 
                     )
                     .await()

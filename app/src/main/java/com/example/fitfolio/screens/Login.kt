@@ -1,12 +1,12 @@
 package com.example.fitfolio.screens
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
@@ -63,118 +63,120 @@ fun LoginScreen(
     var showRegisterError by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
 
-    Box(
+    LazyColumn (
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.Center
     ) {
-        // Top section with FitFolio text and login toggle buttons
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.TopCenter)
-                .padding(top = 32.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = "FitFolio",
-                fontSize = 30.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
-
-            LoginToggleButtons(
-                onSignInClick = { isLoginSelected = true },
-                onSignUpClick = { isLoginSelected = false }
-            )
-        }
-
-        // Middle section with email and password fields
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.Center),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            EmailField(
-                email = email,
-                onEmailChange = {email = it},
-                isEmailValid = isEmailValid,
-                setIsEmailValid = {isEmailValid = it},
+        item {
+            // Top section with FitFolio text and login toggle buttons
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 8.dp)
-            )
+                    .padding(top = 32.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "FitFolio",
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
 
-            if (!isLoginSelected) {
-                RegisterPasswordFields(
-                    onPasswordChange = {password = it},
-                    onConfirmPasswordChange = {confirmPassword = it},
-                    isPasswordValid = isPasswordValid,
-                    setIsPasswordValid = {isPasswordValid = it},
-                    setIsConfirmPasswordValid = {isConfirmPasswordValid = it},
-                    password = password,
-                    confirmPassword = confirmPassword,
+                LoginToggleButtons(
+                    onSignInClick = { isLoginSelected = true },
+                    onSignUpClick = { isLoginSelected = false }
+                )
+            }
+
+            // Middle section with email and password fields
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                EmailField(
+                    email = email,
+                    onEmailChange = {email = it},
+                    isEmailValid = isEmailValid,
+                    setIsEmailValid = {isEmailValid = it},
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 8.dp)
                 )
 
-                // Error message
-                if (showRegisterError) {
-                    Text(
-                        text = errorMessage,
-                        color = MaterialTheme.colorScheme.error,
+                if (!isLoginSelected) {
+                    RegisterPasswordFields(
+                        onPasswordChange = {password = it},
+                        onConfirmPasswordChange = {confirmPassword = it},
+                        isPasswordValid = isPasswordValid,
+                        setIsPasswordValid = {isPasswordValid = it},
+                        setIsConfirmPasswordValid = {isConfirmPasswordValid = it},
+                        password = password,
+                        confirmPassword = confirmPassword,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 6.dp),
-                        textAlign = TextAlign.Center
+                            .padding(bottom = 8.dp)
                     )
-                }
 
-                Button(
-                    onClick = { signUser(navController, onRegister, email, password, repository, { message ->
-                        showRegisterError = true
-                        errorMessage = message
-                    }, true) },
-                    enabled = allFieldsValid(isLoginSelected, isEmailValid, isPasswordValid, isConfirmPasswordValid)
-                ) {
-                    Text("Register")
-                }
-            }
-            else {
-                LoginPasswordField(
-                    onPasswordChange = {password = it},
-                    password = password,
-                    isPasswordValid = isPasswordValid,
-                    setIsPasswordValid = {isPasswordValid = it},
-                    modifier = Modifier
-                )
+                    // Error message
+                    if (showRegisterError) {
+                        Text(
+                            text = errorMessage,
+                            color = MaterialTheme.colorScheme.error,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 6.dp),
+                            textAlign = TextAlign.Center
+                        )
+                    }
 
-                // Error message
-                if (showLoginError) {
-                    Text(
-                        text = errorMessage,
-                        color = MaterialTheme.colorScheme.error,
+                    Button(
+                        onClick = { signUser(navController, onRegister, email, password, repository, { message ->
+                            showRegisterError = true
+                            errorMessage = message
+                        }, true) },
+                        enabled = allFieldsValid(isLoginSelected, isEmailValid, isPasswordValid, isConfirmPasswordValid)
+                    ) {
+                        Text("Register")
+                    }
+                }
+                else {
+                    LoginPasswordField(
+                        onPasswordChange = {password = it},
+                        password = password,
+                        isPasswordValid = isPasswordValid,
+                        setIsPasswordValid = {isPasswordValid = it},
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 6.dp),
-                        textAlign = TextAlign.Center
                     )
-                }
 
-                Button(
-                    onClick = { signUser(navController, onLogin, email, password, repository, { message ->
-                        showLoginError = true
-                        errorMessage = message
-                    }) },
-                    enabled = allFieldsValid(isLoginSelected, isEmailValid, isPasswordValid, isConfirmPasswordValid)
-                ) {
-                    Text("Login")
+                    // Error message
+                    if (showLoginError) {
+                        Text(
+                            text = errorMessage,
+                            color = MaterialTheme.colorScheme.error,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 6.dp),
+                            textAlign = TextAlign.Center
+                        )
+                    }
+
+                    Button(
+                        onClick = { signUser(navController, onLogin, email, password, repository, { message ->
+                            showLoginError = true
+                            errorMessage = message
+                        }) },
+                        enabled = allFieldsValid(isLoginSelected, isEmailValid, isPasswordValid, isConfirmPasswordValid)
+                    ) {
+                        Text("Login")
+                    }
                 }
             }
         }
+
     }
 }
 

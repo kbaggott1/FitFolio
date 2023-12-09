@@ -4,8 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fitfolio.data.Repository
 import com.example.fitfolio.data.Routine
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -38,6 +36,12 @@ class RoutineViewModel(private val repository: Repository) : ViewModel() {
             repository.addRoutine(routine)
             // Update the StateFlow with the new list of routines
             _routines.value = _routines.value + routine
+        }
+    }
+
+    suspend fun update(routine: Routine) = coroutineScope {
+        launch {
+            repository.updateRoutine(routine)
         }
     }
 

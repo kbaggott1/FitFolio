@@ -2,6 +2,7 @@ package com.example.fitfolio
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -43,6 +44,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.fitfolio.data.Repository
 import com.example.fitfolio.screens.AboutScreen
+import com.example.fitfolio.screens.ExerciseEditorScreen
+import com.example.fitfolio.screens.LandingScreen
 import com.example.fitfolio.screens.LoginScreen
 import com.example.fitfolio.screens.MotivationScreen
 import com.example.fitfolio.screens.RoutineOverviewScreen
@@ -57,6 +60,13 @@ import com.google.firebase.firestore.firestore
 
 
 class MainActivity : ComponentActivity() {
+    companion object {
+        val database = Firebase.firestore
+        val authViewModel = AuthViewModel()
+        val repository = Repository(database, authViewModel)
+        val routinesViewModel = RoutineViewModel(repository)
+        val exerciseViewModel = ExerciseViewModel(repository)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -66,7 +76,13 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    FitFolio()
+                    FitFolio(
+                        database = database,
+                        authViewModel = authViewModel,
+                        repository = repository,
+                        routineViewModel = routinesViewModel,
+                        exerciseViewModel = exerciseViewModel
+                    )
                 }
             }
         }
@@ -77,17 +93,21 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun FitFolio(
     modifier: Modifier = Modifier,
-    database: FirebaseFirestore = Firebase.firestore,
-    authViewModel: AuthViewModel = AuthViewModel(),
-    repository: Repository = Repository(database, authViewModel),
-    routineViewModel: RoutineViewModel = RoutineViewModel(repository),
-    exerciseViewModel: ExerciseViewModel = ExerciseViewModel(repository),
+    database: FirebaseFirestore,
+    authViewModel: AuthViewModel,
+    repository: Repository,
+    routineViewModel: RoutineViewModel,
+    exerciseViewModel: ExerciseViewModel,
 ) {
     val navController = rememberNavController()
-    var currentPage by rememberSaveable { mutableStateOf("Routines Overview") }
+    var currentPage by rememberSaveable { mutableStateOf("LandingScreen") }
+
+    BackHandler {
+        navController.popBackStack()
+    }
 
     Scaffold(topBar = {
-        if(currentPage != "Login") {
+        if(currentPage != "Login" && currentPage != "Landing") {
             CenterAlignedTopAppBar(
                 colors = smallTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -113,7 +133,7 @@ fun FitFolio(
 
     },
         bottomBar = {
-            if(currentPage != "Login")
+            if(currentPage != "Login" && currentPage != "Landing")
             {
                 BottomAppBar (
                     content = {
@@ -142,12 +162,11 @@ fun FitFolio(
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
-
         }
         ) {
         NavHost(
             navController = navController,
-            startDestination = "Login",
+            startDestination = "Landing",
             modifier = modifier.padding(it)
         ) {
             composable("RoutinesOverview") {
@@ -162,7 +181,22 @@ fun FitFolio(
             ) { navBackStackEntry ->
                 val routineId = navBackStackEntry.arguments?.getString("id")
                 currentPage = "Routine Viewer"
-                RoutineViewerScreen(routineViewModel, exerciseViewModel, routineId!!)
+                RoutineViewerScreen(
+                    routineViewModel,
+                    exerciseViewModel,
+                    routineId!!,
+                    { navController.navigate("ExerciseEditor/${it}") },
+                )
+            }
+            composable(
+                "ExerciseEditor/{id}",
+                arguments = listOf(
+                    navArgument("id") { type = NavType.StringType }
+                )
+            ) { navBackStackEntry ->
+                val exerciseId = navBackStackEntry.arguments?.getString("id")
+                currentPage = "Exercise Editor"
+                ExerciseEditorScreen(exerciseViewModel, exerciseId!!, { navController.popBackStack() })
             }
             composable("About") {
                 currentPage = "About"
@@ -180,6 +214,11 @@ fun FitFolio(
                     onRegister = { email, password -> authViewModel.registerUser(email, password) },
                     repository = repository
                 )
+            }
+            composable("Landing") {
+                currentPage = "Landing"
+                LandingScreen(onTimeout = { navController.navigate("Login")})
+
             }
         }
     }
