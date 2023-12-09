@@ -154,9 +154,12 @@ fun RoutineTitle(routine: Routine, routineViewModel: RoutineViewModel) {
             Button(
                 modifier = Modifier,
                 onClick = {
-                    routine.name = routineNameText;
-                    routine.description = routineDescriptionText;
-                    recompose = !recompose
+                    runBlocking {
+                        routine.name = routineNameText;
+                        routine.description = routineDescriptionText;
+                        routineViewModel.update(routine)
+                        recompose = !recompose
+                    }
                 }
             ) {
                 Text("Save changes to routine")
