@@ -43,13 +43,14 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
-//Contains signing in and signing up forms
+// Contains signing in and signing up forms
 @Composable
 fun LoginScreen(
     navController: NavController,
     onLogin: (String, String) -> LiveData<Boolean>,
     onRegister: (String, String) -> LiveData<Boolean>,
-    repository: Repository) {
+    repository: Repository
+) {
     var isLoginSelected by rememberSaveable { mutableStateOf(true) }
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
@@ -63,7 +64,7 @@ fun LoginScreen(
     var showRegisterError by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
 
-    LazyColumn (
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp),
@@ -99,9 +100,9 @@ fun LoginScreen(
             ) {
                 EmailField(
                     email = email,
-                    onEmailChange = {email = it},
+                    onEmailChange = { email = it },
                     isEmailValid = isEmailValid,
-                    setIsEmailValid = {isEmailValid = it},
+                    setIsEmailValid = { isEmailValid = it },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 8.dp)
@@ -109,11 +110,11 @@ fun LoginScreen(
 
                 if (!isLoginSelected) {
                     RegisterPasswordFields(
-                        onPasswordChange = {password = it},
-                        onConfirmPasswordChange = {confirmPassword = it},
+                        onPasswordChange = { password = it },
+                        onConfirmPasswordChange = { confirmPassword = it },
                         isPasswordValid = isPasswordValid,
-                        setIsPasswordValid = {isPasswordValid = it},
-                        setIsConfirmPasswordValid = {isConfirmPasswordValid = it},
+                        setIsPasswordValid = { isPasswordValid = it },
+                        setIsConfirmPasswordValid = { isConfirmPasswordValid = it },
                         password = password,
                         confirmPassword = confirmPassword,
                         modifier = Modifier
@@ -134,21 +135,22 @@ fun LoginScreen(
                     }
 
                     Button(
-                        onClick = { signUser(navController, onRegister, email, password, repository, { message ->
-                            showRegisterError = true
-                            errorMessage = message
-                        }, true) },
+                        onClick = {
+                            signUser(navController, onRegister, email, password, repository, { message ->
+                                showRegisterError = true
+                                errorMessage = message
+                            }, true)
+                        },
                         enabled = allFieldsValid(isLoginSelected, isEmailValid, isPasswordValid, isConfirmPasswordValid)
                     ) {
                         Text("Register")
                     }
-                }
-                else {
+                } else {
                     LoginPasswordField(
-                        onPasswordChange = {password = it},
+                        onPasswordChange = { password = it },
                         password = password,
                         isPasswordValid = isPasswordValid,
-                        setIsPasswordValid = {isPasswordValid = it},
+                        setIsPasswordValid = { isPasswordValid = it },
                         modifier = Modifier
                     )
 
@@ -165,10 +167,12 @@ fun LoginScreen(
                     }
 
                     Button(
-                        onClick = { signUser(navController, onLogin, email, password, repository, { message ->
-                            showLoginError = true
-                            errorMessage = message
-                        }) },
+                        onClick = {
+                            signUser(navController, onLogin, email, password, repository, { message ->
+                                showLoginError = true
+                                errorMessage = message
+                            })
+                        },
                         enabled = allFieldsValid(isLoginSelected, isEmailValid, isPasswordValid, isConfirmPasswordValid)
                     ) {
                         Text("Login")
@@ -183,7 +187,7 @@ fun LoginScreen(
 fun signUser(
     navController: NavController,
     signInOrUp: (String, String) -> LiveData<Boolean>,
-    email :String,
+    email: String,
     password: String,
     repository: Repository,
     onError: (String) -> Unit,
@@ -194,7 +198,7 @@ fun signUser(
             // Registration successful, navigate to another screen or perform other actions.
             var user = User(email, password)
             CoroutineScope(Dispatchers.IO).launch {
-                if(createUser){
+                if (createUser) {
                     // List of deferred jobs for adding routines
                     val jobs = getMockRoutines().map { routine ->
                         async {
@@ -205,15 +209,12 @@ fun signUser(
                     // Wait for all routines to be added
                     jobs.awaitAll()
                 }
-
             }
             navController.navigate("RoutinesOverview")
-
         } else {
-            if(createUser){
+            if (createUser) {
                 onError("The email has already been used. Sign in or use a different email")
-            }
-            else{
+            } else {
                 onError("Invalid login credentials. Please try again.")
             }
         }
@@ -223,27 +224,26 @@ fun signUser(
 fun getMockRoutines(): List<Routine> {
     return listOf<Routine>(
         Routine(Routine.generateUniqueId(), "Chest Day", null),
-        Routine(Routine.generateUniqueId(),"Back Day", null),
-        Routine(Routine.generateUniqueId(),"Leg Day", null)
+        Routine(Routine.generateUniqueId(), "Back Day", null),
+        Routine(Routine.generateUniqueId(), "Leg Day", null)
     )
 }
 
-//Validates all user input fields
-fun allFieldsValid (
+// Validates all user input fields
+fun allFieldsValid(
     isLoginSelected: Boolean,
     isEmailValid: Boolean,
     isPasswordValid: Boolean,
     isConfirmPasswordValid: Boolean
 ): Boolean {
-    if(isLoginSelected) {
-        return isEmailValid && isPasswordValid;
-    }
-    else {
+    if (isLoginSelected) {
+        return isEmailValid && isPasswordValid
+    } else {
         return isEmailValid && isPasswordValid && isConfirmPasswordValid
     }
 }
 
-//Buttons for toggling between sign in form and sign up form
+// Buttons for toggling between sign in form and sign up form
 @Composable
 fun LoginToggleButtons(onSignInClick: () -> Unit, onSignUpClick: () -> Unit) {
     var isLoginSelected by remember { mutableStateOf(true) }
@@ -286,7 +286,7 @@ fun LoginToggleButtons(onSignInClick: () -> Unit, onSignUpClick: () -> Unit) {
     }
 }
 
-//User input field for email with validation
+// User input field for email with validation
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EmailField(
@@ -294,7 +294,7 @@ fun EmailField(
     onEmailChange: (String) -> Unit,
     isEmailValid: Boolean,
     setIsEmailValid: (Boolean) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     var emailErrorText by remember { mutableStateOf("Enter a valid email") }
 
@@ -334,13 +334,13 @@ fun EmailField(
     }
 }
 
-//Validates an email using regex
+// Validates an email using regex
 fun isEmailValid(email: String): Boolean {
     val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
     return email.matches(emailPattern.toRegex())
 }
 
-//User input password field for signing in with validation
+// User input password field for signing in with validation
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginPasswordField(
@@ -350,7 +350,6 @@ fun LoginPasswordField(
     setIsPasswordValid: (Boolean) -> Unit,
     modifier: Modifier
 ) {
-
     Column(
         modifier = modifier
     ) {
@@ -368,13 +367,12 @@ fun LoginPasswordField(
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 8.dp),
+                .padding(bottom = 8.dp)
         )
-
     }
 }
 
-//User input password fields (password, re-type password) for signing up with validation
+// User input password fields (password, re-type password) for signing up with validation
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterPasswordFields(
@@ -407,7 +405,6 @@ fun RegisterPasswordFields(
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
         )
-
 
         if (password.length < 8 && password != "") {
             Text(

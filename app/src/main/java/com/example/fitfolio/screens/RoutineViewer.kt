@@ -59,7 +59,6 @@ fun RoutineViewerScreen(
     routineId: String,
     onExerciseClick: (String) -> Unit
 ) {
-
     LaunchedEffect(routineId) {
         exerciseViewModel.initExercises(routineId)
     }
@@ -75,8 +74,8 @@ fun RoutineViewerScreen(
                         exercise = exercise,
                         onClose = { exerciseViewModel.remove(exercise) },
                         modifier = Modifier.padding(8.dp),
-                        onExerciseClick = {it -> onExerciseClick(it)}
-                        )
+                        onExerciseClick = { it -> onExerciseClick(it) }
+                    )
                 }
                 item() {
                     AddExerciseCard(
@@ -88,14 +87,15 @@ fun RoutineViewerScreen(
                                 exerciseViewModel.add(exercise)
                                 onExerciseClick(exercise.id)
                             }
-
-                        })
+                        }
+                    )
                 }
             }
         }
     }
 }
-//Gets a routine that matches the provided ID. Returns null if none were found.
+
+// Gets a routine that matches the provided ID. Returns null if none were found.
 private fun getRoutineFromId(routineViewModel: RoutineViewModel, id: String): Routine? {
     for (routine in routineViewModel.routineList.value) {
         if (routine.id == id) {
@@ -104,7 +104,6 @@ private fun getRoutineFromId(routineViewModel: RoutineViewModel, id: String): Ro
     }
     return null
 }
-
 
 // Represents the routine title. Can be modified to reflect the new name
 @OptIn(ExperimentalMaterial3Api::class)
@@ -145,7 +144,7 @@ fun RoutineTitle(routine: Routine, routineViewModel: RoutineViewModel) {
         )
     }
 
-    if(routineNameText != routine.name || routineDescriptionText != (routine.description ?: "")) {
+    if (routineNameText != routine.name || routineDescriptionText != (routine.description ?: "")) {
         Column(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -155,8 +154,8 @@ fun RoutineTitle(routine: Routine, routineViewModel: RoutineViewModel) {
                 modifier = Modifier,
                 onClick = {
                     runBlocking {
-                        routine.name = routineNameText;
-                        routine.description = routineDescriptionText;
+                        routine.name = routineNameText
+                        routine.description = routineDescriptionText
                         routineViewModel.update(routine)
                         recompose = !recompose
                     }
@@ -165,7 +164,6 @@ fun RoutineTitle(routine: Routine, routineViewModel: RoutineViewModel) {
                 Text("Save changes to routine")
             }
         }
-
     }
 
     Box(
@@ -195,7 +193,7 @@ fun ExerciseCard(
 ) {
     Card(
         modifier = modifier,
-        onClick = {onExerciseClick(exercise.id)}
+        onClick = { onExerciseClick(exercise.id) }
     ) {
         Column(
             modifier = Modifier
@@ -219,10 +217,13 @@ fun ExerciseCard(
                 ) {
                     Spacer(modifier = Modifier.height(1.dp))
                     IconButton(onClick = { onClose(exercise) }) {
-                        Icon(Icons.Filled.Close, contentDescription = "Close",
+                        Icon(
+                            Icons.Filled.Close,
+                            contentDescription = "Close",
                             Modifier
                                 .scale(2f)
-                                .padding(10.dp))
+                                .padding(10.dp)
+                        )
                     }
                 }
             }
@@ -237,33 +238,31 @@ fun ExerciseInformation(
     exercise: Exercise,
     modifier: Modifier = Modifier
 ) {
-
     Column(modifier = modifier) {
         Text(
             text = exercise.name,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-            style = TextStyle(fontSize = 30.sp, color = Color.White),
+            style = TextStyle(fontSize = 30.sp, color = Color.White)
         )
 
-            Text(
+        Text(
             text = exercise.description,
             modifier = Modifier.padding(horizontal = 8.dp),
-            style = TextStyle(fontSize = 20.sp, color = Color.White),
+            style = TextStyle(fontSize = 20.sp, color = Color.White)
         )
 
         Row(modifier = Modifier) {
             Text(
-                text = "Sets: ${exercise.sets}" ,
+                text = "Sets: ${exercise.sets}",
                 modifier = Modifier.padding(horizontal = 8.dp),
-                style = TextStyle(fontSize = 20.sp, color = Color.White),
+                style = TextStyle(fontSize = 20.sp, color = Color.White)
             )
             Text(
-                text = "Reps: ${exercise.reps}" ,
+                text = "Reps: ${exercise.reps}",
                 modifier = Modifier.padding(horizontal = 8.dp),
-                style = TextStyle(fontSize = 20.sp, color = Color.White),
+                style = TextStyle(fontSize = 20.sp, color = Color.White)
             )
         }
-
     }
 }
 
@@ -290,15 +289,15 @@ fun AddExerciseCard(
                 )
                 .fillMaxWidth()
                 .padding(8.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Box(modifier = Modifier, contentAlignment = Alignment.Center) {
-                    Icon(
-                        Icons.Filled.AddCircle,
-                        contentDescription = "Add Exercise",
-                        modifier = Modifier.size(64.dp)
-                    )
-                }
+            contentAlignment = Alignment.Center
+        ) {
+            Box(modifier = Modifier, contentAlignment = Alignment.Center) {
+                Icon(
+                    Icons.Filled.AddCircle,
+                    contentDescription = "Add Exercise",
+                    modifier = Modifier.size(64.dp)
+                )
             }
+        }
     }
 }

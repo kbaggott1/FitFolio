@@ -12,13 +12,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -35,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fitfolio.R
 
-//Main composable for the "Motivation" Screen. Contains all content for the screen
+// Main composable for the "Motivation" Screen. Contains all content for the screen
 @Composable
 fun MotivationScreen() {
     Column(
@@ -48,9 +45,9 @@ fun MotivationScreen() {
     }
 }
 
-//Header, has an image and a title
+// Header, has an image and a title
 @Composable
-fun MotivationHeader(){
+fun MotivationHeader() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -92,9 +89,9 @@ fun MotivationHeader(){
     }
 }
 
-//Card containing motivation for users to read and feel motivated
+// Card containing motivation for users to read and feel motivated
 @Composable
-fun WhyWorkoutCard(){
+fun WhyWorkoutCard() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -109,7 +106,8 @@ fun WhyWorkoutCard(){
             modifier = Modifier
                 .padding(bottom = dimensionResource(id = R.dimen.padding_medium))
         )
-        Text(text= "Embarking on a regular workout routine isn't just about sculpting your physique; " +
+        Text(
+            text = "Embarking on a regular workout routine isn't just about sculpting your physique; " +
                 "it's a commitment to nurturing your overall well-being. Exercise serves as a powerful catalyst for positive change, " +
                 "both physically and mentally. When you lace up those sneakers or roll out that yoga mat, you're not just engaging in a " +
                 "physical activity – you're investing in your energy, confidence, and resilience. The benefits extend beyond the gym, " +
@@ -120,14 +118,14 @@ fun WhyWorkoutCard(){
             modifier = Modifier
                 .padding(horizontal = dimensionResource(id = R.dimen.padding_medium), vertical = dimensionResource(id = R.dimen.padding_small)),
             textAlign = TextAlign.Justify,
-            color = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.colorScheme.primary
         )
     }
 }
 
-//Card containing a title and a list of motivational quotes
+// Card containing a title and a list of motivational quotes
 @Composable
-fun MotivationalQuotes(){
+fun MotivationalQuotes() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -153,8 +151,10 @@ fun MotivationalQuotes(){
             color = MaterialTheme.colorScheme.primary,
             fontSize = 24.sp, // Adjust the font size as needed
             fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
-            modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_medium),
-                bottom = dimensionResource(id = R.dimen.padding_small)),
+            modifier = Modifier.padding(
+                top = dimensionResource(id = R.dimen.padding_medium),
+                bottom = dimensionResource(id = R.dimen.padding_small)
+            )
         )
 
         motivationalQuotesList.forEach { quote ->
@@ -168,7 +168,7 @@ fun MotivationalQuotes(){
                     modifier = Modifier
                         .size(8.dp) // Adjust the size of the circle as needed
                         .background(MaterialTheme.colorScheme.primary, CircleShape)
-                        .align(Alignment.CenterVertically),
+                        .align(Alignment.CenterVertically)
                 )
 
                 // Spacer for separation

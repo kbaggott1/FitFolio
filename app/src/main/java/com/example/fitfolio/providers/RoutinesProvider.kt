@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class RoutinesProvider(private val db: FirebaseFirestore): IRoutinesProvider {
+class RoutinesProvider(private val db: FirebaseFirestore) : IRoutinesProvider {
 
     override suspend fun getRoutines(userId: String): List<Routine> {
         return try {
@@ -22,8 +22,7 @@ class RoutinesProvider(private val db: FirebaseFirestore): IRoutinesProvider {
 
                 docRef.toObjects()
             }
-        }
-        catch (ex: Exception) {
+        } catch (ex: Exception) {
             Log.e("FIRESTORE", ex.message.toString())
             emptyList()
         }
@@ -33,7 +32,7 @@ class RoutinesProvider(private val db: FirebaseFirestore): IRoutinesProvider {
         return try {
             withContext(Dispatchers.IO) {
                 val routineDocument = db
-                        .collection("users")
+                    .collection("users")
                     .document(userId)
                     .collection("routines")
                     .document(routine.id)
@@ -66,7 +65,7 @@ class RoutinesProvider(private val db: FirebaseFirestore): IRoutinesProvider {
 
     override suspend fun updateRoutine(
         userId: String,
-        routine: Routine,
+        routine: Routine
     ): Boolean {
         return try {
             withContext(Dispatchers.IO) {
@@ -76,9 +75,10 @@ class RoutinesProvider(private val db: FirebaseFirestore): IRoutinesProvider {
                     .collection("routines")
                     .document(routine.id)
                     .update(
-                        "name", routine.name,
-                        "description", routine.description,
-
+                        "name",
+                        routine.name,
+                        "description",
+                        routine.description
                     )
                     .await()
             }

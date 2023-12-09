@@ -41,7 +41,7 @@ fun AboutCard() {
             .fillMaxSize(),
         verticalArrangement = Arrangement.Center
     ) {
-        item{
+        item {
             Column(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -78,8 +78,8 @@ fun AboutTitle() {
 fun AboutText() {
     Text(
         text = "At FitFolio, we are dedicated gym goers who wanted a workout app that matches our" +
-                " specific needs. After trying other apps, we decided to create FitFolio, the best " +
-                "workout application you've ever had the pleasure of using!",
+            " specific needs. After trying other apps, we decided to create FitFolio, the best " +
+            "workout application you've ever had the pleasure of using!",
         color = MaterialTheme.colorScheme.primary,
         textAlign = TextAlign.Center,
         modifier = Modifier

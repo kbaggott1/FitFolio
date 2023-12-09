@@ -58,7 +58,6 @@ import com.google.firebase.Firebase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 
-
 class MainActivity : ComponentActivity() {
     companion object {
         val database = Firebase.firestore
@@ -97,7 +96,7 @@ fun FitFolio(
     authViewModel: AuthViewModel,
     repository: Repository,
     routineViewModel: RoutineViewModel,
-    exerciseViewModel: ExerciseViewModel,
+    exerciseViewModel: ExerciseViewModel
 ) {
     val navController = rememberNavController()
     var currentPage by rememberSaveable { mutableStateOf("LandingScreen") }
@@ -106,49 +105,49 @@ fun FitFolio(
         navController.popBackStack()
     }
 
-    Scaffold(topBar = {
-        if(currentPage != "Login" && currentPage != "Landing") {
-            CenterAlignedTopAppBar(
-                colors = smallTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary
-                ),
+    Scaffold(
+        topBar = {
+            if (currentPage != "Login" && currentPage != "Landing") {
+                CenterAlignedTopAppBar(
+                    colors = smallTopAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        titleContentColor = MaterialTheme.colorScheme.primary
+                    ),
 
-                title = {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.app_name),
-                            textAlign = TextAlign.Center,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 30.sp
-                        )
-                        Text(text = currentPage, textAlign = TextAlign.Center)
+                    title = {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.app_name),
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 30.sp
+                            )
+                            Text(text = currentPage, textAlign = TextAlign.Center)
+                        }
                     }
-                }
-            )
-        }
-
-    },
+                )
+            }
+        },
         bottomBar = {
-            if(currentPage != "Login" && currentPage != "Landing")
-            {
-                BottomAppBar (
+
+            if (currentPage != "Login" && currentPage != "Landing") {
+                BottomAppBar(
                     content = {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceEvenly
-                        ){
-                            IconButton(onClick = { navController.navigate(route = "RoutinesOverview")}) {
+                        ) {
+                            IconButton(onClick = { navController.navigate(route = "RoutinesOverview") }) {
                                 Icon(Icons.Filled.Home, contentDescription = "Routine Overview")
                             }
-                            IconButton(onClick = { navController.navigate(route = "About")}) {
+                            IconButton(onClick = { navController.navigate(route = "About") }) {
                                 Icon(Icons.Filled.Face, contentDescription = "About us screen")
                             }
-                            IconButton(onClick = { navController.navigate(route = "Motivation")}) {
+                            IconButton(onClick = { navController.navigate(route = "Motivation") }) {
                                 Icon(Icons.Filled.Favorite, contentDescription = "About us screen")
                             }
                             IconButton(onClick = {
@@ -159,11 +158,11 @@ fun FitFolio(
                             }
                         }
                     },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
         }
-        ) {
+    ) {
         NavHost(
             navController = navController,
             startDestination = "Landing",
@@ -185,7 +184,7 @@ fun FitFolio(
                     routineViewModel,
                     exerciseViewModel,
                     routineId!!,
-                    { navController.navigate("ExerciseEditor/${it}") },
+                    { navController.navigate("ExerciseEditor/$it") }
                 )
             }
             composable(
@@ -217,8 +216,7 @@ fun FitFolio(
             }
             composable("Landing") {
                 currentPage = "Landing"
-                LandingScreen(onTimeout = { navController.navigate("Login")})
-
+                LandingScreen(onTimeout = { navController.navigate("Login") })
             }
         }
     }

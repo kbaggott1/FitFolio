@@ -5,15 +5,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import com.example.fitfolio.R
-import kotlinx.coroutines.delay
-
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.res.painterResource
+import com.example.fitfolio.R
 import kotlinx.coroutines.delay
 
 @Composable
@@ -30,7 +28,8 @@ fun LandingScreen(onTimeout: () -> Unit, modifier: Modifier = Modifier) {
             delay(2000)
             currentOnTimeout()
         }
-        //Made on canva
+        // Made on canva
         Image(painterResource(id = R.drawable.fitfolio), contentDescription = null, Modifier.scale(2F))
     }
 }
+

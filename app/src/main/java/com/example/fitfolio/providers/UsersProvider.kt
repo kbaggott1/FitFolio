@@ -9,27 +9,23 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-
 class UsersProvider(private val db: FirebaseFirestore) : IUsersProvider {
 
-    //Gets the user that is currently logged in from the database
+    // Gets the user that is currently logged in from the database
     override suspend fun getUser(userId: String): User? {
-        //Get the snapshot
+        // Get the snapshot
 
         val docRef = db.collection("users").document(userId)
         return try {
-                withContext(Dispatchers.IO) {
-                    val userSnapshot = docRef.get().await()
-                    userSnapshot.toObject<User>()
-                }
+            withContext(Dispatchers.IO) {
+                val userSnapshot = docRef.get().await()
+                userSnapshot.toObject<User>()
             }
-
-        catch (e: Exception) {
+        } catch (e: Exception) {
             Log.d("E", e.toString())
             null
         }
     }
-
 
     /**
      * Adds a user to the database
