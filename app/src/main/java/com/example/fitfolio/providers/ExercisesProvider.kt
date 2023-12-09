@@ -95,6 +95,12 @@ class ExercisesProvider(private val db: FirebaseFirestore) : IExercisesProvider 
         }
     }
 
+    /**
+     * Updates an exercise in the database
+     * @param userId The ID of the user who contains the routine that contains the exercise
+     * @param routineId The routine that contains the exercise
+     * @param exercise The exercise that will be updated
+     */
     override suspend fun updateExercise(
         userId: String,
         routineId: String,
@@ -123,5 +129,4 @@ class ExercisesProvider(private val db: FirebaseFirestore) : IExercisesProvider 
             false
         }
     }
-
 }

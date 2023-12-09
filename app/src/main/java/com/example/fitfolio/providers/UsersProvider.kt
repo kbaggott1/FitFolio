@@ -9,13 +9,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-
 class UsersProvider(private val db: FirebaseFirestore) : IUsersProvider {
 
-    //Gets the user that is currently logged in from the database
+    /**
+     * Gets a user to the database
+     * @param userId The ID of the user being retrieved to the database
+     */
     override suspend fun getUser(userId: String): User? {
-        //Get the snapshot
-
         val docRef = db.collection("users").document(userId)
         return try {
                 withContext(Dispatchers.IO) {
@@ -23,16 +23,15 @@ class UsersProvider(private val db: FirebaseFirestore) : IUsersProvider {
                     userSnapshot.toObject<User>()
                 }
             }
-
         catch (e: Exception) {
             Log.d("E", e.toString())
             null
         }
     }
 
-
     /**
      * Adds a user to the database
+     * @param userId The ID of the user being added to the database
      * @param user The user being added to the database
      */
     override suspend fun addUser(userId: String, user: User): Boolean {

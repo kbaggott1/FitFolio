@@ -11,6 +11,10 @@ import kotlinx.coroutines.withContext
 
 class RoutinesProvider(private val db: FirebaseFirestore): IRoutinesProvider {
 
+    /**
+     * Gets a routine from the database
+     * @param userId the user that contains the routine
+     */
     override suspend fun getRoutines(userId: String): List<Routine> {
         return try {
             withContext(Dispatchers.IO) {
@@ -29,6 +33,11 @@ class RoutinesProvider(private val db: FirebaseFirestore): IRoutinesProvider {
         }
     }
 
+    /**
+     * Adds a routine to the database
+     * @param userId the user that will contain the routine
+     * @param routine the routine that will be added to the database
+     */
     override suspend fun addRoutine(userId: String, routine: Routine): Boolean {
         return try {
             withContext(Dispatchers.IO) {
@@ -47,6 +56,11 @@ class RoutinesProvider(private val db: FirebaseFirestore): IRoutinesProvider {
         }
     }
 
+    /**
+     * Removes a routine to the database
+     * @param userId the user that contains the routine
+     * @param routine the routine that will be removed from the database
+     */
     override suspend fun removeRoutine(userId: String, routine: Routine): Boolean {
         return try {
             withContext(Dispatchers.IO) {

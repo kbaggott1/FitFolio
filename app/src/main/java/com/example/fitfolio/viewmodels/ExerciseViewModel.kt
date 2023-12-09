@@ -16,8 +16,11 @@ class ExerciseViewModel(private val repository: Repository) : ViewModel() {
     var exerciseList: StateFlow<List<Exercise>> = _exercises.asStateFlow()
     private var routineId: String = ""
 
+    /**
+     * Initializes the exercises
+     * @param routineId ID of the routine that the exercises are inside of
+     */
     suspend fun initExercises(routineId: String) {
-
         Log.d("ExerciseViewModel", "Loading exercises for routine $routineId")
         viewModelScope.launch {
             // Update the StateFlow with the new list of routines
@@ -27,7 +30,10 @@ class ExerciseViewModel(private val repository: Repository) : ViewModel() {
         this.routineId = routineId
     }
 
-
+    /**
+     * Adds an exercise the database
+     * @param exercise The exercise being added to the database
+     */
     suspend fun add(exercise: Exercise) = coroutineScope {
         launch {
             repository.addExercise(routineId, exercise)
@@ -36,12 +42,20 @@ class ExerciseViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
+    /**
+     * Updates an exercise in the database
+     * @param exercise The exercise being updated
+     */
     suspend fun update(exercise: Exercise) = coroutineScope {
         launch {
             repository.updateExercise(routineId, exercise)
         }
     }
 
+    /**
+     * Removes an exercise from the database
+     * @param exercise The exercise being removed from the database
+     */
     fun remove(exercise: Exercise) {
         viewModelScope.launch {
             repository.removeExercise(routineId, exercise)

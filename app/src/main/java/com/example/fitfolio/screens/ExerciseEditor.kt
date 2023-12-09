@@ -21,6 +21,7 @@ import com.example.fitfolio.data.Exercise
 import com.example.fitfolio.viewmodels.ExerciseViewModel
 import kotlinx.coroutines.runBlocking
 
+// Main composable of the ExerciseEditor page. Contains all sub composable
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExerciseEditorScreen(exerciseViewModel: ExerciseViewModel, exerciseId: String, onExerciseSaved: () -> Boolean) {
@@ -29,7 +30,6 @@ fun ExerciseEditorScreen(exerciseViewModel: ExerciseViewModel, exerciseId: Strin
     var description by rememberSaveable { mutableStateOf(exercise.description) }
     var sets by rememberSaveable { mutableStateOf(exercise.sets.toString()) }
     var reps by rememberSaveable { mutableStateOf(exercise.reps.toString()) }
-    // Your UI components go here
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -44,10 +44,6 @@ fun ExerciseEditorScreen(exerciseViewModel: ExerciseViewModel, exerciseId: Strin
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
             )
-
-            // Muscle Group (assuming Muscles is a sealed class or enum)
-            // Add your logic to select muscle groups
-            // ...
 
             // Description
             OutlinedTextField(
@@ -105,6 +101,11 @@ fun ExerciseEditorScreen(exerciseViewModel: ExerciseViewModel, exerciseId: Strin
     }
 }
 
+/**
+ * Gets an exercise based on it's ID
+ * @param exerciseId ID of the exercise being retrieved
+ * @param exerciseViewModel The ViewModel where the execise is being added
+ */
 private fun getExerciseFromId(exerciseId: String, exerciseViewModel: ExerciseViewModel): Exercise? {
     for (exercise in exerciseViewModel.exerciseList.value) {
         if (exercise.id == exerciseId) {

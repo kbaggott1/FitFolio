@@ -50,6 +50,7 @@ import com.example.fitfolio.viewmodels.ExerciseViewModel
 import com.example.fitfolio.viewmodels.RoutineViewModel
 import kotlinx.coroutines.runBlocking
 
+// Main component of the RoutineViewer screen.
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RoutineViewerScreen(
@@ -58,7 +59,6 @@ fun RoutineViewerScreen(
     routineId: String,
     onExerciseClick: (String) -> Unit
 ) {
-
     LaunchedEffect(routineId) {
         exerciseViewModel.initExercises(routineId)
     }
@@ -94,18 +94,6 @@ fun RoutineViewerScreen(
         }
     }
 }
-
-
-//Gets a routine that matches the provided ID. Returns null if none were found.
-private fun getRoutineFromId(routineViewModel: RoutineViewModel, id: String): Routine? {
-    for (routine in routineViewModel.routineList.value) {
-        if (routine.id == id) {
-            return routine
-        }
-    }
-    return null
-}
-
 
 // Represents the routine title. Can be modified to reflect the new name
 @OptIn(ExperimentalMaterial3Api::class)
@@ -202,7 +190,6 @@ fun ExerciseInformation(
     exercise: Exercise,
     modifier: Modifier = Modifier
 ) {
-
     Column(modifier = modifier) {
         Text(
             text = exercise.name,
@@ -210,7 +197,7 @@ fun ExerciseInformation(
             style = TextStyle(fontSize = 30.sp, color = Color.White),
         )
 
-            Text(
+        Text(
             text = exercise.description,
             modifier = Modifier.padding(horizontal = 8.dp),
             style = TextStyle(fontSize = 20.sp, color = Color.White),
@@ -228,7 +215,6 @@ fun ExerciseInformation(
                 style = TextStyle(fontSize = 20.sp, color = Color.White),
             )
         }
-
     }
 }
 
@@ -267,3 +253,14 @@ fun AddExerciseCard(
             }
     }
 }
+
+//Gets a routine that matches the provided ID. Returns null if none were found.
+private fun getRoutineFromId(routineViewModel: RoutineViewModel, id: String): Routine? {
+    for (routine in routineViewModel.routineList.value) {
+        if (routine.id == id) {
+            return routine
+        }
+    }
+    return null
+}
+

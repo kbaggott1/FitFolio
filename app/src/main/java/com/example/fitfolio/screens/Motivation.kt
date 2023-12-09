@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fitfolio.R
 
-//Main composable for the "Motivation" Screen. Contains all content for the screen
+// Main composable for the "Motivation" Screen. Contains all content for the screen
 @Composable
 fun MotivationScreen() {
     Column(
@@ -48,7 +48,7 @@ fun MotivationScreen() {
     }
 }
 
-//Header, has an image and a title
+// Header, has an image and a title
 @Composable
 fun MotivationHeader(){
     Column(
@@ -92,7 +92,7 @@ fun MotivationHeader(){
     }
 }
 
-//Card containing motivation for users to read and feel motivated
+// Card containing motivation for users to read and feel motivated
 @Composable
 fun WhyWorkoutCard(){
     Column(
@@ -125,7 +125,7 @@ fun WhyWorkoutCard(){
     }
 }
 
-//Card containing a title and a list of motivational quotes
+// Card containing a title and a list of motivational quotes
 @Composable
 fun MotivationalQuotes(){
     Column(

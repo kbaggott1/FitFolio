@@ -15,7 +15,6 @@ class InMemoryRoutinesProvider : IRoutinesProvider {
         return _routines
     }
 
-
     override suspend fun addRoutine(userId: String, routine: Routine): Boolean {
         for (r in _routines) {
             return false
@@ -27,14 +26,4 @@ class InMemoryRoutinesProvider : IRoutinesProvider {
     override suspend fun removeRoutine(userId: String, routine: Routine): Boolean {
         return _routines.remove(routine)
     }
-
-    /*
-    private fun getMockRoutines(): List<Routine> {
-        return listOf<Routine>(
-            Routine("Chest Day", null, ExerciseViewModel()),
-            Routine("Back Day", null, ExerciseViewModel()),
-            Routine("Leg Day", null, ExerciseViewModel())
-        )
-    }
-    */
 }

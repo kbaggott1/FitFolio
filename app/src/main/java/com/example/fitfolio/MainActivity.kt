@@ -58,7 +58,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 
-
+//Top level composable, parent of all composables in the app
 class MainActivity : ComponentActivity() {
     companion object {
         val database = Firebase.firestore
@@ -89,6 +89,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+//Contains main content of the app
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FitFolio(
