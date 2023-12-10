@@ -31,22 +31,18 @@ jobs:
       run: chmod +x ./gradlew
 
     # Step 1: Format the kotlin files as best as possible
-    - name: Run the ktlintFormat command to format our files
-      run: ./gradlew ktlintFormat
+    - name: Run the Spotless command to format our files
+      run: ./gradlew spotlessApply
 
-    # Step 2: Check the code with ktlint, you can remove this job if you don't use ktlint
-    - name: Run Kotlin Linter
-      run: ./gradlew ktlintCheck
-
-    #Step 3: Attempt to fix standard linting errors
+    #Step 2: Attempt to fix standard linting errors
     - name: Run lintFix to attempt to fix linting errors
       run: ./gradlew lintFix
 
-    # Step 4: Check the code with Android linter
+    # Step 3: Check the code with Android linter
     - name: Run Android Linter
       run: ./gradlew lint
 
-    # Step 5: Yun your unit tests
+    # Step 4: Yun your unit tests
     #- name: Run Unit Tests
     #  run: ./gradlew testStagingDebugUnitTest
 
