@@ -81,7 +81,6 @@ fun RoutineViewerScreen(
                 }
                 item() {
                     AddExerciseCard(
-                        routine = routine,
                         modifier = Modifier.padding(8.dp),
                         addExercise = {
                             var exercise = Exercise("", "", 0, 0)
@@ -266,7 +265,6 @@ fun ExerciseInformation(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddExerciseCard(
-    routine: Routine,
     modifier: Modifier = Modifier,
     addExercise: () -> Unit
 ) {

@@ -37,7 +37,7 @@ class UsersProvider(private val db: FirebaseFirestore) : IUsersProvider {
         val documentTask = db.collection("users").document(userId).set(user)
 
         var isSuccess = false
-        documentTask?.addOnSuccessListener { isSuccess = true }
+        documentTask.addOnSuccessListener { isSuccess = true }
 
         return isSuccess
     }

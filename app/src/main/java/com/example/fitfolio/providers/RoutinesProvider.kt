@@ -38,21 +38,17 @@ class RoutinesProvider(private val db: FirebaseFirestore) : IRoutinesProvider {
      * @param routine the routine that will be added to the database
      */
     override suspend fun addRoutine(userId: String, routine: Routine): Boolean {
-        return try {
-            withContext(Dispatchers.IO) {
-                val routineDocument = db
-                    .collection("users")
-                    .document(userId)
-                    .collection("routines")
-                    .document(routine.id)
-                    .set(routine)
-                    .await()
-            }
-            true
-        } catch (e: Exception) {
-            // Handle the exception if needed
-            false
-        }
+        val routineDocument = db
+            .collection("users")
+            .document(userId)
+            .collection("routines")
+            .document(routine.id)
+            .set(routine)
+
+        var isSuccess = false
+        routineDocument.addOnSuccessListener { isSuccess = true }
+
+        return isSuccess
     }
 
     /**

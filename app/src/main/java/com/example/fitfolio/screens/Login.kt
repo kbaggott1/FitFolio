@@ -36,7 +36,6 @@ import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import com.example.fitfolio.data.Repository
 import com.example.fitfolio.data.Routine
-import com.example.fitfolio.data.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -112,14 +111,10 @@ fun LoginScreen(
                     RegisterPasswordFields(
                         onPasswordChange = { password = it },
                         onConfirmPasswordChange = { confirmPassword = it },
-                        isPasswordValid = isPasswordValid,
                         setIsPasswordValid = { isPasswordValid = it },
                         setIsConfirmPasswordValid = { isConfirmPasswordValid = it },
                         password = password,
-                        confirmPassword = confirmPassword,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 8.dp)
+                        confirmPassword = confirmPassword
                     )
 
                     // Error message
@@ -149,7 +144,6 @@ fun LoginScreen(
                     LoginPasswordField(
                         onPasswordChange = { password = it },
                         password = password,
-                        isPasswordValid = isPasswordValid,
                         setIsPasswordValid = { isPasswordValid = it },
                         modifier = Modifier
                     )
@@ -195,7 +189,6 @@ fun signUser(
     signInOrUp(email, password).observeForever { success ->
         if (success) {
             // Registration successful, navigate to another screen or perform other actions.
-            var user = User(email, password)
             CoroutineScope(Dispatchers.IO).launch {
                 if (createUser) {
                     // List of deferred jobs for adding routines
@@ -345,7 +338,6 @@ fun isEmailValid(email: String): Boolean {
 fun LoginPasswordField(
     onPasswordChange: (String) -> Unit,
     password: String,
-    isPasswordValid: Boolean,
     setIsPasswordValid: (Boolean) -> Unit,
     modifier: Modifier
 ) {
@@ -377,12 +369,10 @@ fun LoginPasswordField(
 fun RegisterPasswordFields(
     onPasswordChange: (String) -> Unit,
     onConfirmPasswordChange: (String) -> Unit,
-    isPasswordValid: Boolean,
     setIsPasswordValid: (Boolean) -> Unit,
     setIsConfirmPasswordValid: (Boolean) -> Unit,
     password: String,
-    confirmPassword: String,
-    modifier: Modifier
+    confirmPassword: String
 ) {
     Column(
         modifier = Modifier

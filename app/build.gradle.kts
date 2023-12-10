@@ -1,8 +1,9 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("org.jlleitschuh.gradle.ktlint")
+    id("kotlin-parcelize")
     id("com.google.gms.google-services")
+    id("com.diffplug.spotless") version "6.23.3"
 }
 
 android {
@@ -53,10 +54,21 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    spotless {
+        kotlin {
+            ktfmt()
+            ktlint()
+            diktat()
+            prettier()
+        }
+        kotlinGradle {
+            ktlint()
+            diktat()
+        }
+    }
 }
 
 dependencies {
-
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
