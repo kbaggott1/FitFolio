@@ -46,23 +46,19 @@ class ExercisesProvider(private val db: FirebaseFirestore) : IExercisesProvider 
         routineId: String,
         exercise: Exercise
     ): Boolean {
-        return try {
-            withContext(Dispatchers.IO) {
-                val routineDocument = db
-                    .collection("users")
-                    .document(userId)
-                    .collection("routines")
-                    .document(routineId)
-                    .collection("exercises")
-                    .document(exercise.id)
-                    .set(exercise)
-                    .await()
-            }
-            true
-        } catch (e: Exception) {
-            // Handle the exception if needed
-            false
-        }
+        val routineDocument = db
+            .collection("users")
+            .document(userId)
+            .collection("routines")
+            .document(routineId)
+            .collection("exercises")
+            .document(exercise.id)
+            .set(exercise)
+
+        var isSuccess = false
+        routineDocument.addOnSuccessListener { isSuccess = true }
+
+        return isSuccess
     }
 
     /**

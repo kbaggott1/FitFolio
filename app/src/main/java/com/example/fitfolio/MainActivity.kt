@@ -55,7 +55,6 @@ import com.example.fitfolio.viewmodels.AuthViewModel
 import com.example.fitfolio.viewmodels.ExerciseViewModel
 import com.example.fitfolio.viewmodels.RoutineViewModel
 import com.google.firebase.Firebase
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 
 // Top level composable, parent of all composables in the app
@@ -77,7 +76,6 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     FitFolio(
-                        database = database,
                         authViewModel = authViewModel,
                         repository = repository,
                         routineViewModel = routinesViewModel,
@@ -94,7 +92,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun FitFolio(
     modifier: Modifier = Modifier,
-    database: FirebaseFirestore,
     authViewModel: AuthViewModel,
     repository: Repository,
     routineViewModel: RoutineViewModel,
